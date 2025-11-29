@@ -21,8 +21,6 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
     post?.pageCoverThumbnail &&
     !showPreview
 
-  // const delay = (index % 2) * 200
-
   return (
     <div>
       <div
@@ -52,16 +50,18 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
               : ''
           }`}
       >
-        {/* 文字內容 */}
-        <BlogPostCardInfo
-          index={index}
-          post={post}
-          showPageCover={showPageCover}
-          showPreview={showPreview}
-          showSummary={showSummary}
-        />
+        {/* 文字欄位：給一個自己的容器，控制寬度與對齊 */}
+        <div className='md:w-7/12 flex'>
+          <BlogPostCardInfo
+            index={index}
+            post={post}
+            showPageCover={showPageCover}
+            showPreview={showPreview}
+            showSummary={showSummary}
+          />
+        </div>
 
-        {/* 圖片封面 */}
+        {/* 圖片欄位 */}
         {showPageCover && (
           <div className='md:w-5/12 h-64 md:h-auto overflow-hidden flex-shrink-0'>
             <SmartLink href={post?.href}>
