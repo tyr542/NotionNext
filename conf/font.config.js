@@ -10,47 +10,41 @@ module.exports = {
   // 字体CSS 例如 https://npm.elemecdn.com/lxgw-wenkai-webfont@1.6.0/style.css
   FONT_URL: [
     // 'https://npm.elemecdn.com/lxgw-wenkai-webfont@1.6.0/style.css',
-    'https://fonts.googleapis.com/css?family=Bitter:300,400,700&display=swap',
-    'https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap',
-    'https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;700&display=swap'
   ],
 
   // 字体优化配置
   FONT_DISPLAY: process.env.NEXT_PUBLIC_FONT_DISPLAY || 'swap',
   FONT_PRELOAD: process.env.NEXT_PUBLIC_FONT_PRELOAD || true,
-  FONT_SUBSET: process.env.NEXT_PUBLIC_FONT_SUBSET || 'chinese-simplified',
+  FONT_SUBSET: process.env.NEXT_PUBLIC_FONT_SUBSET || 'chinese-traditional',
   // 无衬线字体 例如'"LXGW WenKai"'
   FONT_SANS: [
     // '"LXGW WenKai"',
-    '"PingFang SC"',
+    '"PingFang TC"',
+    '"Microsoft JhengHei"',
+    '"Noto Sans TC"',
     '-apple-system',
     'BlinkMacSystemFont',
-    '"Hiragino Sans GB"',
-    '"Microsoft YaHei"',
-    '"Segoe UI Emoji"',
-    '"Segoe UI Symbol"',
     '"Segoe UI"',
-    '"Noto Sans SC"',
-    'HarmonyOS_Regular',
+    'Roboto',
     '"Helvetica Neue"',
-    'Helvetica',
-    '"Source Han Sans SC"',
     'Arial',
     'sans-serif',
-    '"Apple Color Emoji"'
-  ],
+    '"Apple Color Emoji"',
+    '"Segoe UI Emoji"',
+    '"Segoe UI Symbol"'
+    ],
   // 衬线字体 例如'"LXGW WenKai"'
   FONT_SERIF: [
     // '"LXGW WenKai"',
-    'Bitter',
-    '"Noto Serif SC"',
-    'SimSun',
-    '"Times New Roman"',
-    'Times',
-    'serif',
-    '"Segoe UI Emoji"',
-    '"Segoe UI Symbol"',
-    '"Apple Color Emoji"'
+  '"Songti TC"',       // 1. 蘋果【宋體】 (Mac 內建，非常優雅)
+  '"Noto Serif TC"',   // 2. 思源【繁體】宋體 (如果讀者有裝，這很美)
+  '"PMingLiU"',        // 3. 新細明體 (Windows 內建，雖然老派但保證是繁體)
+  '"Times New Roman"', // 4. 經典英文襯線
+  'Times',
+  'serif',             // 5. 系統預設
+  '"Apple Color Emoji"',
+  '"Segoe UI Emoji"',
+  '"Segoe UI Symbol"'
   ],
   FONT_AWESOME:
     process.env.NEXT_PUBLIC_FONT_AWESOME_PATH ||
