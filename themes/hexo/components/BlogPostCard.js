@@ -30,7 +30,7 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
         data-aos-once='false'
         data-aos-anchor-placement='top-bottom'
         id='blog-post-card'
-        className={`group md:h-56 w-full flex justify-between md:flex-row flex-col-reverse ${siteConfig('HEXO_POST_LIST_IMG_CROSSOVER', null, CONFIG) && index % 2 === 1 ? 'md:flex-row-reverse' : ''}
+        className={`group md:h-64 w-full flex justify-between md:flex-row flex-col-reverse ${siteConfig('HEXO_POST_LIST_IMG_CROSSOVER', null, CONFIG) && index % 2 === 1 ? 'md:flex-row-reverse' : ''}
                     overflow-hidden rounded-2xl bg-white/0 dark:bg-hexo-black-gray/20 shadow-md backdrop-blur-sm`}>
 
         {/* 文字内容 */}
@@ -51,7 +51,7 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
                   priority={index === 1}
                   alt={post?.title}
                   src={post?.pageCoverThumbnail}
-                  className='h-56 w-full rounded-xl object-cover object-center group-hover:scale-105 duration-500'
+                  className='h-64 w-full rounded-xl object-cover object-center group-hover:scale-105 duration-500'
                 />
               </>
             </SmartLink>
