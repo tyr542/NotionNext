@@ -32,7 +32,8 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
         data-aos-anchor-placement='top-bottom'
         id='blog-post-card'
         className={`group md:h-56 w-full flex justify-between md:flex-row flex-col-reverse ${siteConfig('HEXO_POST_LIST_IMG_CROSSOVER', null, CONFIG) && index % 2 === 1 ? 'md:flex-row-reverse' : ''}
-                    overflow-hidden border dark:border-black rounded-xl bg-white dark:bg-hexo-black-gray`}>
+                    overflow-hidden rounded-2xl bg-white/60 dark:bg-hexo-black-gray/60 shadow-md backdrop-blur-sm`}
+
         {/* 文字内容 */}
         <BlogPostCardInfo
           index={index}
@@ -44,14 +45,14 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
 
         {/* 图片封面 */}
         {showPageCover && (
-          <div className='md:w-5/12 overflow-hidden'>
+          <div className='md:w-5/12 overflow-hidden p-3 md:p-4 flex items-center'>
             <SmartLink href={post?.href}>
               <>
                 <LazyImage
                   priority={index === 1}
                   alt={post?.title}
                   src={post?.pageCoverThumbnail}
-                  className='h-56 w-full object-cover object-center group-hover:scale-110 duration-500'
+                  className='h-44 w-full rounded-xl object-cover object-center group-hover:scale-105 duration-500'
                 />
               </>
             </SmartLink>
