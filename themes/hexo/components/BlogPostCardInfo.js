@@ -1,3 +1,4 @@
+// BlogPostCardInfo.js
 import NotionIcon from '@/components/NotionIcon'
 import NotionPage from '@/components/NotionPage'
 import TwikooCommentCount from '@/components/TwikooCommentCount'
@@ -5,6 +6,7 @@ import { siteConfig } from '@/lib/config'
 import { formatDateFmt } from '@/lib/utils/formatDate'
 import SmartLink from '@/components/SmartLink'
 import TagItemMini from './TagItemMini'
+import CONFIG from '../config'
 
 /**
  * 博客列表的文字内容
@@ -13,113 +15,108 @@ export const BlogPostCardInfo = ({
   post,
   showPreview,
   showPageCover,
-  showSummary
+  showSummary,
+  align = 'left' // 'left' | 'right'
 }) => {
-  // 日期：轉成 2025.11.29 這種格式
-  const rawDate = post?.publishDay || post.lastEditedDay
-  const dateText = rawDate ? formatDateFmt(rawDate, 'yyyy.MM.dd') : ''
+  const dateText = post?.publishDay || post.lastEditedDay
+  const isRight = align === 'right'
+
+  const metaJustify = showPreview
+    ? 'justify-center'
+    : isRight
+      ? 'justify-end'
+      : 'justify-start'
+
+  const bottomJustify = isRight ? 'justify-end' : 'justify-start'
 
   return (
     <article
       className={`flex flex-col h-full lg:p-6 p-4 ${
         showPageCover && !showPreview
-          ? 'md:w-7/12 w-full md:max-h-60'
+          ? 'w-full md:max-h-60'
           : 'w-full'
       }`}
     >
       {/* 整個文字縱向區塊 */}
-      <div className='flex flex-col h-full'>
-        {/* 上半：分類、標題、摘要、預覽、標籤 */}
-        <div className='flex flex-col space-y-3'>
-          <header className={showPreview ? 'text-center' : 'text-left'}>
-            {/* 第一排：分類 + 日期 */}
-            <div
-              className={`flex items-center text-xs md:text-sm text-gray-400 ${
-                showPreview ? 'justify-center' : 'justify-start'
-              }`}
-            >
-              {post?.category && (
-                <>
-                  <SmartLink
-                    href={`/category/${post.category}`}
-                    className='tracking-wide hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors'
-                  >
-                    {post.category}
-                  </SmartLink>
-                  <span className='mx-2'>•</span>
-                </>
-              )}
-              <span>{dateText}</span>
-            </div>
-
-            {/* 第二排：標題 */}
-            <h2 className='mt-2'>
-              <SmartLink
-                href={post?.href}
-                passHref
-                className='line-clamp-2 cursor-pointer text-2xl leading-tight font-normal text-gray-800 dark:text-gray-100 hover:text-indigo-700 dark:hover:text-indigo-400 hover:underline underline-offset-4'
-              >
-                {siteConfig('POST_TITLE_ICON') && (
-                  <NotionIcon icon={post.pageIcon} />
-                )}
-                {/* 拿掉 menu-link，避免只畫一條 border 底線 */}
-                <span>{post.title}</span>
-              </SmartLink>
-            </h2>
-          </header>
-
-          {/* 摘要 */}
-          {(!showPreview || showSummary) && !post.results && (
-            <main className='line-clamp-3 text-gray-700 dark:text-gray-300 text-sm font-light leading-7'>
-              {post.summary}
-            </main>
-          )}
-
-          {/* 搜索結果 */}
-          {post.results && (
-            <p className='line-clamp-3 text-gray-700 dark:text-gray-300 text-sm font-light leading-7'>
-              {post.results.map((r, index) => (
-                <span key={index}>{r}</span>
-              ))}
-            </p>
-          )}
-
-          {/* 內容預覽區塊（如果有） */}
-          {showPreview && (
-            <div className='overflow-ellipsis truncate'>
-              <NotionPage post={post} />
-            </div>
-          )}
-
-          {/* Tag 列：放在閱讀全文上方 */}
-          {post.tagItems?.length > 0 && (
-            <div className='mt-1 flex flex-wrap gap-2'>
-              {post.tagItems.map(tag => (
+      <div
+        className={`flex flex-col h-full w-full ${
+          isRight ? 'items-end text-right' : 'items-start text-left'
+        }`}
+      >
+        {/* 第一排：分類 + 日期 */}
+        {(post?.category || dateText) && (
+          <div
+            className={`flex w-full items-center text-xs md:text-sm text-gray-400 dark:text-gray-500 ${metaJustify}`}
+          >
+            {post?.category && (
+              <>
                 <SmartLink
-                  key={tag.name}
-                  href={`/tag/${tag.name}`}
-                  className='inline-flex items-center px-3 py-1 rounded-full
-                             bg-gray-100 dark:bg-gray-800
-                             text-xs text-gray-600 dark:text-gray-300
-                             hover:bg-gray-200 dark:hover:bg-gray-700
-                             transition-colors'
+                  href={`/category/${post.category}`}
+                  className='tracking-wide hover:underline'
                 >
-                  #{tag.name}
+                  {post.category}
                 </SmartLink>
-              ))}
-            </div>
-          )}
-        </div>
+                <span className='mx-2'>•</span>
+              </>
+            )}
+            {dateText && (
+              <span>{formatDateFmt(dateText, 'yyyy.MM.dd')}</span>
+            )}
+          </div>
+        )}
 
-        {/* 下半：閱讀全文（自然排在最後，不再被撐到最底） */}
-        <SmartLink
-          href={post?.href}
-          passHref
-          className='inline-flex items-center mt-4 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-indigo-700 dark:hover:text-indigo-400'
+        {/* 標題 */}
+        <h2 className='mt-3 text-lg md:text-2xl font-bold text-gray-800 dark:text-gray-100'>
+          <SmartLink href={post?.href}>
+            <span className='transition-all group-hover:text-blue-600 dark:group-hover:text-blue-400'>
+              {post?.title}
+            </span>
+          </SmartLink>
+        </h2>
+
+        {/* 摘要或預覽內容 */}
+        {showPreview && post?.blockMap ? (
+          <div className='mt-3 w-full'>
+            <NotionPage post={post} />
+          </div>
+        ) : (
+          showSummary &&
+          post?.summary && (
+            <p className='mt-3 text-sm md:text-base text-gray-600 dark:text-gray-300 line-clamp-3'>
+              {post.summary}
+            </p>
+          )
+        )}
+
+        {/* Tag 列：放在閱讀全文上方 */}
+        {post.tagItems?.length > 0 && (
+          <div className='mt-3 flex flex-wrap gap-2 w-full'>
+            {post.tagItems.map(tag => (
+              <TagItemMini key={tag.name} tag={tag} />
+            ))}
+          </div>
+        )}
+
+        {/* 底部：留言數 + 閱讀全文 */}
+        <div
+          className={`mt-4 flex w-full items-center gap-4 ${bottomJustify}`}
         >
-          閱讀全文
-          <span className='ml-1'>→</span>
-        </SmartLink>
+          {siteConfig('BLOG_COMMENT', null, CONFIG) &&
+            siteConfig('BLOG_COMMENT_TWIKOO_ENV_ID', null, CONFIG) && (
+              <TwikooCommentCount
+                post={post}
+                className='text-xs text-gray-400 dark:text-gray-500'
+              />
+            )}
+
+          <SmartLink
+            href={post?.href}
+            className='inline-flex items-center text-sm font-medium text-gray-700 dark:text-gray-200 hover:underline'
+          >
+            閱讀全文
+            <span className='ml-1'>↗</span>
+          </SmartLink>
+        </div>
       </div>
     </article>
   )
