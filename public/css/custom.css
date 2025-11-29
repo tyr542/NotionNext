@@ -1,216 +1,149 @@
 /* -----------------------------------------------------------
-   1. 字體引入 (Typography Imports)
+   8. 全站字體全面放大（18px 基準）
    ----------------------------------------------------------- */
-/* 內文 Noto Sans + 標題 Noto Serif */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;700&display=swap');
 
-/* 如果你有要用 Font Awesome 再留著，沒用可以先註解掉 */
-/* @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'); */
-
-
-/* -----------------------------------------------------------
-   2. 全域變數設定 (CSS Variables)
-   ----------------------------------------------------------- */
-:root,
-[data-theme="light"] {
-  /* 紙感配色 */
-  --color-paper:  #fdfbf7;
-  --color-ink:    #2c2c2c;
-  --color-accent: #8c7b75;
-
-  /* 字體 */
-  --font-sans:  'Noto Sans TC', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-serif: 'Noto Serif TC', 'Source Han Serif TC', 'Times New Roman', serif;
-
-  /* NotionNext 本來就有的 primary 色，順便對齊 accent */
-  --color-primary: var(--color-accent);
-  --color-primary-hover: #6f625d;
-  --link-color: var(--color-accent);
-  --link-color-hover: #6f625d;
+/* 基準字體大小：整站拉大 */
+html {
+  font-size: 18px; /* 原本 16 → 現在 18，整體大約 12% 放大 */
 }
 
-/* 深色模式可以稍微拉亮一點 */
-[data-theme="dark"] {
-  --color-paper:  #141414;
-  --color-ink:    #f5f5f5;
-  --color-accent: #d1b4a8;
-
-  --color-primary: var(--color-accent) !important;
-  --color-primary-hover: #e3c7ba !important;
-  --link-color: var(--color-accent) !important;
-  --link-color-hover: #e3c7ba !important;
-}
-
-/* -----------------------------------------------------------
-   3. 基礎設定 (Base Styles)
-   ----------------------------------------------------------- */
+/* 內文字體（Noto Sans） */
 body {
-  background-color: var(--color-paper);
-  color: var(--color-ink);
+  font-size: 1rem;           /* 18px */
+  line-height: 1.8;          /* 更紙本、更舒服 */
   font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
 }
 
-/* 全站標題：頁面標題、文章標題、小節標題，用襯線體 */
-h1, h2, h3, h4,
+/* -----------------------------------------------------------
+   9. 全站標題：襯線 + 粗體 + 放大
+   ----------------------------------------------------------- */
+
+h1, h2, h3, h4, h5, h6,
 .post-card-title,
 .notion-page .notion-title,
 .notion-page h1,
 .notion-page h2,
 .notion-page h3 {
-  font-family: var(--font-serif);
+  font-family: var(--font-serif) !important;
+  font-weight: 700 !important;   /* 你要求的 Bold */
   letter-spacing: 0.02em;
+  color: var(--color-ink);
 }
 
-/* 選取文字時的顏色效果 */
-::selection {
-  background-color: var(--color-accent);
-  color: #ffffff;
+/* 標題尺寸（整體提高） */
+h1, .notion-page h1 {
+  font-size: 2.4rem;      /* 約 43px */
+  line-height: 1.25;
 }
 
-/* -----------------------------------------------------------
-   4. 自定義捲軸 (Custom Scrollbar)
-   ----------------------------------------------------------- */
-::-webkit-scrollbar {
-  width: 8px;
+h2, .notion-page h2 {
+  font-size: 2rem;        /* 約 36px */
+  line-height: 1.35;
 }
 
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
+h3, .notion-page h3 {
+  font-size: 1.6rem;      /* 約 29px */
+  line-height: 1.45;
 }
 
-::-webkit-scrollbar-thumb {
-  background: #ccc;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-accent);
+h4, .notion-page h4 {
+  font-size: 1.3rem;      /* 約 23px */
+  line-height: 1.5;
 }
 
 
 /* -----------------------------------------------------------
-   5. 動畫效果 (Animations)
+   10. 導覽列：襯線體 + Bold（你有要求）
    ----------------------------------------------------------- */
-.fade-in-up {
-  animation: fadeInUp 0.8s ease-out forwards;
-  opacity: 0;
-  transform: translateY(20px);
+
+.navbar,
+.nav-item,
+.header-container,
+#navbar,
+#top-nav,
+#nav {
+  font-family: var(--font-serif) !important;
+  font-weight: 700 !important;
+  font-size: 1rem;   /* 導覽列字體也變大 */
 }
 
-@keyframes fadeInUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* 如果你的主題 nav 使用 .menu-link（大部分都這樣），一起加 */
+.menu-link {
+  font-family: var(--font-serif) !important;
+  font-weight: 700 !important;
+  font-size: 1rem;
+}
+
+/* -----------------------------------------------------------
+   11. 文章內容：段落、清單、引用等
+   ----------------------------------------------------------- */
+
+/* 文章段落 */
+.notion-page p {
+  font-size: 1.1rem;        /* 18px → 提高到 19.8px */
+  line-height: 1.85;
+  margin: 1rem 0;
+}
+
+/* 清單 */
+.notion-page ul,
+.notion-page ol {
+  font-size: 1.1rem;
+  line-height: 1.85;
+}
+
+/* 引用 blockquote */
+.notion-page blockquote {
+  font-size: 1.1rem;
+  border-left: 4px solid var(--color-accent);
+  padding-left: 1rem;
+  opacity: 0.9;
+}
+
+/* 程式碼區塊 */
+.notion-page pre {
+  font-size: 0.9rem; /* 可以略小以避免爆版 */
+  line-height: 1.7;
 }
 
 
 /* -----------------------------------------------------------
-   6. 閱讀進度條 (Reading Progress Bar)
+   12. 卡片內容也放大（首頁文章卡片）
    ----------------------------------------------------------- */
-#reading-progress-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 6px; /* h-1.5 等於 6px */
-  z-index: 60;
-  background-color: transparent;
-  pointer-events: none;
-}
 
-#reading-progress {
-  position: relative;           /* 讓裡面的文字可以絕對定位 */
-  height: 100%;
-  width: 0%;
-  background-color: var(--color-accent);
-  box-shadow: 0 0 10px rgba(140, 123, 117, 0.5);
-  transition: width 0.1s ease-out;
-}
-
-/* 這個是顯示 {percent}% 的小文字（垂直置中＋靠右） */
-.reading-progress-label {
-  position: absolute;
-  right: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 0.75rem;
-  color: #ffffff;
-}
-
-
-/* -----------------------------------------------------------
-   7. 卡片整體外觀 (沿用你原本的，但用新配色)
-   ----------------------------------------------------------- */
-.post-card-wrapper {
-  border-radius: 24px;
-  overflow: hidden;
-  background: #f8f5f1; /* 可以改成 var(--color-paper) 看感覺 */
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.06);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.post-card-wrapper:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.09);
-}
-
-/* 內部左右排版 */
-.post-card-inner {
-  display: flex;
-  flex-direction: column;
-}
-
-@media (min-width: 768px) {
-  .post-card-inner {
-    flex-direction: row;
-  }
-}
-
-/* 圖片區塊 */
-.post-card-cover {
-  display: block;
-  width: 100%;
-  max-height: 260px;
-  overflow: hidden;
-}
-
-@media (min-width: 768px) {
-  .post-card-cover {
-    width: 45%;
-    max-height: none;
-  }
-}
-
-.post-card-cover-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.35s ease, filter 0.35s ease;
-}
-
-.post-card-wrapper:hover .post-card-cover-img {
-  transform: scale(1.03);
-  filter: brightness(0.97);
-}
-
-/* 文字區塊 */
 .post-card-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 1.75rem 1.75rem;
+  font-size: 1.05rem;     /* 內文略微放大 */
+  line-height: 1.7;
 }
 
-@media (min-width: 768px) {
-  .post-card-content {
-    width: 55%;
-    padding: 2.5rem 2.75rem;
+.post-card-title {
+  font-size: 1.4rem;      /* 卡片標題更醒目 */
+  font-weight: 700 !important;
+}
+
+
+/* -----------------------------------------------------------
+   13. 手機版字體微調，避免太大爆版
+   ----------------------------------------------------------- */
+
+@media (max-width: 768px) {
+  html {
+    font-size: 17px; /* 手機稍微降低，避免爆字爆排版 */
+  }
+
+  h1, .notion-page h1 {
+    font-size: 2rem;
+  }
+
+  h2, .notion-page h2 {
+    font-size: 1.7rem;
+  }
+
+  h3, .notion-page h3 {
+    font-size: 1.4rem;
+  }
+
+  .post-card-title {
+    font-size: 1.25rem;
   }
 }
-
-/* 若你有 purple / indigo 顏色被 NotionNext 用到，也可以繼續覆蓋 */
-.bg-purple-500, .bg-indigo-500 { background-color: var(--color-primary) !important; }
-.text-purple-500, .text-indigo-500 { color: var(--color-primary) !important; }
-.border-purple-500, .border-indigo-500 { border-color: var(--color-primary) !important; }
