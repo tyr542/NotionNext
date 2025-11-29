@@ -7,7 +7,6 @@ import { BlogPostCardInfo } from './BlogPostCardInfo'
 const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
   const showPreview =
     siteConfig('HEXO_POST_LIST_PREVIEW', null, CONFIG) && post.blockMap
-
   if (
     post &&
     !post.pageCoverThumbnail &&
@@ -15,21 +14,15 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
   ) {
     post.pageCoverThumbnail = siteInfo?.pageCover
   }
-
   const showPageCover =
     siteConfig('HEXO_POST_LIST_COVER', null, CONFIG) &&
     post?.pageCoverThumbnail &&
     !showPreview
-  // const delay = (index % 2) * 200
+  //   const delay = (index % 2) * 200
 
   return (
     <div
-      className={`${
-        siteConfig('HEXO_POST_LIST_COVER_HOVER_ENLARGE', null, CONFIG)
-          ? ' hover:scale-110 transition-all duration-150'
-          : ''
-      }`}
-    >
+      className={`${siteConfig('HEXO_POST_LIST_COVER_HOVER_ENLARGE', null, CONFIG) ? ' hover:scale-110 transition-all duration-150' : ''}`}>
       <div
         key={post.id}
         data-aos='fade-up'
@@ -38,14 +31,10 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
         data-aos-once='false'
         data-aos-anchor-placement='top-bottom'
         id='blog-post-card'
-        className={`group md:h-56 w-full flex justify-between md:flex-row flex-col-reverse ${
-          siteConfig('HEXO_POST_LIST_IMG_CROSSOVER', null, CONFIG) &&
-          index % 2 === 1
-            ? 'md:flex-row-reverse'
-            : ''
-        } overflow-hidden rounded-2xl bg-white/60 dark:bg-hexo-black-gray/60 shadow-md backdrop-blur-sm`}
-      >
-        {/* 文字內容 */}
+        className={`group md:h-56 w-full flex justify-between md:flex-row flex-col-reverse ${siteConfig('HEXO_POST_LIST_IMG_CROSSOVER', null, CONFIG) && index % 2 === 1 ? 'md:flex-row-reverse' : ''}
+                    overflow-hidden rounded-2xl bg-white/60 dark:bg-hexo-black-gray/60 shadow-md backdrop-blur-sm`}>
+
+        {/* 文字内容 */}
         <BlogPostCardInfo
           index={index}
           post={post}
@@ -54,9 +43,9 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
           showSummary={showSummary}
         />
 
-        {/* 圖片封面 */}
+        {/* 图片封面 */}
         {showPageCover && (
-          <div className='md:w-5/12 overflow-hidden p-3 md:p-4 flex items-center'>
+            <div className='md:w-5/12 overflow-hidden'>
             <SmartLink href={post?.href}>
               <>
                 <LazyImage
