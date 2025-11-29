@@ -51,14 +51,14 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
         `}
       >
         {/* 文字欄位 */}
-        <div className='md:w-7/12 flex'>
+        <div className='md:w-7/12 flex flex-col justify-center'> {/* 加上 flex-col justify-center 讓文字垂直置中更好看 */}
           <BlogPostCardInfo
             index={index}
             post={post}
             showPageCover={showPageCover}
             showPreview={showPreview}
             showSummary={showSummary}
-            align={isReversed ? 'right' : 'left'} // ★ 傳進去
+            align={isReversed ? 'right' : 'left'} 
           />
         </div>
 
