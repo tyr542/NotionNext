@@ -32,11 +32,16 @@ export const BlogPostCardInfo = ({
     }`}
   >
     {post?.category && (
-      <>
-        <span className='tracking-wide'>{post.category}</span>
-        <span className='mx-2'>•</span>
-      </>
-    )}
+  <>
+    <SmartLink
+      href={`/category/${post.category}`}
+      className='tracking-wide hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors'
+    >
+      {post.category}
+    </SmartLink>
+    <span className='mx-2'>•</span>
+  </>
+)}
     <span>{dateText}</span>
   </div>
 
@@ -77,9 +82,25 @@ export const BlogPostCardInfo = ({
             <NotionPage post={post} />
           </div>
         )}
+
+      {/* Tag 列：放在閱讀全文上方 */}
+      {post.tagItems?.length > 0 && (
+        <div className='mt-2 flex flex-wrap gap-2'>
+          {post.tagItems.map(tag => (
+            <SmartLink
+              key={tag.name}
+              href={`/tag/${tag.name}`}
+              className='px-2 py-1 rounded-md bg-gray-100 dark:bg-gray-700 text-xs text-gray-600 dark:text-gray-300 hover:bg-indigo-100 dark:hover:bg-indigo-600 transition-colors'
+            >
+              #{tag.name}
+            </SmartLink>
+          ))}
+        </div>
+      )}
+
       </div>
 
-            <div>
+       <div>
         {/* 第四排：閱讀全文 */}
         <SmartLink
           href={post?.href}
