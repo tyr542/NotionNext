@@ -8,160 +8,235 @@
 }
 
 /* * -------------------------------------------
- * NotionNext 部落格美學改造 V2 - 極簡雅致與元件清理
+ * NotionNext 部落格美學改造 V4 - 卡片與日期優化
  * -------------------------------------------
- * 專注於提升閱讀質感、留白優化、色彩主題，並深度清理導航欄與漂浮選單。
+ * 專注於首頁文章卡片視覺重構 (圖片、無邊框陰影)、日期格式統一及側邊欄卡片美化。
  */
 
 /* =======================================
-   色彩主題改造 (Accent Color)
+   色彩主題改造 (Accent Color) - 維持 V3 不變
    ======================================= */
-
-/* [A] 全面去除預設紫色，替換為「焦糖脆皮」色：#B25F4C */
 :root, [data-theme="light"] {
-    --color-primary: #B25F4C !important; /* 日間模式主色 (連結、按鈕) */
+    --color-primary: #B25F4C !important;
     --color-primary-hover: #8C473A !important;
     --link-color: #B25F4C !important;
     --link-color-hover: #8C473A !important;
 }
-
 [data-theme="dark"] {
-    --color-primary: #D19D8C !important; /* 黑暗模式用稍亮的焦糖色 */
+    --color-primary: #D19D8C !important;
     --color-primary-hover: #E3B3A2 !important;
     --link-color: #D19D8C !important;
     --link-color-hover: #E3B3A2 !important;
 }
-
-/* [B] 覆蓋特定元素上的顏色，確保統一性 */
-.bg-purple-500, .bg-indigo-500 {
-    background-color: var(--color-primary) !important;
-}
-.text-purple-500, .text-indigo-500 {
-    color: var(--color-primary) !important;
-}
-.border-purple-500, .border-indigo-500 {
-    border-color: var(--color-primary) !important;
-}
+.bg-purple-500, .bg-indigo-500 { background-color: var(--color-primary) !important; }
+.text-purple-500, .text-indigo-500 { color: var(--color-primary) !important; }
+.border-purple-500, .border-indigo-500 { border-color: var(--color-primary) !important; }
 
 
 /* =======================================
-   1. 骨架、字體與留白改造 (Layout & Typography)
+   1. 骨架、字體與留白改造 (全域應用) - 維持 V3 不變
    ======================================= */
-
-/* [A] 內容最大寬度與留白：收窄到 720px，增加左右留白與內邊距 */
-.notion-article-content, 
-.notion-page-detail {
+.notion-article-content, .notion-page-detail, .notion-article-list, .notion-widget { /* 將 .notion-widget 加入，確保側邊欄卡片也受影響 */
     max-width: 720px !important; 
     margin-left: auto !important; 
     margin-right: auto !important;
     padding-left: 1.5rem !important;
     padding-right: 1.5rem !important;
 }
-
-/* [B] 優化行高：解決「硬塞」的擁擠感 */
-.notion-text, 
-.notion-page-detail p,
-.notion-article-content {
+.notion-text, .notion-page-detail p, .notion-article-content, .notion-article-summary {
     line-height: 1.75 !important; 
     letter-spacing: 0.02em; 
 }
-
-/* [C] 繁體中文主體字體：現代、清晰的系統黑體 */
-body, 
-.notion-text, 
-.notion-nav-header, 
-.notion-page-detail {
+body, .notion-text, .notion-nav-header, .notion-page-detail, .notion-article-list, .notion-widget {
     font-family: "PingFang TC", "Heiti TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif !important;
+    font-size: 0.95rem !important; 
 }
-
-/* [D] 互動元素的圓角 */
-.notion-property-multi_select > div, 
-.notion-property-select > div,
-.notion-button {
+.notion-property-multi_select > div, .notion-property-select > div, .notion-button {
     border-radius: 0.5rem !important; 
     padding: 0.25rem 0.6rem !important; 
+    font-size: 0.85rem !important;
 }
+h1 { font-size: 2.25rem !important; }
+h2 { font-size: 1.6rem !important; }
+h3 { font-size: 1.35rem !important; }
 
 
 /* =======================================
-   2. 元件清理與美化 (Nav, Floating Menu, Images)
+   2. 元件清理與美化 (Nav Bar & 首頁清理) - 維持 V3 不變
    ======================================= */
-
-/* [A] 徹底移除飄浮功能表 (Nav Drawer / Side Menu)
- * 您說它「很可怕」，所以我們把它從 DOM 中移除。
- */
-.notion-nav-header .text-xl.flex, /* 針對手機板左上角菜單圖標 */
-.notion-nav-header .text-2xl.flex, /* 針對電腦版上隱藏的浮動菜單按鈕 (如果有) */
-.fixed.right-0.top-0.z-50.bg-white.dark\:bg-black { /* 這是側邊彈出的菜單本身 */
-    display: none !important;
-}
-
-/* [B] 隱藏首頁大圖 (Header Image)
- * 解決「不想要首頁有大圖」的需求。直接把這個區塊隱藏。
- */
-.notion-header-image {
-    display: none !important;
-}
-
-/* [C] 導航欄 (Nav Bar) 視覺優化
- * 讓導航欄更清晰、更雅致，固定在頂部，並且有輕微的陰影。
- */
+.notion-nav-header .text-xl.flex, .notion-nav-header .text-2xl.flex, .fixed.right-0.top-0.z-50.bg-white.dark\:bg-black { display: none !important; }
+.notion-header-image { display: none !important; }
 .notion-nav-header {
-    /* 增加底部的陰影，讓它「浮」在內容上方，增加層次感 */
     box-shadow: 0 1px 10px rgba(0, 0, 0, 0.05); 
-    /* 確保置頂，並讓背景稍微透明一點點（極簡設計常用手法） */
     backdrop-filter: blur(8px);
     background-color: rgba(255, 255, 255, 0.95) !important;
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    border-bottom: none !important; /* 移除底部邊框 */
+    position: sticky; top: 0; z-index: 50; border-bottom: none !important;
+    height: 4rem; padding: 0 1.5rem; 
 }
 [data-theme="dark"] .notion-nav-header {
     background-color: rgba(18, 18, 18, 0.95) !important;
     box-shadow: 0 1px 10px rgba(255, 255, 255, 0.08); 
 }
-
-/* [D] 日/夜切換按鈕納入 Nav Bar
- * 因為我們移除了飄浮菜單，這個按鈕必須重新定位。
- * 這是通過覆寫 `fixed` 定位來實現的。
- */
-.notion-nav-header > div > div:last-child > button {
-    /* 這是日夜切換按鈕在 Nav Bar 裡的父容器 */
-    position: static !important; /* 消除絕對定位或固定定位 */
-    margin-left: 1rem; /* 與導航項目隔開 */
-}
-
-/* [E] 圖片呈現優化 (解決「可怕」的呈現形式)
- * 讓圖片有圓角和內斂的陰影，增加質感，避免直愣愣的方塊。
- * 雖然文章為主，但圖片質感不能丟。
- */
-.notion-page-detail img, 
-.notion-article-content img {
-    border-radius: 0.6rem !important; /* 圓角 */
-    /* 輕微的陰影，讓圖片像是「浮」在紙面上 */
+.notion-page-detail img, .notion-article-content img {
+    border-radius: 0.6rem !important; 
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); 
-    /* 確保圖片不會超過內容區的寬度 */
-    max-width: 100% !important; 
-    height: auto !important;
-    /* 增加圖片上下的留白 */
     margin-top: 1.5rem !important;
     margin-bottom: 1.5rem !important;
+    display: block; margin-left: auto; margin-right: auto;
 }
-
-/* 移除圖片在文章列表中的圓角和陰影，保持列表的簡潔 */
-.notion-article-cover img {
-    border-radius: 0 !important; 
-    box-shadow: none !important; 
+.notion-nav-header nav { font-size: 0.9rem !important; line-height: 1; }
+.notion-nav-header button {
+    background: none; border: none; cursor: pointer;
+    width: 1.25rem; height: 1.25rem; font-size: 1.25rem; 
+    transition: color 0.2s ease;
 }
+.notion-nav-header button:hover { color: var(--color-primary) !important; }
 
 
 /* =======================================
-   3. 網站標題/Logo 居中 (選用)
+   3. 首頁文章列表專屬樣式 - 卡片重構
    ======================================= */
-/* 如果您希望 Logo/標題文字在手機版上居中，可以加上以下程式碼 */
-@media (max-width: 640px) {
-    .notion-nav-header .flex-1.flex.items-center.justify-start {
-        justify-content: center !important;
+/* [A] 文章列表容器整體調整 */
+.notion-article-list {
+    display: grid; /* 使用 Grid 佈局 */
+    grid-template-columns: 1fr; /* 預設單欄 */
+    gap: 2rem; /* 文章卡片間距 */
+    margin-top: 2rem;
+}
+/* 寬螢幕下兩欄佈局，側邊欄在右側 */
+@media (min-width: 1024px) { /* 約等於桌面版 */
+    .notion-article-list {
+        grid-template-columns: 2fr 1fr; /* 左側文章列表佔 2/3，右側側邊欄佔 1/3 */
     }
+}
+
+
+/* [B] 文章卡片 (post-card) 樣式：無邊框，改用陰影區隔，加入封面圖 */
+.post-card, .notion-latest-post, .notion-widget-card { /* 應用於所有卡片類元素 */
+    /* 移除邊框 */
+    border: none !important; 
+    padding: 1.5rem;
+    margin-bottom: 0 !important; /* 間距由 grid-gap 控制 */
+    border-radius: 0.75rem;
+    transition: box-shadow 0.3s, transform 0.3s;
+    background-color: var(--bg-color); /* 確保背景色繼承 */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* 柔和陰影區隔 */
+}
+.post-card:hover, .notion-latest-post:hover, .notion-widget-card:hover {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12); /* 懸停時陰影加深 */
+    transform: translateY(-3px); /* 輕微上浮 */
+}
+[data-theme="dark"] .post-card, [data-theme="dark"] .notion-latest-post, [data-theme="dark"] .notion-widget-card {
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.08);
+}
+[data-theme="dark"] .post-card:hover, [data-theme="dark"] .notion-latest-post:hover, [data-theme="dark"] .notion-widget-card:hover {
+    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.12);
+}
+
+/* [C] 文章卡片內部結構 (用於首頁列表) */
+.post-card-content {
+    display: flex; /* 讓圖片和文字並排 */
+    gap: 1.5rem; /* 圖片與文字的間距 */
+    flex-direction: column; /* 預設堆疊 (手機版) */
+}
+@media (min-width: 640px) { /* 平板及以上，圖片在左，文字在右 */
+    .post-card-content {
+        flex-direction: row; 
+        align-items: flex-start; /* 對齊頂部 */
+    }
+}
+
+/* [D] 文章卡片封面圖片 */
+.post-card-cover {
+    flex-shrink: 0; /* 不讓圖片被擠壓 */
+    width: 100%; /* 手機版圖片全寬 */
+    max-width: 150px; /* 桌面版圖片最大寬度 */
+    height: 100px; /* 固定高度 */
+    border-radius: 0.5rem;
+    overflow: hidden; /* 確保圖片圓角 */
+}
+@media (min-width: 640px) {
+    .post-card-cover {
+        width: 150px; /* 固定圖片寬度 */
+        height: 100px; /* 固定圖片高度 */
+    }
+}
+.post-card-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 圖片填滿容器並裁切 */
+    transition: transform 0.3s ease; /* 懸停放大效果 */
+    border-radius: 0.5rem !important; /* 確保圖片自身也有圓角 */
+    box-shadow: none !important; /* 移除圖片本身的陰影，讓卡片陰影統治 */
+    margin: 0 !important; /* 移除圖片預設的 margin */
+}
+.post-card:hover .post-card-cover img {
+    transform: scale(1.05); /* 懸停時圖片輕微放大 */
+}
+
+/* [E] 文章標題、摘要、日期 */
+.post-title {
+    font-size: 1.15rem; /* 標題微調 */
+    font-weight: 600;
+    margin-bottom: 0.3rem; /* 調整間距 */
+    color: var(--text-color);
+}
+.post-title:hover { color: var(--color-primary); }
+.post-summary {
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem; /* 摘要文字更小 */
+    line-height: 1.5; /* 摘要行高 */
+}
+/* [F] 日期格式：Nov 23, 2025 */
+.post-date, .notion-latest-post .text-gray-500 { /* 應用於首頁列表和側邊欄最新發佈 */
+    font-size: 0.8rem !important; /* 日期文字更小 */
+    color: #9ca3af !important; /* 較淺的灰色 */
+    margin-top: 0.5rem; /* 與摘要分隔 */
+}
+
+/* [G] 側邊欄卡片通用樣式 (例如：煎餃日誌, 最新發佈, 公告) */
+.notion-widget {
+    /* 確保側邊欄容器也遵循 max-width */
+    margin-top: 2rem; /* 與上方內容間距 */
+}
+.notion-widget-card { /* 用於側邊欄每個獨立的卡片，例如「煎餃日誌」 */
+    margin-bottom: 2rem; /* 側邊欄卡片間距 */
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* 柔和陰影區隔 */
+    border: none !important; /* 確保無邊框 */
+}
+.notion-widget-card .title { /* 側邊欄卡片標題 */
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+}
+.notion-widget-card p { /* 側邊欄內文 */
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #6b7280;
+}
+.notion-latest-post .flex.items-center { /* 最新發佈列表項目 */
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.8rem;
+}
+.notion-latest-post .flex.items-center img { /* 最新發佈縮略圖 */
+    width: 50px;
+    height: 50px;
+    border-radius: 0.4rem;
+    object-fit: cover;
+    margin-right: 0.8rem;
+    box-shadow: none !important; /* 移除圖片陰影 */
+    margin: 0 !important; /* 移除圖片 margin */
+}
+.notion-latest-post .flex-1 .font-medium { /* 最新發佈標題 */
+    font-size: 0.9rem;
+    color: var(--text-color);
+    line-height: 1.3;
+}
+.notion-latest-post .flex-1 .font-medium:hover {
+    color: var(--color-primary);
 }
