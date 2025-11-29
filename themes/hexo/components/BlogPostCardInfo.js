@@ -15,7 +15,9 @@ export const BlogPostCardInfo = ({
   showPageCover,
   showSummary
 }) => {
-  const dateText = post?.publishDay || post.lastEditedDay
+  // 日期：轉成 2025.11.29 這種格式
+  const rawDate = post?.publishDay || post.lastEditedDay
+  const dateText = rawDate ? formatDateFmt(rawDate, 'yyyy.MM.dd') : ''
 
   return (
     <article
@@ -55,12 +57,13 @@ export const BlogPostCardInfo = ({
               <SmartLink
                 href={post?.href}
                 passHref
-                className='line-clamp-2 cursor-pointer text-2xl leading-tight font-normal text-gray-800 dark:text-gray-100 hover:text-indigo-700 dark:hover:text-indigo-400'
+                className='line-clamp-2 cursor-pointer text-2xl leading-tight font-normal text-gray-800 dark:text-gray-100 hover:text-indigo-700 dark:hover:text-indigo-400 hover:underline underline-offset-4'
               >
                 {siteConfig('POST_TITLE_ICON') && (
                   <NotionIcon icon={post.pageIcon} />
                 )}
-                <span className='menu-link'>{post.title}</span>
+                {/* 拿掉 menu-link，避免只畫一條 border 底線 */}
+                <span>{post.title}</span>
               </SmartLink>
             </h2>
           </header>
@@ -95,7 +98,11 @@ export const BlogPostCardInfo = ({
                 <SmartLink
                   key={tag.name}
                   href={`/tag/${tag.name}`}
-                  className='px-2 py-1 rounded-md bg-gray-100 dark:bg-gray-700 text-xs text-gray-600 dark:text-gray-300 hover:bg-indigo-100 dark:hover:bg-indigo-600 transition-colors'
+                  className='inline-flex items-center px-3 py-1 rounded-full
+                             bg-gray-100 dark:bg-gray-800
+                             text-xs text-gray-600 dark:text-gray-300
+                             hover:bg-gray-200 dark:hover:bg-gray-700
+                             transition-colors'
                 >
                   #{tag.name}
                 </SmartLink>
