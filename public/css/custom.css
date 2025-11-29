@@ -147,3 +147,36 @@ h4, .notion-page h4 {
     font-size: 1.25rem;
   }
 }
+
+/* 基本字體：內文用 Sans，標題/導覽用 Serif */
+body {
+  font-family: var(--font-sans);
+}
+
+/* 標題：襯線體 + 粗體，只改家族跟字重，大小交給原本 Tailwind/主題 */
+h1, h2, h3, h4, h5, h6,
+.post-card-title,
+.notion-page .notion-title {
+  font-family: var(--font-serif) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em;
+}
+
+/* Notion 內文標題（很多是 div + class，不是真正 h1/h2） */
+.notion-page .notion-h-title {
+  font-family: var(--font-serif) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em;
+}
+
+/* 導覽列：襯線 + Bold，只動字體不要動大小，避免排版爆炸 */
+header,
+header nav,
+header nav a,
+#nav,
+#top-nav,
+#navbar,
+.menu-link {
+  font-family: var(--font-serif) !important;
+  font-weight: 700 !important;
+}
