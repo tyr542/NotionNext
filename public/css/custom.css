@@ -6,3 +6,162 @@
 .fa-info:before {
     content: "\f05a";
 }
+
+/* * -------------------------------------------
+ * NotionNext 部落格美學改造 V2 - 極簡雅致與元件清理
+ * -------------------------------------------
+ * 專注於提升閱讀質感、留白優化、色彩主題，並深度清理導航欄與漂浮選單。
+ */
+
+/* =======================================
+   色彩主題改造 (Accent Color)
+   ======================================= */
+
+/* [A] 全面去除預設紫色，替換為「焦糖脆皮」色：#B25F4C */
+:root, [data-theme="light"] {
+    --color-primary: #B25F4C !important; /* 日間模式主色 (連結、按鈕) */
+    --color-primary-hover: #8C473A !important;
+    --link-color: #B25F4C !important;
+    --link-color-hover: #8C473A !important;
+}
+
+[data-theme="dark"] {
+    --color-primary: #D19D8C !important; /* 黑暗模式用稍亮的焦糖色 */
+    --color-primary-hover: #E3B3A2 !important;
+    --link-color: #D19D8C !important;
+    --link-color-hover: #E3B3A2 !important;
+}
+
+/* [B] 覆蓋特定元素上的顏色，確保統一性 */
+.bg-purple-500, .bg-indigo-500 {
+    background-color: var(--color-primary) !important;
+}
+.text-purple-500, .text-indigo-500 {
+    color: var(--color-primary) !important;
+}
+.border-purple-500, .border-indigo-500 {
+    border-color: var(--color-primary) !important;
+}
+
+
+/* =======================================
+   1. 骨架、字體與留白改造 (Layout & Typography)
+   ======================================= */
+
+/* [A] 內容最大寬度與留白：收窄到 720px，增加左右留白與內邊距 */
+.notion-article-content, 
+.notion-page-detail {
+    max-width: 720px !important; 
+    margin-left: auto !important; 
+    margin-right: auto !important;
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+}
+
+/* [B] 優化行高：解決「硬塞」的擁擠感 */
+.notion-text, 
+.notion-page-detail p,
+.notion-article-content {
+    line-height: 1.75 !important; 
+    letter-spacing: 0.02em; 
+}
+
+/* [C] 繁體中文主體字體：現代、清晰的系統黑體 */
+body, 
+.notion-text, 
+.notion-nav-header, 
+.notion-page-detail {
+    font-family: "PingFang TC", "Heiti TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif !important;
+}
+
+/* [D] 互動元素的圓角 */
+.notion-property-multi_select > div, 
+.notion-property-select > div,
+.notion-button {
+    border-radius: 0.5rem !important; 
+    padding: 0.25rem 0.6rem !important; 
+}
+
+
+/* =======================================
+   2. 元件清理與美化 (Nav, Floating Menu, Images)
+   ======================================= */
+
+/* [A] 徹底移除飄浮功能表 (Nav Drawer / Side Menu)
+ * 您說它「很可怕」，所以我們把它從 DOM 中移除。
+ */
+.notion-nav-header .text-xl.flex, /* 針對手機板左上角菜單圖標 */
+.notion-nav-header .text-2xl.flex, /* 針對電腦版上隱藏的浮動菜單按鈕 (如果有) */
+.fixed.right-0.top-0.z-50.bg-white.dark\:bg-black { /* 這是側邊彈出的菜單本身 */
+    display: none !important;
+}
+
+/* [B] 隱藏首頁大圖 (Header Image)
+ * 解決「不想要首頁有大圖」的需求。直接把這個區塊隱藏。
+ */
+.notion-header-image {
+    display: none !important;
+}
+
+/* [C] 導航欄 (Nav Bar) 視覺優化
+ * 讓導航欄更清晰、更雅致，固定在頂部，並且有輕微的陰影。
+ */
+.notion-nav-header {
+    /* 增加底部的陰影，讓它「浮」在內容上方，增加層次感 */
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.05); 
+    /* 確保置頂，並讓背景稍微透明一點點（極簡設計常用手法） */
+    backdrop-filter: blur(8px);
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    border-bottom: none !important; /* 移除底部邊框 */
+}
+[data-theme="dark"] .notion-nav-header {
+    background-color: rgba(18, 18, 18, 0.95) !important;
+    box-shadow: 0 1px 10px rgba(255, 255, 255, 0.08); 
+}
+
+/* [D] 日/夜切換按鈕納入 Nav Bar
+ * 因為我們移除了飄浮菜單，這個按鈕必須重新定位。
+ * 這是通過覆寫 `fixed` 定位來實現的。
+ */
+.notion-nav-header > div > div:last-child > button {
+    /* 這是日夜切換按鈕在 Nav Bar 裡的父容器 */
+    position: static !important; /* 消除絕對定位或固定定位 */
+    margin-left: 1rem; /* 與導航項目隔開 */
+}
+
+/* [E] 圖片呈現優化 (解決「可怕」的呈現形式)
+ * 讓圖片有圓角和內斂的陰影，增加質感，避免直愣愣的方塊。
+ * 雖然文章為主，但圖片質感不能丟。
+ */
+.notion-page-detail img, 
+.notion-article-content img {
+    border-radius: 0.6rem !important; /* 圓角 */
+    /* 輕微的陰影，讓圖片像是「浮」在紙面上 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); 
+    /* 確保圖片不會超過內容區的寬度 */
+    max-width: 100% !important; 
+    height: auto !important;
+    /* 增加圖片上下的留白 */
+    margin-top: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+}
+
+/* 移除圖片在文章列表中的圓角和陰影，保持列表的簡潔 */
+.notion-article-cover img {
+    border-radius: 0 !important; 
+    box-shadow: none !important; 
+}
+
+
+/* =======================================
+   3. 網站標題/Logo 居中 (選用)
+   ======================================= */
+/* 如果您希望 Logo/標題文字在手機版上居中，可以加上以下程式碼 */
+@media (max-width: 640px) {
+    .notion-nav-header .flex-1.flex.items-center.justify-start {
+        justify-content: center !important;
+    }
+}
