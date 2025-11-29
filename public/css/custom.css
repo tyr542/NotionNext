@@ -1,13 +1,25 @@
-/* * -------------------------------------------
- * NotionNext 部落格美學改造 V9 - 顏色優化與最終收尾
- * -------------------------------------------
- * 假設配置檔 HEXO_THEME_COLOR 已被設為 #B25F4C。
- * 移除多餘的 !important 顏色標籤，讓 CSS 更高效。
- */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700&display=swap');
 
-/* =======================================
-   色彩主題改造 (Accent Color) - 簡化！
-   ======================================= */
+:root {
+  --heading-serif-font: 'Noto Serif TC', 'Source Han Serif TC', 'Times New Roman', serif;
+}
+/* 全站標題：頁面標題、文章標題、小節標題 */
+h1, h2, h3, h4,
+.post-card-title,
+.notion-page .notion-title,
+.notion-page h1,
+.notion-page h2,
+.notion-page h3 {
+  font-family: var(--heading-serif-font);
+}
+
+/* 可順便稍微調整標題的字重與字距 */
+h1, h2, h3 {
+  letter-spacing: 0.02em;
+}
+
+
+
 /* 由於配置檔已設為 #B25F4C，我們只需確保黑暗模式的顏色正確覆蓋 */
 :root, [data-theme="light"] {
     /* 移除大部分 !important，讓配置檔顏色作為基礎 */
@@ -32,3 +44,76 @@
 /* 以下所有結構、字體、佈局的 CSS 保持 V8 不變，確保所有 !important 都針對佈局而不是顏色 */
 
 /* ... (其餘 V8/V9 的 CSS 內容：字體、Max-Width、Nav Bar 隱藏、卡片陰影等) ... */
+/* ---- 卡片整體外觀 ---- */
+.post-card-wrapper {
+  border-radius: 24px;
+  overflow: hidden;
+  background: #f8f5f1;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.06);
+}
+
+/* 內部左右排版：手機直向堆疊、桌機左右排列 */
+.post-card-inner {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .post-card-inner {
+    flex-direction: row;
+  }
+}
+
+/* 圖片區塊 */
+.post-card-cover {
+  display: block;
+  width: 100%;
+  max-height: 260px;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .post-card-cover {
+    width: 45%;
+    max-height: none;
+  }
+}
+
+.post-card-cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease, filter 0.35s ease;
+}
+
+/* hover 稍微放大一點，質感比較像你截圖那種 */
+.post-card-wrapper:hover .post-card-cover-img {
+  transform: scale(1.03);
+  filter: brightness(0.97);
+}
+
+/* 文字區塊：讓文字垂直置中、左右跟圖片齊 */
+.post-card-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1.75rem 1.75rem;
+}
+
+@media (min-width: 768px) {
+  .post-card-content {
+    width: 55%;
+    padding: 2.5rem 2.75rem;
+  }
+}
+
+/* 卡片 hover 微微浮起 */
+.post-card-wrapper {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.post-card-wrapper:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.09);
+}
+
