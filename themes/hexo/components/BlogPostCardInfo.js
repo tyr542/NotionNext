@@ -17,47 +17,43 @@ export const BlogPostCardInfo = ({
   showPageCover,
   showSummary
 }) => {
+  
+  const dateText = post?.publishDay || post.lastEditedDay
+  
   return (
     <article
       className={`flex flex-col justify-between lg:p-6 p-4  ${showPageCover && !showPreview ? 'md:w-7/12 w-full md:max-h-60' : 'w-full'}`}>
       <div>
-        <header>
-          <h2>
-            {/* 标题 */}
-            <SmartLink
-              href={post?.href}
-              passHref
-              className={`line-clamp-2 replace cursor-pointer text-2xl ${
-                showPreview ? 'text-center' : ''
-              } leading-tight font-normal text-gray-600 dark:text-gray-100 hover:text-indigo-700 dark:hover:text-indigo-400`}>
-              {siteConfig('POST_TITLE_ICON') && (
-                <NotionIcon icon={post.pageIcon} />
-              )}
-              <span className='menu-link '>{post.title}</span>
-            </SmartLink>
-          </h2>
+        <header className={showPreview ? 'text-center' : ''}>
+  {/* 第一排：分類 + 日期 */}
+  <div
+    className={`flex items-center text-xs md:text-sm text-gray-400 ${
+      showPreview ? 'justify-center' : 'justify-start'
+    }`}
+  >
+    {post?.category && (
+      <>
+        <span className='tracking-wide'>{post.category}</span>
+        <span className='mx-2'>•</span>
+      </>
+    )}
+    <span>{dateText}</span>
+  </div>
 
-          {/* 分类 */}
-          {post?.category && (
-            <div
-              className={`flex mt-2 items-center ${
-                showPreview ? 'justify-center' : 'justify-start'
-              } flex-wrap dark:text-gray-500 text-gray-400 `}>
-              <SmartLink
-                href={`/category/${post.category}`}
-                passHref
-                className='cursor-pointer font-light text-sm menu-link hover:text-indigo-700 dark:hover:text-indigo-400 transform'>
-                <i className='mr-1 far fa-folder' />
-                {post.category}
-              </SmartLink>
-
-              <TwikooCommentCount
-                className='text-sm hover:text-indigo-700 dark:hover:text-indigo-400'
-                post={post}
-              />
-            </div>
-          )}
-        </header>
+  {/* 第二排：標題 */}
+  <h2 className='mt-2'>
+    <SmartLink
+      href={post?.href}
+      passHref
+      className='line-clamp-2 replace cursor-pointer text-2xl leading-tight font-normal text-gray-600 dark:text-gray-100 hover:text-indigo-700 dark:hover:text-indigo-400'
+    >
+      {siteConfig('POST_TITLE_ICON') && (
+        <NotionIcon icon={post.pageIcon} />
+      )}
+      <span className='menu-link'>{post.title}</span>
+    </SmartLink>
+  </h2>
+</header>
 
         {/* 摘要 */}
         {(!showPreview || showSummary) && !post.results && (
@@ -83,27 +79,16 @@ export const BlogPostCardInfo = ({
         )}
       </div>
 
-      <div>
-        {/* 日期标签 */}
-        <div className='text-gray-400 justify-between flex'>
-          {/* 日期 */}
-          <SmartLink
-            href={`/archive#${formatDateFmt(post?.publishDate, 'yyyy-MM')}`}
-            passHref
-            className='font-light menu-link cursor-pointer text-sm leading-4 mr-3'>
-            <i className='far fa-calendar-alt mr-1' />
-            {post?.publishDay || post.lastEditedDay}
-          </SmartLink>
-
-          <div className='md:flex-nowrap flex-wrap md:justify-start inline-block'>
             <div>
-              {' '}
-              {post.tagItems?.map(tag => (
-                <TagItemMini key={tag.name} tag={tag} />
-              ))}
-            </div>
-          </div>
-        </div>
+        {/* 第四排：閱讀全文 */}
+        <SmartLink
+          href={post?.href}
+          passHref
+          className='inline-flex items-center mt-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-indigo-700 dark:hover:text-indigo-400'
+        >
+          閱讀全文
+          <span className='ml-1'>→</span>
+        </SmartLink>
       </div>
     </article>
   )
