@@ -1,3 +1,4 @@
+// BlogPostCard.js
 import LazyImage from '@/components/LazyImage'
 import { siteConfig } from '@/lib/config'
 import SmartLink from '@/components/SmartLink'
@@ -21,6 +22,9 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
     post?.pageCoverThumbnail &&
     !showPreview
 
+  const crossoverEnabled = siteConfig('HEXO_POST_LIST_IMG_CROSSOVER', null, CONFIG)
+  const isReversed = crossoverEnabled && index % 2 === 1
+
   return (
     <div>
       <div
@@ -43,14 +47,10 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
           dark:bg-hexo-black-gray/20
           shadow-md
           backdrop-blur-sm
-          ${
-            siteConfig('HEXO_POST_LIST_IMG_CROSSOVER', null, CONFIG) &&
-            index % 2 === 1
-              ? 'md:flex-row-reverse'
-              : ''
-          }`}
+          ${isReversed ? 'md:flex-row-reverse' : ''}
+        `}
       >
-        {/* 文字欄位：給一個自己的容器，控制寬度與對齊 */}
+        {/* 文字欄位 */}
         <div className='md:w-7/12 flex'>
           <BlogPostCardInfo
             index={index}
@@ -58,6 +58,7 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
             showPageCover={showPageCover}
             showPreview={showPreview}
             showSummary={showSummary}
+            align={isReversed ? 'right' : 'left'} // ★ 傳進去
           />
         </div>
 
