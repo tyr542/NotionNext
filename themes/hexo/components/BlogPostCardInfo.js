@@ -21,13 +21,12 @@ export const BlogPostCardInfo = ({
   const dateText = post?.publishDay || post.lastEditedDay
   const isRight = align === 'right'
 
-  const metaJustify = showPreview
-    ? 'justify-center'
-    : isRight
-      ? 'justify-end'
-      : 'justify-start'
-
-  const bottomJustify = isRight ? 'justify-end' : 'justify-start'
+  // 設定各個區塊的對齊 class
+  const justifyClass = isRight ? 'justify-end' : 'justify-start'
+  const alignClass = isRight ? 'items-end text-right' : 'items-start text-left'
+  
+  // 預覽模式通常強制置中，若非預覽則跟隨 align
+  const metaJustify = showPreview ? 'justify-center' : justifyClass
 
   return (
     <article
@@ -38,11 +37,8 @@ export const BlogPostCardInfo = ({
       }`}
     >
       {/* 整個文字縱向區塊 */}
-      <div
-        className={`flex flex-col h-full w-full ${
-          isRight ? 'items-end text-right' : 'items-start text-left'
-        }`}
-      >
+      <div className={`flex flex-col h-full w-full ${alignClass}`}>
+        
         {/* 第一排：分類 + 日期 */}
         {(post?.category || dateText) && (
           <div
@@ -88,9 +84,9 @@ export const BlogPostCardInfo = ({
           )
         )}
 
-        {/* Tag 列：放在閱讀全文上方 */}
+        {/* Tag 列：重點修改，讓 Tag 也可以跟著靠左或靠右 */}
         {post.tagItems?.length > 0 && (
-          <div className='mt-3 flex flex-wrap gap-2 w-full'>
+          <div className={`mt-3 flex flex-wrap gap-2 w-full ${justifyClass}`}>
             {post.tagItems.map(tag => (
               <TagItemMini key={tag.name} tag={tag} />
             ))}
@@ -99,7 +95,7 @@ export const BlogPostCardInfo = ({
 
         {/* 底部：留言數 + 閱讀全文 */}
         <div
-          className={`mt-4 flex w-full items-center gap-4 ${bottomJustify}`}
+          className={`mt-4 flex w-full items-center gap-4 ${justifyClass}`}
         >
           {siteConfig('BLOG_COMMENT', null, CONFIG) &&
             siteConfig('BLOG_COMMENT_TWIKOO_ENV_ID', null, CONFIG) && (
