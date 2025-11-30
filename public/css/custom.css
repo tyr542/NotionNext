@@ -31,6 +31,13 @@ body, #__next, #layout-wrapper, .bg-white {
     color: #ffffff; 
 }
 
+/* [修正] 強制 Noton 內文區塊也使用強調色反白，避免淺藍色出現 */
+.notion-page ::selection {
+    background: var(--color-accent);
+    color: #ffffff; 
+}
+
+
 /* 連結顏色：全站預設強調色 */
 a, .notion-link {
     color: var(--color-accent);
@@ -85,6 +92,13 @@ h1 a:hover, h2 a:hover, h3 a:hover,
 h1 { font-size: 2.5rem !important; }
 h2 { font-size: 2rem !important; }
 
+/* [修正] Notion 區塊內標題字體統一 (例如提示框內的標題) */
+.notion-page .notion-callout-title {
+    font-family: var(--font-serif) !important;
+    font-weight: 700 !important;
+}
+
+
 /* ==========================================================================
    4. 文章分類 (Category)
    ========================================================================== */
@@ -134,10 +148,17 @@ header nav {
 }
 
 /* ==========================================================================
-   6. Footer (強制縮小術)
+   6. Footer (強制縮小術 + 色差修正)
    ========================================================================== */
 footer, #footer, .footer {
     padding: 2rem 1rem !important; /* 縮減間距 */
+    /* [修正色差] 強制使用暖米灰色，與 body 一致 */
+    background-color: var(--bg-paper) !important; 
+}
+
+/* 確保 Footer 內部的所有容器也使用暖米灰色 */
+footer > div, #footer > div, .footer > div {
+    background-color: var(--bg-paper) !important;
 }
 
 /* 強制鎖定 footer 裡面的所有文字元素 */
@@ -186,6 +207,27 @@ footer a:hover {
     font-family: var(--font-sans) !important;
     font-size: 0.95rem !important;
     color: #666;
+}
+
+/* [新增] 閱讀全文連結優化 */
+.article-card-readmore a,
+.post-card-readmore a {
+    color: var(--color-accent) !important;
+    text-decoration: none !important; /* 拿掉底線 */
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.article-card-readmore a:hover,
+.post-card-readmore a:hover {
+    transform: translateX(4px); /* 往右滑動 */
+    opacity: 0.8;
+}
+
+/* [新增] 文章內圖片最大寬度限制 */
+.notion-page img {
+    max-width: 100% !important;
+    height: auto !important;
+    object-fit: contain;
 }
 
 /* ==========================================================================
@@ -274,7 +316,7 @@ img.rounded-full, .user-avatar {
 }
 
 /* ==========================================================================
-   10. 側邊欄標題統一 (目錄、公告、最新發布) [核彈級強制作業]
+   10. 側邊欄標題統一 (目錄、公告、最新發布) [核彈級強制作業 - 最終字體修正]
    ========================================================================== */
 /* 策略：鎖定所有側邊欄 (aside) 卡片的第一個子元素，並使用通配符 (*) 炸開所有子層級
    無論 JS 怎麼寫 style，全部用 !important 覆蓋 */
@@ -294,15 +336,21 @@ aside .shadow-md > div:first-child,
 }
 
 /* 2. 文字層級：暴力統一字體與顏色 */
-/* 這裡使用 * 選擇器，不管它是 h3, span, div 還是什麼鬼，全部聽令 */
+/* 我們用兩種方式鎖定文字，這次加入針對 span/div 的精準打擊，確保宋體覆蓋 */
 aside .card > div:first-child *,
 aside .shadow-md > div:first-child *,
 #toc-header,
-#toc-header * {
-    font-family: var(--font-serif) !important;
+#toc-header *,
+/* [關鍵修正] 針對 div 和 span 進行高權重覆蓋 */
+aside .card > div:first-child div,
+aside .card > div:first-child span,
+aside .shadow-md > div:first-child div,
+aside .shadow-md > div:first-child span {
+    font-family: var(--font-serif) !important; /* 確保是宋體！ */
     font-weight: 700 !important;
     font-size: 1.1rem !important;
     color: var(--text-ink) !important; /* 深墨色 */
+    
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
@@ -338,4 +386,26 @@ aside .shadow-md > div:first-child svg,
     button[aria-label="Toggle navigation"] { 
         display: none !important;
     }
+}
+
+/* ==========================================================================
+   12. 程式碼區塊優化 (Code Block Readability) [新增]
+   ========================================================================== */
+.notion-code {
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace !important;
+    font-size: 0.95rem !important; /* 略大於預設，保持可讀性 */
+    line-height: 1.6 !important;
+    padding: 1.5rem !important;
+    border-radius: 8px !important;
+    background-color: #f5f5f5 !important; /* 淺灰色背景，增加對比 */
+    border: 1px solid rgba(0,0,0,0.05) !important;
+}
+
+/* 確保行內程式碼與內文對齊，且有圓角 */
+.notion-code-inline {
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace !important;
+    background-color: #eee !important;
+    padding: 2px 6px !important;
+    border-radius: 4px !important;
+    color: #333 !important;
 }
