@@ -20,6 +20,7 @@ export const BlogPostCardInfo = ({
   const dateText = post?.publishDay || post.lastEditedDay
   const isRight = align === 'right'
 
+  // 對齊邏輯：電腦版(md)根據 align 決定，手機版一律靠左
   const justifyClass = isRight
     ? 'justify-start md:justify-end'
     : 'justify-start'
@@ -28,17 +29,15 @@ export const BlogPostCardInfo = ({
     ? 'text-left items-start md:text-right md:items-end'
     : 'text-left items-start'
 
-  const metaJustify = showPreview ? 'justify-center' : justifyClass
-
   return (
-    <article className='flex flex-col h-full w-full p-4 md:p-6'> {/* 縮減 padding */}
+    <article className='flex flex-col h-full w-full p-4 md:p-8 relative overflow-hidden'> 
       
       {/* 內容垂直置中 */}
       <div className={`flex flex-col justify-center h-full w-full ${alignClass}`}>
         
         {/* 日期與分類 */}
         {(post?.category || dateText) && (
-          <div className={`flex w-full items-center mb-2 text-xs font-medium tracking-wider text-gray-400 dark:text-gray-500 ${metaJustify}`}>
+          <div className={`flex w-full items-center mb-3 text-xs font-medium tracking-wider text-gray-400 dark:text-gray-500 ${justifyClass}`}>
             {post?.category && (
               <>
                 <SmartLink href={`/category/${post.category}`} className='hover:text-blue-500 uppercase transition-colors'>
@@ -62,42 +61,52 @@ export const BlogPostCardInfo = ({
           </SmartLink>
         </h2>
 
-        {/* 摘要 (移除 showSummary 檢查，強制顯示) */}
-        {!showPreview && post?.summary && (
-            <p className='hidden md:block text-sm text-gray-600 dark:text-gray-400 line-clamp-2 md:line-clamp-3 leading-relaxed mb-4 opacity-90'>
-              {post.summary}
-            </p>
-        )}
+        {/* 內文預覽區塊 (取代摘要) */}
+        {/* 使用 NotionPage 渲染真實 Block，並限制高度 */}
+        <div className={`w-full flex-grow relative overflow-hidden text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4 opacity-90 ${isRight ? 'md:text-right' : 'md:text-left'}`}>
+           {post?.blockMap ? (
+             <div className='max-h-[80px] overflow-hidden pointer-events-none'>
+               <NotionPage post={post} />
+             </div>
+           ) : (
+             <p className='line-clamp-3'>{post.summary}</p>
+           )}
+           {/* 底部漸層遮罩，讓文字看起來是自然淡出 */}
+           {/* <div className='absolute bottom-0 w-full h-8 bg-gradient-to-t from-white/80 to-transparent dark:from-black/80'></div> */}
+        </div>
         
-        {/* 預覽模式 (通常很少用，先留著) */}
-        {showPreview && post?.blockMap && (
-          <div className='mt-2 w-full'>
-            <NotionPage post={post} />
-          </div>
-        )}
-
         {/* 底部資訊列：Tag 與 閱讀全文 */}
-        <div className={`flex w-full items-center justify-between mt-auto`}> 
-          {/* Tag 改到左邊或跟隨對齊? 這裡為了整齊，我們讓 Tag 跟閱讀全文分開兩邊，或者照你的需求跟隨對齊 */}
-          {/* 為了視覺平衡，我建議 Tag 跟隨 alignClass，但這裡我們先用 flex-row 讓它們排在一起 */}
-          
-          <div className={`flex flex-wrap gap-2 ${justifyClass} w-full items-center`}>
-             {post.tagItems?.length > 0 && post.tagItems.map(tag => (
-                <TagItemMini key={tag.name} tag={tag} />
-             ))}
-             
-             {/* 如果 Tag 很多，閱讀全文可能會被擠下去，所以用 flex-wrap */}
-             {/* 這裡我們把閱讀全文放在最後 */}
-             <div className='flex-grow'></div>
+        <div className={`flex w-full items-center gap-4 mt-auto ${justifyClass}`}> 
+           {/* 如果圖在右邊(文字靠右)，我們把 Tag 放左邊，閱讀全文放右邊? 還是全部跟隨對齊? */}
+           {/* 為了整齊，這裡全部跟隨 justifyClass 對齊 */}
+           
+           {/* 如果是靠右對齊，Tag 在前(左)，閱讀全文在後(右)會有點怪，通常閱讀全文要在最外側 */}
+           {/* 我們利用 flex-row 和 order 來控制 */}
 
-             <SmartLink
-              href={post?.href}
-              className='flex-shrink-0 inline-flex items-center text-xs font-bold text-gray-500 hover:text-blue-600 transition-colors uppercase tracking-widest'
-            >
-              Read More
-              <span className='ml-1'>→</span>
-            </SmartLink>
-          </div>
+           <div className={`flex items-center gap-4 ${isRight ? 'flex-row' : 'flex-row'}`}>
+              
+              {/* Tag 區塊 */}
+              {!isRight && post.tagItems?.length > 0 && (
+                 <div className='flex gap-2'>
+                   {post.tagItems.map(tag => <TagItemMini key={tag.name} tag={tag} />)}
+                 </div>
+              )}
+
+              <SmartLink
+                href={post?.href}
+                className='group inline-flex items-center text-sm font-bold text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors'
+              >
+                閱讀全文
+                <span className='ml-1 transform group-hover:translate-x-1 transition-transform'>→</span>
+              </SmartLink>
+
+              {/* Tag 區塊 (靠右對齊時放在左側) */}
+              {isRight && post.tagItems?.length > 0 && (
+                 <div className='flex gap-2'>
+                   {post.tagItems.map(tag => <TagItemMini key={tag.name} tag={tag} />)}
+                 </div>
+              )}
+           </div>
         </div>
 
       </div>
