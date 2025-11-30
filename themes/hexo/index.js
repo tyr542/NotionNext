@@ -282,8 +282,8 @@ const LayoutSlug = props => {
   }, [post])
   return (
     <>
-      {/* 修改點：加大了上邊距 lg:mt-12，讓文章容器沉下來，跟右邊目錄對齊 */}
-      <div className='w-full lg:mt-12 lg:hover:shadow lg:border rounded-t-xl lg:rounded-xl lg:px-2 lg:py-4 bg-white dark:bg-hexo-black-gray dark:border-black article'>
+      {/* 修改點：從 lg:mt-12 改回 lg:mt-6，微調上邊距 */}
+      <div className='w-full lg:mt-6 lg:hover:shadow lg:border rounded-t-xl lg:rounded-xl lg:px-2 lg:py-4 bg-white dark:bg-hexo-black-gray dark:border-black article'>
         {lock && <ArticleLock validPassword={validPassword} />}
 
         {!lock && post && (
