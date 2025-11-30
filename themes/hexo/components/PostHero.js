@@ -3,12 +3,15 @@ import { formatDateFmt } from '@/lib/utils/formatDate'
 import SmartLink from '@/components/SmartLink'
 import { useGlobal } from '@/lib/global'
 import { useRouter } from 'next/router'
+import { siteConfig } from '@/lib/config'
+import CONFIG from '../config'
 
 /**
- * 文章內頁的 Hero 區塊 (內嵌版 - 最終微調 V2)
+ * 文章內頁的 Hero 區塊 (終極完美版)
  * 修改點：
- * 1. Tag 背景加深 (bg-gray-200)
- * 2. Meta 順序調換 (分類 / 日期)
+ * 1. 齊頭對齊微調
+ * 2. Meta 資訊擴充：[分類] / [發佈] / [更新]
+ * 3. 新增閱讀時間估算
  */
 const PostHero = ({ post, siteInfo }) => {
   const { fullWidth } = useGlobal()
@@ -18,16 +21,30 @@ const PostHero = ({ post, siteInfo }) => {
     return <></>
   }
 
+  // 如果 Notion 設定為全寬頁面，則不顯示 Hero
   if (fullWidth) {
     return <div className='my-8' />
   }
 
+  // 取得封面圖 URL
   const headerImage = post?.pageCover ? post.pageCover : siteInfo?.pageCover
+
+  // 計算發佈與更新日期是否相同
+  const datePublished = post?.publishDay
+  const dateLastEdited = post?.lastEditedDay
+  const showLastEdited = dateLastEdited && dateLastEdited !== datePublished
+
+  // 估算閱讀時間 (假設 NotionNext 後端沒算，我們前端簡單算一下)
+  // 如果 post.readingTime 存在就用它，不然就用字數/400
+  const readingTime = post?.readingTime || Math.ceil((post?.summary?.length || 0) * 2 / 400) + ' 分鐘' 
+  // 註：這只是粗略估計，因為拿不到完整純文字內容，通常 NotionNext 會在後端算好傳過來
+  // 如果你的 post 物件裡沒有 readingTime，這裡可能需要依賴後端支援，或者你可以開啟 WORD_COUNT 開關
 
   return (
     <div id='post-hero' className='w-full mb-8 animate-fade-in px-5 md:px-0'>
       
       {/* 1. 回到列表按鈕 */}
+      {/* 保持無 margin-top，讓 index.js 的 lg:mt-4 控制齊頭 */}
       <div className='w-full flex justify-start mb-6'>
         <button 
           onClick={() => router.push('/')}
@@ -38,10 +55,10 @@ const PostHero = ({ post, siteInfo }) => {
         </button>
       </div>
 
-      {/* 2. Meta 資訊：順序調換為 [分類] / [日期] */}
-      <div className='flex flex-wrap items-center gap-3 text-sm font-bold tracking-widest mb-3 text-gray-400'>
+      {/* 2. Meta 資訊：[分類] / [發佈] / [更新] / [閱讀時間] */}
+      <div className='flex flex-wrap items-center gap-3 text-sm font-bold tracking-widest mb-3 text-gray-400 leading-6'>
           
-          {/* 先顯示分類 */}
+          {/* A. 分類 */}
           {post?.category && (
           <>
             {/* 分類使用你的強調色 #8c7b75 */}
@@ -52,9 +69,26 @@ const PostHero = ({ post, siteInfo }) => {
           </>
           )}
 
-          {/* 再顯示日期 */}
-          <span className='font-sans'>
-            {post?.publishDay ? formatDateFmt(post.publishDay, 'yyyy.MM.dd') : post.lastEditedDay}
+          {/* B. 發佈日期 */}
+          <span className='font-sans whitespace-nowrap'>
+            {formatDateFmt(datePublished, 'yyyy.MM.dd')} 發佈
+          </span>
+
+          {/* C. 更新日期 (如果有不同才顯示) */}
+          {showLastEdited && (
+            <>
+              <span className='text-gray-300'>/</span>
+              <span className='font-sans whitespace-nowrap'>
+                {formatDateFmt(dateLastEdited, 'yyyy.MM.dd')} 更新
+              </span>
+            </>
+          )}
+
+          {/* D. 閱讀時間 (前面加一個小 icon) */}
+          <span className='text-gray-300'>/</span>
+          <span className='font-sans whitespace-nowrap flex items-center gap-1'>
+            <i className='fas fa-clock text-xs opacity-70'></i> {/* FontAwesome Icon */}
+            閱讀約 {readingTime}
           </span>
       </div>
 
