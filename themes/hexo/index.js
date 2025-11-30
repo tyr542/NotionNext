@@ -44,10 +44,7 @@ const ThemeGlobalHexo = createContext()
 export const useHexoGlobal = () => useContext(ThemeGlobalHexo)
 
 /**
- * 基础布局 采用左右两侧布局，移动端使用顶部导航栏
- * @param props
- * @returns {JSX.Element}
- * @constructor
+ * 基础布局
  */
 const LayoutBase = props => {
   const { post, children, slotTop, className } = props
@@ -55,8 +52,6 @@ const LayoutBase = props => {
   const router = useRouter()
   const showRandomButton = siteConfig('HEXO_MENU_RANDOM', false, CONFIG)
 
-  // 【修改點 1】 移除這裡原本的 PostHero 呼叫
-  // 只保留首頁的 Hero (Banner)
   const headerSlot = router.route === '/' &&
     siteConfig('HEXO_HOME_BANNER_ENABLE', null, CONFIG) ? (
     <Hero {...props} />
@@ -65,7 +60,6 @@ const LayoutBase = props => {
   const drawerRight = useRef(null)
   const tocRef = isBrowser ? document.getElementById('article-wrapper') : null
 
-  // 悬浮按钮内容
   const floatSlot = (
     <>
       {post?.toc?.length > 1 && (
@@ -82,7 +76,6 @@ const LayoutBase = props => {
     </>
   )
 
-  // Algolia搜索框
   const searchModal = useRef(null)
 
   return (
@@ -91,11 +84,8 @@ const LayoutBase = props => {
         id='theme-hexo'
         className={`${siteConfig('FONT_STYLE')} dark:bg-black scroll-smooth`}>
         <Style />
-
-        {/* 顶部导航 */}
         <Header {...props} />
 
-        {/* 顶部嵌入 */}
         <Transition
           show={!onLoading}
           appear={true}
@@ -109,7 +99,6 @@ const LayoutBase = props => {
           {headerSlot}
         </Transition>
 
-        {/* 主区块 */}
         <main
           id='wrapper'
           className={`${siteConfig('HEXO_HOME_BANNER_ENABLE', null, CONFIG) ? '' : 'pt-16'} bg-hexo-background-gray dark:bg-black w-full py-8 md:px-8 lg:px-24 min-h-screen relative`}>
@@ -133,14 +122,10 @@ const LayoutBase = props => {
                 leaveFrom='opacity-100 translate-y-0'
                 leaveTo='opacity-0 -translate-y-16'
                 unmount={false}>
-                {/* 主区上部嵌入 */}
                 {slotTop}
-
                 {children}
               </Transition>
             </div>
-
-            {/* 右侧栏 */}
             <SideRight {...props} />
           </div>
         </main>
@@ -148,35 +133,18 @@ const LayoutBase = props => {
         <div className='block lg:hidden'>
           <TocDrawer post={post} cRef={drawerRight} targetRef={tocRef} />
         </div>
-
-        {/* 悬浮菜单 */}
         <RightFloatArea floatSlot={floatSlot} />
-
-        {/* 全文搜索 */}
         <AlgoliaSearchModal cRef={searchModal} {...props} />
-
-        {/* 页脚 */}
         <Footer title={siteConfig('TITLE')} />
       </div>
     </ThemeGlobalHexo.Provider>
   )
 }
 
-/**
- * 首页
- * 是一个博客列表，嵌入一个Hero大图
- * @param {*} props
- * @returns
- */
 const LayoutIndex = props => {
   return <LayoutPostList {...props} className='pt-8' />
 }
 
-/**
- * 博客列表
- * @param {*} props
- * @returns
- */
 const LayoutPostList = props => {
   return (
     <div className='pt-8'>
@@ -190,11 +158,6 @@ const LayoutPostList = props => {
   )
 }
 
-/**
- * 搜索
- * @param {*} props
- * @returns
- */
 const LayoutSearch = props => {
   const { keyword } = props
   const router = useRouter()
@@ -231,11 +194,6 @@ const LayoutSearch = props => {
   )
 }
 
-/**
- * 归档
- * @param {*} props
- * @returns
- */
 const LayoutArchive = props => {
   const { archivePosts } = props
   return (
@@ -255,17 +213,11 @@ const LayoutArchive = props => {
   )
 }
 
-/**
- * 文章详情
- * @param {*} props
- * @returns
- */
 const LayoutSlug = props => {
   const { post, lock, validPassword } = props
   const router = useRouter()
   const waiting404 = siteConfig('POST_WAITING_TIME_FOR_404') * 1000
   useEffect(() => {
-    // 404
     if (!post) {
       setTimeout(
         () => {
@@ -284,7 +236,8 @@ const LayoutSlug = props => {
   }, [post])
   return (
     <>
-      <div className='w-full lg:hover:shadow lg:border rounded-t-xl lg:rounded-xl lg:px-2 lg:py-4 bg-white dark:bg-hexo-black-gray dark:border-black article'>
+      {/* 修改點：添加 lg:mt-4 讓它跟右邊齊頭 */}
+      <div className='w-full lg:mt-4 lg:hover:shadow lg:border rounded-t-xl lg:rounded-xl lg:px-2 lg:py-4 bg-white dark:bg-hexo-black-gray dark:border-black article'>
         {lock && <ArticleLock validPassword={validPassword} />}
 
         {!lock && post && (
@@ -295,16 +248,12 @@ const LayoutSlug = props => {
               itemType='https://schema.org/Movie'
               className='subpixel-antialiased overflow-y-hidden'>
               
-              {/* 【修改點 2】 Vibe Coding: 將 PostHero 移植到這裡！ */}
-              {/* 它現在是文章的一部分，會乖乖待在框框裡 */}
               <PostHero {...props} />
 
-              {/* Notion文章主体 */}
               <section className='px-5 justify-center mx-auto max-w-2xl lg:max-w-full'>
                 {post && <NotionPage post={post} />}
               </section>
 
-              {/* 分享 */}
               <ShareBar post={post} />
               {post?.type === 'Post' && (
                 <>
@@ -317,7 +266,6 @@ const LayoutSlug = props => {
 
             <div className='pt-4 border-dashed'></div>
 
-            {/* 评论互动 */}
             <div className='duration-200 overflow-x-auto bg-white dark:bg-hexo-black-gray px-3'>
               <Comment frontMatter={post} />
             </div>
@@ -328,16 +276,10 @@ const LayoutSlug = props => {
   )
 }
 
-/**
- * 404
- * @param {*} props
- * @returns
- */
 const Layout404 = props => {
   const router = useRouter()
   const { locale } = useGlobal()
   useEffect(() => {
-    // 延时3秒如果加载失败就返回首页
     setTimeout(() => {
       if (isBrowser) {
         const article = document.querySelector('#article-wrapper #notion-article')
@@ -365,11 +307,6 @@ const Layout404 = props => {
   )
 }
 
-/**
- * 分类列表
- * @param {*} props
- * @returns
- */
 const LayoutCategoryIndex = props => {
   const { categoryOptions } = props
   const { locale } = useGlobal()
@@ -403,11 +340,6 @@ const LayoutCategoryIndex = props => {
   )
 }
 
-/**
- * 标签列表
- * @param {*} props
- * @returns
- */
 const LayoutTagIndex = props => {
   const { tagOptions } = props
   const { locale } = useGlobal()
