@@ -188,3 +188,42 @@ img.rounded-full, .user-avatar {
     background-color: var(--color-accent) !important;
     color: #fff !important;
 }
+
+/* --- 目錄 (TOC) 樣式優化 --- */
+
+/* 1. 解決文字不換行與被切掉的問題 */
+.toc-link, .toc-text {
+    white-space: normal !important; /* 允許文字換行 */
+    overflow: visible !important;   /* 顯示溢出的文字 */
+    text-overflow: unset !important; /* 移除省略號 (...) */
+    display: block;                 /* 確保佔滿整行寬度 */
+    line-height: 1.6;               /* 增加行距，讓它像圖一一樣透氣 */
+    margin-bottom: 8px;             /* 每個條目之間增加一點距離 */
+}
+
+/* 2. 調整文字顏色與字體大小 */
+.toc-link {
+    color: #999999; /* 未選中時是灰色（像圖一） */
+    font-size: 0.95rem; 
+    transition: all 0.2s ease;
+}
+
+/* 3. 當文章滾動到該段落時的「高亮狀態」 */
+.toc-link.is-active-link, 
+.toc-link.is-active-link .toc-text {
+    color: #8c7b75 !important; /* 你的指定亮點色 */
+    font-weight: bold;
+    background-color: transparent !important; /* 移除可能的背景色 */
+}
+
+/* 4. 如果圖二左邊那個「粗直線」是你不要的，可以用這段隱藏 */
+.toc-link.is-active-link::before {
+    display: none !important; /* 隱藏左側指示條 */
+    /* 若想要圖一的「小圓點」效果，需要針對你的主題結構做更細的偽元素設定，
+       先把這行加上去看看左邊直線會不會消失 */
+}
+
+/* 5. 進度條顏色 (如果有顯示的話) */
+#nprogress .bar {
+    background: #8c7b75 !important;
+}
