@@ -19,7 +19,7 @@ export const BlogPostCardInfo = ({
   const dateText = post?.publishDay || post.lastEditedDay
   const isRight = align === 'right'
 
-  // 對齊邏輯：電腦版(md)根據 align 決定，手機版一律靠左
+  // 對齊邏輯
   const justifyClass = isRight
     ? 'justify-start md:justify-end'
     : 'justify-start'
@@ -34,12 +34,15 @@ export const BlogPostCardInfo = ({
       {/* 內容垂直置中區塊 */}
       <div className={`flex flex-col justify-center h-full w-full ${alignClass}`}>
         
-        {/* 日期與分類 */}
+        {/* 1. 分類與日期 */}
         {(post?.category || dateText) && (
-          <div className={`flex w-full items-center mb-3 text-xs font-medium tracking-wider text-gray-400 dark:text-gray-500 ${justifyClass}`}>
+          <div className={`flex w-full items-center mb-3 text-xs font-bold tracking-wider text-gray-500 dark:text-gray-400 ${justifyClass}`}>
             {post?.category && (
               <>
-                <SmartLink href={`/category/${post.category}`} className='hover:text-blue-500 uppercase transition-colors'>
+                <SmartLink 
+                  href={`/category/${post.category}`} 
+                  className='hover:text-[#8c7b75] uppercase transition-colors' // 強調色 #8c7b75
+                >
                   {post.category}
                 </SmartLink>
                 <span className='mx-2'>•</span>
@@ -54,31 +57,35 @@ export const BlogPostCardInfo = ({
         {/* 標題 */}
         <h2 className='text-xl md:text-2xl font-bold text-gray-800 dark:text-gray-100 leading-tight mb-3 line-clamp-1 md:line-clamp-2'>
           <SmartLink href={post?.href}>
-            <span className='hover:text-blue-600 dark:hover:text-blue-400 transition-colors'>
+            <span className='hover:text-[#8c7b75] dark:hover:text-[#8c7b75] transition-colors'> {/* 強調色 #8c7b75 */}
               {post?.title}
             </span>
           </SmartLink>
         </h2>
 
-        {/* 內文預覽區塊 (NotionPage) */}
+        {/* 3. 內文預覽區塊 */}
         <div className={`w-full flex-grow relative overflow-hidden text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4 opacity-90 ${isRight ? 'md:text-right' : 'md:text-left'}`}>
              <div className='max-h-[80px] overflow-hidden pointer-events-none'>
-               {/* 這裡直接呼叫 NotionPage 渲染內文 Block */}
                <NotionPage post={post} />
              </div>
-           {/* 底部漸層遮罩，讓內文看起來是自然淡出，不會硬切 */}
-           {/* <div className='absolute bottom-0 w-full h-8 bg-gradient-to-t from-white/80 to-transparent dark:from-black/80'></div> */}
         </div>
         
-        {/* Tag 區塊 - 移到閱讀全文上面 */}
+        {/* 2. Tag 區塊：灰色背景 -> Hover 變強調色 #8c7b75 */}
         {post.tagItems?.length > 0 && (
-            <div className={`mb-3 w-full flex items-center overflow-hidden ${justifyClass}`}>
+            <div className={`mb-4 w-full flex items-center overflow-hidden ${justifyClass}`}>
               <div className='flex flex-nowrap gap-2 overflow-x-hidden text-ellipsis whitespace-nowrap'>
                 {post.tagItems.map(tag => (
                    <SmartLink 
                       key={tag.name} 
                       href={`/tag/${encodeURIComponent(tag.name)}`}
-                      className='text-xs font-medium text-gray-400 hover:text-blue-500 transition-colors'
+                      className='
+                        px-3 py-1 rounded-full border border-gray-100 dark:border-gray-700
+                        bg-gray-100 dark:bg-gray-800 
+                        text-xs font-bold text-gray-700 dark:text-gray-300
+                        transition-all duration-200
+                        hover:bg-[#8c7b75] dark:hover:bg-[#8c7b75]
+                        hover:text-white dark:hover:text-white
+                      '
                    >
                      #{tag.name}
                    </SmartLink>
@@ -87,11 +94,11 @@ export const BlogPostCardInfo = ({
             </div>
         )}
 
-        {/* 底部資訊列：僅保留閱讀全文，保持純淨 */}
+        {/* 底部資訊列：閱讀全文 */}
         <div className={`flex w-full items-center ${justifyClass} mt-auto`}> 
            <SmartLink
              href={post?.href}
-             className='group inline-flex items-center text-sm font-bold text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors'
+             className='group inline-flex items-center text-sm font-bold text-gray-800 dark:text-white hover:text-[#8c7b75] dark:hover:text-[#8c7b75] transition-colors'
            >
              閱讀全文
              <span className='ml-1 transform group-hover:translate-x-1 transition-transform'>→</span>
