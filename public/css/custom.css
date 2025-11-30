@@ -156,7 +156,8 @@ footer a:hover {
 
 .post-title, .card-title {
     font-family: var(--font-serif) !important;
-    font-size: 1.4rem !important;
+    /* [修改] 標題縮小一咪咪：從 1.4rem 改為 1.25rem */
+    font-size: 1.25rem !important; 
     margin-bottom: 0.5rem;
 }
 
@@ -190,156 +191,12 @@ img.rounded-full, .user-avatar {
 }
 
 /* ==========================================================================
-   9. 目錄區域 (TOC) [極致排版修正]
+   9. 目錄區域 (TOC) [古蹟區 - 請勿更動]
    ========================================================================== */
-/* 1. 外層容器：給一點呼吸空間 */
 .notion-table-of-contents,
 [class*="notion-table-of-contents"],
 .catalog-list,
 #toc {
-    padding: 10px 0 !important;
-    line-height: 1.6 !important; /* 拉開行距 */
-}
-
-/* 2. 目錄連結 (單個項目) */
-.notion-table-of-contents a,
-[class*="notion-table-of-contents"] a,
-.toc-link,
-.catalog-list-item {
-    /* 字體設定：強制黑體 */
-    font-family: var(--font-sans) !important;
-    font-size: 0.9rem !important;
-    font-weight: 400 !important;
-    
-    /* 顏色：平時是灰色 (你要求的) */
-    color: #999999 !important; 
-    transition: all 0.2s ease !important;
-    
-    /* 排版：懸掛縮排 (Hanging Indent) 密技 */
-    display: block !important;
-    position: relative !important;
-    
-    /* 關鍵在這裡：左邊先推開 1.5個字寬，第一行再拉回來 1.5個字寬 */
-    /* 這樣第二行就會乖乖對齊縮排後的起點 */
-    padding-left: 1.5em !important; 
-    text-indent: -1.5em !important; 
-    
-    /* 間距：項目之間拉開 */
-    margin-bottom: 10px !important; /* 修正「太擠」 */
-    
-    /* 強制換行 */
-    white-space: normal !important;
-    overflow: visible !important;
-    text-overflow: clip !important;
-    height: auto !important;
-}
-
-/* 3. Hover 效果 */
-.notion-table-of-contents a:hover,
-[class*="notion-table-of-contents"] a:hover,
-.toc-link:hover {
-    color: var(--color-accent) !important; /* 變強調色 */
-    background: transparent !important;
-    transform: translateX(4px); /* 微動態：往右滑一點點 */
-}
-
-/* 4. 激活狀態 (Active) */
-.notion-table-of-contents .active,
-.catalog-list-item-active,
-.toc-link-active {
-    color: var(--color-accent) !important;
-    font-weight: 700 !important;
-    /* 選中時，左邊加一個小標記 */
-    border-left: 2px solid var(--color-accent) !important; 
-    /* 因為加了 border，padding 要微調回來一點點 */
-    padding-left: calc(1.5em - 2px) !important; 
-}
-
-/* ==========================================================================
-   9. 目錄區域 (TOC) [核彈級權重修正]
-   ========================================================================== */
-/* 針對容器：先清空干擾 */
-.notion-table-of-contents,
-[class*="notion-table-of-contents"],
-.catalog-list,
-#toc {
-    padding: 10px 0 !important;
-    line-height: 1.6 !important;
-}
-
-/* 針對每一個目錄連結 (a) 及其內部的文字 (span) */
-/* 我們把所有可能的層級都寫進去，保證抓到 */
-.notion-table-of-contents a,
-.notion-table-of-contents span,
-[class*="notion-table-of-contents"] a,
-[class*="notion-table-of-contents"] span,
-.toc-link,
-.toc-link span,
-.catalog-list-item,
-.catalog-list-item span {
-    /* 1. 字體：強制黑體 */
-    font-family: var(--font-sans) !important;
-    font-size: 0.9rem !important;
-    font-weight: 400 !important;
-    
-    /* 2. 顏色：強制覆寫成灰色 (除了 Hover 狀態) */
-    color: #999999 !important; 
-    fill: #999999 !important; /* 如果有 SVG icon */
-    
-    /* 3. 排版：懸掛縮排 (Hanging Indent) */
-    display: block !important; /* 確保它是區塊才能縮排 */
-    position: relative !important;
-    
-    /* 這是關鍵：利用 padding 推開，再用負 text-indent 拉回第一行 */
-    padding-left: 1.6em !important; 
-    text-indent: -1.6em !important;
-    margin-left: 0 !important; /* 清除可能原本有的左邊距 */
-    
-    /* 4. 強制換行與高度 */
-    white-space: normal !important;
-    overflow: visible !important;
-    text-overflow: clip !important;
-    height: auto !important;
-    
-    /* 5. 間距：增加呼吸感 */
-    margin-bottom: 8px !important;
-    transition: all 0.2s ease !important;
-}
-
-/* 3. Hover 效果 (滑鼠移過去) */
-/* 這裡權重必須超級高，才能蓋過上面的灰色設定 */
-.notion-table-of-contents a:hover,
-.notion-table-of-contents a:hover span,
-[class*="notion-table-of-contents"] a:hover,
-[class*="notion-table-of-contents"] a:hover span,
-.toc-link:hover,
-.toc-link:hover span {
-    color: var(--color-accent) !important;
-    cursor: pointer !important;
-    transform: translateX(4px); /* 微動態 */
-}
-
-/* 4. 激活狀態 (Active) */
-.notion-table-of-contents .active,
-.notion-table-of-contents .active span,
-.catalog-list-item-active,
-.toc-link-active {
-    color: var(--color-accent) !important;
-    font-weight: 700 !important;
-    /* 修正 border 位置，因為我們用了 padding-left */
-    border-left: 3px solid var(--color-accent) !important;
-    padding-left: calc(1.6em - 3px) !important; 
-}
-
-/* ==========================================================================
-   9. 目錄區域 (TOC) [最終修正：呼吸感 + 懸掛縮排]
-   ========================================================================== */
-/* 針對容器：這裡加 padding-left 來解決「文字貼著左邊」的問題 */
-.notion-table-of-contents,
-[class*="notion-table-of-contents"],
-.catalog-list,
-#toc {
-    /* 關鍵：把整個區塊往右推 12px，不要貼牆 */
     padding-left: 12px !important; 
     padding-right: 5px !important;
     padding-top: 5px !important;
@@ -347,7 +204,6 @@ img.rounded-full, .user-avatar {
     box-sizing: border-box !important;
 }
 
-/* 針對每一個目錄連結 (a) 及其內部的文字 (span) */
 .notion-table-of-contents a,
 .notion-table-of-contents span,
 [class*="notion-table-of-contents"] a,
@@ -356,69 +212,48 @@ img.rounded-full, .user-avatar {
 .toc-link span,
 .catalog-list-item,
 .catalog-list-item span {
-    /* 1. 字體：強制黑體 */
     font-family: var(--font-sans) !important;
     font-size: 0.9rem !important;
     font-weight: 400 !important;
-    
-    /* 2. 顏色：平時灰色 #999 */
     color: #999999 !important; 
     fill: #999999 !important;
-    
-    /* 3. 排版：懸掛縮排 (Hanging Indent) 核心代碼 */
     display: block !important; 
     position: relative !important;
-    
-    /* [縮排邏輯] */
-    /* 步驟A: 先把所有行數都往右推 1.5em */
     padding-left: 1.5em !important; 
-    /* 步驟B: 再把第一行狠狠拉回左邊 1.5em */
     text-indent: -1.5em !important;
-    
-    /* 清除干擾 */
     margin-left: 0 !important; 
-    
-    /* 4. 強制換行 */
     white-space: normal !important;
     overflow: visible !important;
     text-overflow: clip !important;
     height: auto !important;
-    
-    /* 5. 項目之間的間距 */
     margin-bottom: 8px !important;
     transition: all 0.2s ease !important;
 }
 
-/* 3. Hover 效果 (滑鼠移過去) */
 .notion-table-of-contents a:hover,
 .notion-table-of-contents a:hover span,
 [class*="notion-table-of-contents"] a:hover,
 [class*="notion-table-of-contents"] a:hover span,
 .toc-link:hover,
 .toc-link:hover span {
-    color: var(--color-accent) !important; /* 變強調色 */
+    color: var(--color-accent) !important; 
     cursor: pointer !important;
-    transform: translateX(4px); /* 微動態 */
+    transform: translateX(4px); 
 }
 
-/* 4. 激活狀態 (Active) */
 .notion-table-of-contents .active,
 .notion-table-of-contents .active span,
 .catalog-list-item-active,
 .toc-link-active {
     color: var(--color-accent) !important;
     font-weight: 700 !important;
-    
-    /* 修正 border 位置 */
-    /* 因為我們用了 padding-left 來做縮排，border 要小心不要被吃掉 */
     border-left: 3px solid var(--color-accent) !important;
-    /* 微調 padding 讓 border 不會把字擠歪 */
     padding-left: calc(1.5em - 6px) !important; 
     margin-left: 3px !important;
 }
 
 /* ==========================================================================
-   10. 目錄標題 (Header) [精準鎖定]
+   10. 目錄標題 (Header) [古蹟區 - 請勿更動]
    ========================================================================== */
 div:has(> i.fa-bars),
 div:has(> svg.w-6),
@@ -429,14 +264,10 @@ div:has(> svg.w-6),
     font-weight: 700 !important;
     font-size: 1.1rem !important;
     color: var(--text-ink) !important;
-    
     border-bottom: 1px solid rgba(140, 123, 117, 0.2) !important;
     padding-bottom: 8px !important;
     margin-bottom: 16px !important;
-    
-    /* 標題也要有一點 padding-left 以對齊下面的文字視覺 */
     padding-left: 4px !important; 
-    
     width: 100% !important;
     display: flex !important;
     align-items: center !important;
@@ -449,4 +280,20 @@ div:has(> svg) svg,
     color: var(--color-accent) !important;
     margin-right: 8px !important;
     fill: var(--color-accent) !important;
+}
+
+/* ==========================================================================
+   11. 修復導覽列「幽靈漢堡」 [新增]
+   ========================================================================== */
+/* 在電腦版 (大於 768px) 強制隱藏導覽列裡的漢堡選單圖示 */
+@media (min-width: 768px) {
+    nav .fa-bars,
+    .navbar .fa-bars,
+    #header .fa-bars,
+    .nav-item .fa-bars,
+    /* 針對 NotionNext 常見的手機選單按鈕 class */
+    .mobile-nav-toggle,
+    button[aria-label="Toggle navigation"] {
+        display: none !important;
+    }
 }
