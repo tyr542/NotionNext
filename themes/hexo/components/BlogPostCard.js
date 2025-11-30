@@ -22,12 +22,11 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
     !showPreview
 
   const crossoverEnabled = siteConfig('HEXO_POST_LIST_IMG_CROSSOVER', null, CONFIG)
-  // 判斷是否為偶數項目，用於左右交替排版
   const isReversed = crossoverEnabled && index % 2 === 1
 
   return (
     <div
-      className={`w-full max-w-7xl mx-auto ${siteConfig('HEXO_POST_LIST_ANIMATION', null, CONFIG) ? 'animate-on-scroll' : ''}`}
+      className={`${siteConfig('HEXO_POST_LIST_ANIMATION', null, CONFIG) ? 'animate-on-scroll' : ''}`}
     >
       <div
         key={post.id}
@@ -38,50 +37,49 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
         data-aos-anchor-placement='top-bottom'
         id='blog-post-card'
         className={`group
-          w-[96%] md:w-full mx-auto   /* 手機版內縮 96%，電腦版全寬 */
+          w-[96%]              /* 手機版寬度 */
+          md:max-w-[900px]     /* 電腦版最大寬度 (這裡控制胖瘦！) */
+          mx-auto              /* 置中 */
           flex
-          md:flex-row                 /* 電腦版左右排 */
-          flex-col-reverse            /* 手機版反轉：圖在上(DOM後)，文在下(DOM前) */
-          items-center                /* 垂直置中 */
+          md:flex-row          /* 電腦版左右排 */
+          flex-col-reverse     /* 手機版圖上文下 */
+          items-stretch        /* 讓左右兩邊高度拉伸一致 */
           overflow-hidden
-          rounded-2xl
-          bg-white/40                 /* 白天模式 40% 透明度 */
-          dark:bg-black/40            /* 夜間模式 40% 透明度 */
-          shadow-md
-          backdrop-blur-md            /* 毛玻璃效果增強 */
-          border border-white/20      /* 增加一點邊框質感 */
+          rounded-xl           /* 圓角稍微小一點點，比較俐落 */
+          bg-white/40
+          dark:bg-black/40
+          shadow-sm            /* 陰影改小一點，比較扁平 */
+          backdrop-blur-md
+          border border-white/20
           transition-all duration-300
-          hover:shadow-xl
-          mb-6 md:mb-12               /* 增加卡片間距，讓呼吸感更強 */
-          ${isReversed ? 'md:flex-row-reverse' : ''} /* 電腦版反轉控制 */
+          hover:shadow-lg
+          mb-8                 /* 卡片之間的間距 */
+          md:h-[260px]         /* 電腦版固定高度 (這裡控制高度！) */
+          ${isReversed ? 'md:flex-row-reverse' : ''}
         `}
       >
         {/* 文字欄位 */}
-        <div className='w-full md:w-7/12 flex flex-col justify-center p-2'>
+        <div className='w-full md:w-7/12 flex flex-col justify-center'>
           <BlogPostCardInfo
             index={index}
             post={post}
             showPageCover={showPageCover}
             showPreview={showPreview}
             showSummary={showSummary}
-            align={isReversed ? 'right' : 'left'} // 將對齊邏輯傳入 Info
+            align={isReversed ? 'right' : 'left'}
           />
         </div>
 
         {/* 圖片欄位 */}
         {showPageCover && (
-          <div className='w-full md:w-5/12 h-64 md:h-full overflow-hidden flex-shrink-0 relative'>
-            <SmartLink href={post?.href}>
-              <div className='h-64 md:h-80 w-full relative overflow-hidden'>
+          <div className='w-full md:w-5/12 h-48 md:h-full overflow-hidden relative'>
+            <SmartLink href={post?.href} className='block h-full w-full'>
                  <LazyImage
                   priority={index === 1}
                   alt={post?.title}
                   src={post?.pageCoverThumbnail}
-                  className='h-full w-full object-cover object-center group-hover:scale-110 duration-700 transition-transform'
+                  className='h-full w-full object-cover object-center group-hover:scale-105 duration-500 transition-transform'
                 />
-                {/* 圖片遮罩，讓文字交界處更柔和 (可選) */}
-                {/* <div className='absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-300'></div> */}
-              </div>
             </SmartLink>
           </div>
         )}
