@@ -1,46 +1,69 @@
 /* ==========================================================================
    1. 核心基礎：引入「鏡頭」 (Google Fonts)
-   這步最重要！我們要引入 Noto Serif TC (標題用) 和 Noto Sans TC (內文用)
    ========================================================================== */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&display=swap');
 
 :root {
     /* 定義你的「底片風格」 */
     --font-serif: 'Noto Serif TC', serif;    /* 標題用的宋體 */
     --font-sans: 'Noto Sans TC', sans-serif; /* 內文用的黑體 */
-    --bg-paper: #f9f9f7;                     /* 參考圖那種暖暖的米灰色 */
-    --text-ink: #2c2c2c;                     /* 像墨水一樣的深灰，不要純黑 */
-    --card-bg: #ffffff;
+    
+    /* 色票系統 */
+    --bg-paper: #f9f9f7;       /* 背景：米灰色 */
+    --text-ink: #2c2c2c;       /* 文字：深墨色 */
+    --card-bg: #ffffff;        /* 卡片：純白 */
+    --color-accent: #8c7b75;   /* 強調色：溫暖的灰褐色 (你的指定色) */
 }
 
 /* ==========================================================================
-   2. 全站氛圍設定 (白平衡與色調)
+   2. 全站氛圍 & 顏色系統
    ========================================================================== */
-body {
-    background-color: var(--bg-paper) !important; /* 把背景改成高級米灰 */
+body, #__next, #layout-wrapper, .bg-white {
+    background-color: var(--bg-paper) !important;
     font-family: var(--font-sans) !important;
     color: var(--text-ink);
-    line-height: 1.8; /* 呼吸感 */
+    line-height: 1.8;
 }
 
-/* 讓深色模式 (Dark Mode) 還是保持深色，避免眼睛瞎掉 */
-.dark body {
+/* [新增] 文字選取顏色：改成你的灰褐色 */
+::selection {
+    background: var(--color-accent);
+    color: #ffffff; /* 字變白，對比才夠 */
+}
+
+/* [新增] 連結顏色：統一用強調色，比較優雅 */
+a, .notion-link {
+    color: var(--color-accent);
+    text-decoration-color: var(--color-accent); /* 底線也同色 */
+    transition: opacity 0.2s ease;
+}
+
+a:hover, .notion-link:hover {
+    opacity: 0.7; /* 懸停時稍微變淡 */
+}
+
+/* 修正：把特定區域改回白色，避免全部變灰 */
+.notion-page-content {
+    background-color: transparent !important;
+}
+
+/* 深色模式保護 */
+.dark body, .dark #__next, .dark #layout-wrapper {
     background-color: #1a1a1a !important; 
     color: #e5e5e5;
 }
 
 /* ==========================================================================
-   3. 標題系統：雜誌感的靈魂 (Serif + Bold)
-   所有標題都換成宋體，並且加粗，製造視覺衝擊
+   3. 標題系統 (字重 700)
    ========================================================================== */
 h1, h2, h3, h4, h5, h6,
 .notion-h1, .notion-h2, .notion-h3,
 .post-title, 
 .article-title {
     font-family: var(--font-serif) !important;
-    font-weight: 900 !important; /* 用最重的字重，像參考圖那樣 */
+    font-weight: 700 !important; 
     letter-spacing: 0.02em;
-    color: #111; /* 標題要比內文更黑一點 */
+    color: #111;
 }
 
 /* 針對首頁的大標題做特化 */
@@ -48,64 +71,90 @@ h1 { font-size: 2.5rem !important; }
 h2 { font-size: 2rem !important; }
 
 /* ==========================================================================
-   4. 導覽列 (Navbar)：優雅的襯線體
+   4. 導覽列 (Navbar) (透明背景 + 強調色 Hover)
    ========================================================================== */
 nav, .navbar, #header, .menu-link {
     font-family: var(--font-serif) !important;
     font-weight: 600 !important;
-    background-color: rgba(249, 249, 247, 0.9) !important; /* 跟背景融合 */
-    backdrop-filter: blur(8px);
+    background-color: transparent !important; 
+    backdrop-filter: none !important;
+    box-shadow: none !important;
+}
+
+/* 導覽列連結預設深色，滑鼠移過去變強調色 */
+.menu-link {
+    color: var(--text-ink) !important;
+}
+.menu-link:hover {
+    color: var(--color-accent) !important;
 }
 
 /* ==========================================================================
-   5. 卡片設計：極簡 + 懸浮感
+   5. Footer (小巧精緻)
    ========================================================================== */
-/* 文章卡片、個人介紹卡片 */
+footer, .footer, footer p, footer a, footer span {
+    font-family: var(--font-sans) !important;
+    font-size: 0.85rem !important; 
+    font-weight: 400 !important;
+    line-height: 1.5 !important;
+    opacity: 0.8;
+}
+
+footer a:hover {
+    color: var(--color-accent) !important;
+    text-decoration: underline;
+}
+
+/* ==========================================================================
+   6. 卡片設計 (加入微小的強調色互動)
+   ========================================================================== */
 .shadow-md, .shadow-xl, .card, .notion-collection-card {
-    background-color: var(--card-bg) !important;
-    border: 1px solid rgba(0,0,0,0.03); /* 極細的邊框 */
-    box-shadow: 0 4px 12px rgba(0,0,0,0.03) !important; /* 像紙張輕輕浮起 */
+    background-color: var(--card-bg) !important; 
+    border: 1px solid rgba(0,0,0,0.03);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03) !important;
     border-radius: 12px !important;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: all 0.3s ease;
 }
 
-/* 滑鼠移過去的效果 */
+/* Hover 時，邊框稍微帶一點點你的強調色，非常低調的質感 */
 .shadow-md:hover, .shadow-xl:hover, .card:hover {
-    transform: translateY(-3px); /* 微微浮起 */
-    box-shadow: 0 8px 24px rgba(0,0,0,0.08) !important;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(140, 123, 117, 0.15) !important; /* 用了你的顏色做淡陰影 */
+    border-color: rgba(140, 123, 117, 0.3); /* 邊框也微微變色 */
 }
 
-/* 卡片裡的標題 */
 .post-title, .card-title {
     font-family: var(--font-serif) !important;
     font-size: 1.4rem !important;
     margin-bottom: 0.5rem;
 }
 
-/* 卡片裡的摘要內文 */
 .post-summary, .card-text {
     font-family: var(--font-sans) !important;
     font-size: 0.95rem !important;
-    color: #666; /* 次要文字淡一點 */
+    color: #666;
 }
 
 /* ==========================================================================
-   6. 你的個人頭像 (參考圖是圓的)
+   7. 其他細節 (標籤使用強調色)
    ========================================================================== */
 img.rounded-full, .user-avatar {
-    border: 2px solid #fff; /* 加個白框比較精緻 */
+    border: 2px solid #fff;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-/* ==========================================================================
-   7. 標籤 (Tags) 樣式
-   參考圖的標籤是灰底黑字，小小的
-   ========================================================================== */
+/* 標籤改成你的強調色但調淡一點當背景 */
 .tag-container, .tag-item {
-    background-color: #f0f0f0 !important;
-    color: #444 !important;
+    background-color: rgba(140, 123, 117, 0.1) !important; /* 強調色的 10% 透明度 */
+    color: var(--color-accent) !important; /* 字用原色 */
     border-radius: 4px !important;
     font-size: 0.8rem !important;
     padding: 2px 8px !important;
     font-family: var(--font-sans) !important;
+    transition: background-color 0.2s;
+}
+
+.tag-item:hover {
+    background-color: var(--color-accent) !important;
+    color: #fff !important;
 }
