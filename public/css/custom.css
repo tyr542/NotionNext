@@ -1,4 +1,195 @@
 /* ==========================================================================
+   1. 核心基礎：引入「鏡頭」 (Google Fonts)
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&display=swap');
+
+:root {
+    /* 定義你的「底片風格」 */
+    --font-serif: 'Noto Serif TC', serif;    /* 標題用的宋體 */
+    --font-sans: 'Noto Sans TC', sans-serif; /* 內文用的黑體 */
+    
+    /* 色票系統 */
+    --bg-paper: #f9f9f7;       /* 背景：米灰色 */
+    --text-ink: #2c2c2c;       /* 文字：深墨色 */
+    --card-bg: #ffffff;        /* 卡片：純白 */
+    --color-accent: #8c7b75;   /* 強調色：溫暖的灰褐色 */
+}
+
+/* ==========================================================================
+   2. 全站氛圍 & 顏色系統
+   ========================================================================== */
+body, #__next, #layout-wrapper, .bg-white {
+    background-color: var(--bg-paper) !important;
+    font-family: var(--font-sans) !important;
+    color: var(--text-ink);
+    line-height: 1.8;
+}
+
+/* 文字選取顏色 */
+::selection {
+    background: var(--color-accent);
+    color: #ffffff; 
+}
+
+/* 連結顏色：全站預設強調色 */
+a, .notion-link {
+    color: var(--color-accent);
+    text-decoration-color: var(--color-accent);
+    transition: all 0.2s ease;
+}
+
+a:hover, .notion-link:hover {
+    opacity: 0.7;
+}
+
+/* 內容區透明 */
+.notion-page-content {
+    background-color: transparent !important;
+}
+
+/* 深色模式保護 */
+.dark body, .dark #__next, .dark #layout-wrapper {
+    background-color: #1a1a1a !important; 
+    color: #e5e5e5;
+}
+
+/* ==========================================================================
+   3. 標題系統 (深墨色 -> Hover 變強調色)
+   ========================================================================== */
+h1, h2, h3, h4, h5, h6,
+.notion-h1, .notion-h2, .notion-h3,
+.post-title, 
+.article-title {
+    font-family: var(--font-serif) !important;
+    font-weight: 700 !important; 
+    letter-spacing: 0.02em;
+    color: #111 !important; /* 強制預設為深色，覆蓋全站連結色 */
+}
+
+/* 針對標題連結的特殊處理 */
+h1 a, h2 a, h3 a,
+.post-title a,
+.article-title a {
+    color: #111 !important; /* 預設深色 */
+    text-decoration: none !important;
+}
+
+/* 標題 Hover 效果：變強調色 */
+h1 a:hover, h2 a:hover, h3 a:hover,
+.post-title a:hover, .post-title:hover,
+.article-title a:hover {
+    color: var(--color-accent) !important; /* 滑鼠移上去才變色 */
+}
+
+/* 首頁大標題尺寸 */
+h1 { font-size: 2.5rem !important; }
+h2 { font-size: 2rem !important; }
+
+/* ==========================================================================
+   4. 文章分類 (Category)
+   ========================================================================== */
+/* 鎖定分類連結：保持強調色，但加粗一階 */
+.category-item, 
+.article-category, 
+.notion-collection-card-property .notion-link {
+   font-weight: 600 !important; /* 加粗 */
+   color: var(--color-accent) !important;
+}
+
+/* ==========================================================================
+   5. 導覽列 (Navbar)
+   ========================================================================== */
+nav, .navbar, #header, .menu-link {
+    font-family: var(--font-serif) !important;
+    font-weight: 600 !important;
+    background-color: transparent !important; 
+    backdrop-filter: none !important;
+    box-shadow: none !important;
+}
+
+.menu-link {
+    color: var(--text-ink) !important;
+}
+.menu-link:hover {
+    color: var(--color-accent) !important;
+}
+
+/* ==========================================================================
+   6. Footer (強制縮小術)
+   ========================================================================== */
+footer, #footer, .footer {
+    padding: 2rem 1rem !important; /* 縮減間距 */
+}
+
+/* 強制鎖定 footer 裡面的所有文字元素 */
+footer p, footer span, footer a, footer div, 
+#footer p, #footer span, #footer a,
+.footer p, .footer span, .footer a {
+    font-family: var(--font-sans) !important;
+    font-size: 13px !important; /* 強制設定為 13px */
+    font-weight: 400 !important;
+    line-height: 1.6 !important;
+    opacity: 0.8;
+}
+
+footer a:hover {
+    color: var(--color-accent) !important;
+    text-decoration: underline;
+}
+
+/* ==========================================================================
+   7. 卡片設計
+   ========================================================================== */
+.shadow-md, .shadow-xl, .card, .notion-collection-card {
+    background-color: var(--card-bg) !important; 
+    border: 1px solid rgba(0,0,0,0.03);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03) !important;
+    border-radius: 12px !important;
+    transition: all 0.3s ease;
+}
+
+.shadow-md:hover, .shadow-xl:hover, .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 8px 24px rgba(140, 123, 117, 0.15) !important;
+    border-color: rgba(140, 123, 117, 0.3);
+}
+
+.post-title, .card-title {
+    font-family: var(--font-serif) !important;
+    font-size: 1.4rem !important;
+    margin-bottom: 0.5rem;
+}
+
+.post-summary, .card-text {
+    font-family: var(--font-sans) !important;
+    font-size: 0.95rem !important;
+    color: #666;
+}
+
+/* ==========================================================================
+   8. 其他細節
+   ========================================================================== */
+img.rounded-full, .user-avatar {
+    border: 2px solid #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.tag-container, .tag-item {
+    background-color: rgba(140, 123, 117, 0.1) !important;
+    color: var(--color-accent) !important;
+    border-radius: 4px !important;
+    font-size: 0.8rem !important;
+    padding: 2px 8px !important;
+    font-family: var(--font-sans) !important;
+    transition: background-color 0.2s;
+}
+
+.tag-item:hover {
+    background-color: var(--color-accent) !important;
+    color: #fff !important;
+}
+
+/* ==========================================================================
    9. 目錄區域 (TOC) [極致排版修正]
    ========================================================================== */
 /* 1. 外層容器：給一點呼吸空間 */
@@ -65,29 +256,197 @@
 }
 
 /* ==========================================================================
-   10. 目錄標題 (Header) [強制覆寫]
+   9. 目錄區域 (TOC) [核彈級權重修正]
    ========================================================================== */
-/* 鎖定目錄容器的第一個 div (通常標題都在這) */
+/* 針對容器：先清空干擾 */
+.notion-table-of-contents,
+[class*="notion-table-of-contents"],
+.catalog-list,
+#toc {
+    padding: 10px 0 !important;
+    line-height: 1.6 !important;
+}
+
+/* 針對每一個目錄連結 (a) 及其內部的文字 (span) */
+/* 我們把所有可能的層級都寫進去，保證抓到 */
+.notion-table-of-contents a,
+.notion-table-of-contents span,
+[class*="notion-table-of-contents"] a,
+[class*="notion-table-of-contents"] span,
+.toc-link,
+.toc-link span,
+.catalog-list-item,
+.catalog-list-item span {
+    /* 1. 字體：強制黑體 */
+    font-family: var(--font-sans) !important;
+    font-size: 0.9rem !important;
+    font-weight: 400 !important;
+    
+    /* 2. 顏色：強制覆寫成灰色 (除了 Hover 狀態) */
+    color: #999999 !important; 
+    fill: #999999 !important; /* 如果有 SVG icon */
+    
+    /* 3. 排版：懸掛縮排 (Hanging Indent) */
+    display: block !important; /* 確保它是區塊才能縮排 */
+    position: relative !important;
+    
+    /* 這是關鍵：利用 padding 推開，再用負 text-indent 拉回第一行 */
+    padding-left: 1.6em !important; 
+    text-indent: -1.6em !important;
+    margin-left: 0 !important; /* 清除可能原本有的左邊距 */
+    
+    /* 4. 強制換行與高度 */
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    height: auto !important;
+    
+    /* 5. 間距：增加呼吸感 */
+    margin-bottom: 8px !important;
+    transition: all 0.2s ease !important;
+}
+
+/* 3. Hover 效果 (滑鼠移過去) */
+/* 這裡權重必須超級高，才能蓋過上面的灰色設定 */
+.notion-table-of-contents a:hover,
+.notion-table-of-contents a:hover span,
+[class*="notion-table-of-contents"] a:hover,
+[class*="notion-table-of-contents"] a:hover span,
+.toc-link:hover,
+.toc-link:hover span {
+    color: var(--color-accent) !important;
+    cursor: pointer !important;
+    transform: translateX(4px); /* 微動態 */
+}
+
+/* 4. 激活狀態 (Active) */
+.notion-table-of-contents .active,
+.notion-table-of-contents .active span,
+.catalog-list-item-active,
+.toc-link-active {
+    color: var(--color-accent) !important;
+    font-weight: 700 !important;
+    /* 修正 border 位置，因為我們用了 padding-left */
+    border-left: 3px solid var(--color-accent) !important;
+    padding-left: calc(1.6em - 3px) !important; 
+}
+
+/* ==========================================================================
+   9. 目錄區域 (TOC) [最終修正：呼吸感 + 懸掛縮排]
+   ========================================================================== */
+/* 針對容器：這裡加 padding-left 來解決「文字貼著左邊」的問題 */
+.notion-table-of-contents,
+[class*="notion-table-of-contents"],
+.catalog-list,
+#toc {
+    /* 關鍵：把整個區塊往右推 12px，不要貼牆 */
+    padding-left: 12px !important; 
+    padding-right: 5px !important;
+    padding-top: 5px !important;
+    line-height: 1.6 !important;
+    box-sizing: border-box !important;
+}
+
+/* 針對每一個目錄連結 (a) 及其內部的文字 (span) */
+.notion-table-of-contents a,
+.notion-table-of-contents span,
+[class*="notion-table-of-contents"] a,
+[class*="notion-table-of-contents"] span,
+.toc-link,
+.toc-link span,
+.catalog-list-item,
+.catalog-list-item span {
+    /* 1. 字體：強制黑體 */
+    font-family: var(--font-sans) !important;
+    font-size: 0.9rem !important;
+    font-weight: 400 !important;
+    
+    /* 2. 顏色：平時灰色 #999 */
+    color: #999999 !important; 
+    fill: #999999 !important;
+    
+    /* 3. 排版：懸掛縮排 (Hanging Indent) 核心代碼 */
+    display: block !important; 
+    position: relative !important;
+    
+    /* [縮排邏輯] */
+    /* 步驟A: 先把所有行數都往右推 1.5em */
+    padding-left: 1.5em !important; 
+    /* 步驟B: 再把第一行狠狠拉回左邊 1.5em */
+    text-indent: -1.5em !important;
+    
+    /* 清除干擾 */
+    margin-left: 0 !important; 
+    
+    /* 4. 強制換行 */
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    height: auto !important;
+    
+    /* 5. 項目之間的間距 */
+    margin-bottom: 8px !important;
+    transition: all 0.2s ease !important;
+}
+
+/* 3. Hover 效果 (滑鼠移過去) */
+.notion-table-of-contents a:hover,
+.notion-table-of-contents a:hover span,
+[class*="notion-table-of-contents"] a:hover,
+[class*="notion-table-of-contents"] a:hover span,
+.toc-link:hover,
+.toc-link:hover span {
+    color: var(--color-accent) !important; /* 變強調色 */
+    cursor: pointer !important;
+    transform: translateX(4px); /* 微動態 */
+}
+
+/* 4. 激活狀態 (Active) */
+.notion-table-of-contents .active,
+.notion-table-of-contents .active span,
+.catalog-list-item-active,
+.toc-link-active {
+    color: var(--color-accent) !important;
+    font-weight: 700 !important;
+    
+    /* 修正 border 位置 */
+    /* 因為我們用了 padding-left 來做縮排，border 要小心不要被吃掉 */
+    border-left: 3px solid var(--color-accent) !important;
+    /* 微調 padding 讓 border 不會把字擠歪 */
+    padding-left: calc(1.5em - 6px) !important; 
+    margin-left: 3px !important;
+}
+
+/* ==========================================================================
+   10. 目錄標題 (Header) [精準鎖定]
+   ========================================================================== */
+div:has(> i.fa-bars),
+div:has(> svg.w-6),
 [class*="catalog"] > div:first-child,
 [class*="toc"] > div:first-child,
 #toc-header {
-    /* 字體強制宋體 (Serif) */
     font-family: var(--font-serif) !important;
     font-weight: 700 !important;
     font-size: 1.1rem !important;
     color: var(--text-ink) !important;
     
-    /* 加底線區隔 */
     border-bottom: 1px solid rgba(140, 123, 117, 0.2) !important;
     padding-bottom: 8px !important;
-    margin-bottom: 16px !important; /* 跟下面的列表拉開距離 */
+    margin-bottom: 16px !important;
+    
+    /* 標題也要有一點 padding-left 以對齊下面的文字視覺 */
+    padding-left: 4px !important; 
+    
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
 }
 
-/* 讓前面的 icon (≡) 變色 */
-[class*="catalog"] > div:first-child i,
-[class*="catalog"] > div:first-child svg,
+div:has(> i.fa-bars) i,
+div:has(> svg) svg,
 #toc-header i,
 #toc-header svg {
     color: var(--color-accent) !important;
     margin-right: 8px !important;
+    fill: var(--color-accent) !important;
 }
