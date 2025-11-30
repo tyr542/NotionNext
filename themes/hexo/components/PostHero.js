@@ -5,9 +5,10 @@ import { useGlobal } from '@/lib/global'
 import { useRouter } from 'next/router'
 
 /**
- * 文章內頁的 Hero 區塊 (內嵌版)
- * 風格：無背景、無陰影，直接融入文章容器的排版
- * 結構：回到列表 -> Meta -> 標題 -> Tags -> 圖片
+ * 文章內頁的 Hero 區塊 (內嵌版 - 最終微調 V2)
+ * 修改點：
+ * 1. Tag 背景加深 (bg-gray-200)
+ * 2. Meta 順序調換 (分類 / 日期)
  */
 const PostHero = ({ post, siteInfo }) => {
   const { fullWidth } = useGlobal()
@@ -17,19 +18,17 @@ const PostHero = ({ post, siteInfo }) => {
     return <></>
   }
 
-  // 如果 Notion 設定為全寬頁面，則不顯示 Hero
   if (fullWidth) {
     return <div className='my-8' />
   }
 
-  // 取得封面圖 URL
   const headerImage = post?.pageCover ? post.pageCover : siteInfo?.pageCover
 
   return (
     <div id='post-hero' className='w-full mb-8 animate-fade-in px-5 md:px-0'>
       
       {/* 1. 回到列表按鈕 */}
-      <div className='w-full flex justify-start mb-6 mt-4'>
+      <div className='w-full flex justify-start mb-6'>
         <button 
           onClick={() => router.push('/')}
           className='group flex items-center text-sm font-bold text-gray-400 hover:text-[#8c7b75] transition-colors gap-1'
@@ -39,21 +38,24 @@ const PostHero = ({ post, siteInfo }) => {
         </button>
       </div>
 
-      {/* 2. Meta 資訊：日期與分類 */}
+      {/* 2. Meta 資訊：順序調換為 [分類] / [日期] */}
       <div className='flex flex-wrap items-center gap-3 text-sm font-bold tracking-widest mb-3 text-gray-400'>
-          <span className='font-sans'>
-          {post?.publishDay ? formatDateFmt(post.publishDay, 'yyyy.MM.dd') : post.lastEditedDay}
-          </span>
           
+          {/* 先顯示分類 */}
           {post?.category && (
           <>
-          <span className='text-gray-300'>/</span>
-          {/* 分類使用你的強調色 #8c7b75 */}
-          <SmartLink href={`/category/${post.category}`} className='text-[#8c7b75] hover:underline transition-colors'>
-              {post.category}
-          </SmartLink>
+            {/* 分類使用你的強調色 #8c7b75 */}
+            <SmartLink href={`/category/${post.category}`} className='text-[#8c7b75] hover:underline transition-colors'>
+                {post.category}
+            </SmartLink>
+            <span className='text-gray-300'>/</span>
           </>
           )}
+
+          {/* 再顯示日期 */}
+          <span className='font-sans'>
+            {post?.publishDay ? formatDateFmt(post.publishDay, 'yyyy.MM.dd') : post.lastEditedDay}
+          </span>
       </div>
 
       {/* 3. 文章標題 */}
@@ -61,7 +63,7 @@ const PostHero = ({ post, siteInfo }) => {
         {post.title}
       </h1>
 
-      {/* 4. Tags 標籤 */}
+      {/* 4. Tags 標籤：背景加深為 bg-gray-200 */}
       {post.tagItems?.length > 0 && (
         <div className='flex flex-wrap gap-2 mb-8'>
           {post.tagItems.map(tag => (
@@ -69,8 +71,8 @@ const PostHero = ({ post, siteInfo }) => {
               key={tag.name}
               href={`/tag/${encodeURIComponent(tag.name)}`}
               className='
-                px-3 py-1 rounded-full border border-gray-100 dark:border-gray-700
-                bg-gray-50 dark:bg-gray-800
+                px-3 py-1 rounded-full border border-gray-200 dark:border-gray-700
+                bg-gray-200 dark:bg-gray-800 
                 text-xs font-bold text-gray-600 dark:text-gray-300
                 transition-all duration-200
                 hover:bg-[#8c7b75] dark:hover:bg-[#8c7b75]
@@ -83,10 +85,9 @@ const PostHero = ({ post, siteInfo }) => {
         </div>
       )}
 
-      {/* 5. 封面大圖：限制高度，圓角處理 */}
+      {/* 5. 封面大圖 */}
       {headerImage && (
         <div className='w-full relative rounded-xl overflow-hidden shadow-sm bg-gray-50 dark:bg-gray-900 mt-4 border border-gray-100 dark:border-gray-800'>
-            {/* 限制高度為 400px，保持長條感 */}
             <div className='relative w-full max-h-[400px] overflow-hidden'>
               <LazyImage
                 src={headerImage}
@@ -98,7 +99,7 @@ const PostHero = ({ post, siteInfo }) => {
         </div>
       )}
 
-      {/* 分隔線：讓 Hero 跟正文稍微分開一點 */}
+      {/* 分隔線 */}
       <hr className='mt-8 border-gray-100 dark:border-gray-800' />
     </div>
   )
