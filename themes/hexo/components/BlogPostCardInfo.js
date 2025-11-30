@@ -4,7 +4,6 @@ import TwikooCommentCount from '@/components/TwikooCommentCount'
 import { siteConfig } from '@/lib/config'
 import { formatDateFmt } from '@/lib/utils/formatDate'
 import SmartLink from '@/components/SmartLink'
-import TagItemMini from './TagItemMini'
 import CONFIG from '../config'
 
 /**
@@ -32,7 +31,7 @@ export const BlogPostCardInfo = ({
   return (
     <article className='flex flex-col h-full w-full p-4 md:p-8 relative overflow-hidden'> 
       
-      {/* 內容垂直置中 */}
+      {/* 內容垂直置中區塊 */}
       <div className={`flex flex-col justify-center h-full w-full ${alignClass}`}>
         
         {/* 日期與分類 */}
@@ -61,52 +60,42 @@ export const BlogPostCardInfo = ({
           </SmartLink>
         </h2>
 
-        {/* 內文預覽區塊 (取代摘要) */}
-        {/* 使用 NotionPage 渲染真實 Block，並限制高度 */}
+        {/* 內文預覽區塊 (NotionPage) */}
         <div className={`w-full flex-grow relative overflow-hidden text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4 opacity-90 ${isRight ? 'md:text-right' : 'md:text-left'}`}>
-           {post?.blockMap ? (
              <div className='max-h-[80px] overflow-hidden pointer-events-none'>
+               {/* 這裡直接呼叫 NotionPage 渲染內文 Block */}
                <NotionPage post={post} />
              </div>
-           ) : (
-             <p className='line-clamp-3'>{post.summary}</p>
-           )}
-           {/* 底部漸層遮罩，讓文字看起來是自然淡出 */}
+           {/* 底部漸層遮罩，讓內文看起來是自然淡出，不會硬切 */}
            {/* <div className='absolute bottom-0 w-full h-8 bg-gradient-to-t from-white/80 to-transparent dark:from-black/80'></div> */}
         </div>
         
-        {/* 底部資訊列：Tag 與 閱讀全文 */}
-        <div className={`flex w-full items-center gap-4 mt-auto ${justifyClass}`}> 
-           {/* 如果圖在右邊(文字靠右)，我們把 Tag 放左邊，閱讀全文放右邊? 還是全部跟隨對齊? */}
-           {/* 為了整齊，這裡全部跟隨 justifyClass 對齊 */}
-           
-           {/* 如果是靠右對齊，Tag 在前(左)，閱讀全文在後(右)會有點怪，通常閱讀全文要在最外側 */}
-           {/* 我們利用 flex-row 和 order 來控制 */}
+        {/* Tag 區塊 - 移到閱讀全文上面 */}
+        {post.tagItems?.length > 0 && (
+            <div className={`mb-3 w-full flex items-center overflow-hidden ${justifyClass}`}>
+              <div className='flex flex-nowrap gap-2 overflow-x-hidden text-ellipsis whitespace-nowrap'>
+                {post.tagItems.map(tag => (
+                   <SmartLink 
+                      key={tag.name} 
+                      href={`/tag/${encodeURIComponent(tag.name)}`}
+                      className='text-xs font-medium text-gray-400 hover:text-blue-500 transition-colors'
+                   >
+                     #{tag.name}
+                   </SmartLink>
+                ))}
+              </div>
+            </div>
+        )}
 
-           <div className={`flex items-center gap-4 ${isRight ? 'flex-row' : 'flex-row'}`}>
-              
-              {/* Tag 區塊 */}
-              {!isRight && post.tagItems?.length > 0 && (
-                 <div className='flex gap-2'>
-                   {post.tagItems.map(tag => <TagItemMini key={tag.name} tag={tag} />)}
-                 </div>
-              )}
-
-              <SmartLink
-                href={post?.href}
-                className='group inline-flex items-center text-sm font-bold text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors'
-              >
-                閱讀全文
-                <span className='ml-1 transform group-hover:translate-x-1 transition-transform'>→</span>
-              </SmartLink>
-
-              {/* Tag 區塊 (靠右對齊時放在左側) */}
-              {isRight && post.tagItems?.length > 0 && (
-                 <div className='flex gap-2'>
-                   {post.tagItems.map(tag => <TagItemMini key={tag.name} tag={tag} />)}
-                 </div>
-              )}
-           </div>
+        {/* 底部資訊列：僅保留閱讀全文，保持純淨 */}
+        <div className={`flex w-full items-center ${justifyClass} mt-auto`}> 
+           <SmartLink
+             href={post?.href}
+             className='group inline-flex items-center text-sm font-bold text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors'
+           >
+             閱讀全文
+             <span className='ml-1 transform group-hover:translate-x-1 transition-transform'>→</span>
+           </SmartLink>
         </div>
 
       </div>
