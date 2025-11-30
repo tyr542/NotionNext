@@ -282,8 +282,8 @@ const LayoutSlug = props => {
   }, [post])
   return (
     <>
-      {/* 最終微調：使用自定義像素值 [36px]，這是介於 mt-8 (32px) 和 mt-10 (40px) 之間的完美折衷 */}
-      <div className='w-full lg:mt-[36px] lg:hover:shadow lg:border rounded-t-xl lg:rounded-xl lg:px-2 lg:py-4 bg-white dark:bg-hexo-black-gray dark:border-black article'>
+      {/* 最終微調：使用自定義像素值 [34px]，完美齊頭對齊 */}
+      <div className='w-full lg:mt-[34px] lg:hover:shadow lg:border rounded-t-xl lg:rounded-xl lg:px-2 lg:py-4 bg-white dark:bg-hexo-black-gray dark:border-black article'>
         {lock && <ArticleLock validPassword={validPassword} />}
 
         {!lock && post && (
