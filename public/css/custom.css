@@ -63,7 +63,7 @@ h1, h2, h3, h4, h5, h6,
     font-family: var(--font-serif) !important;
     font-weight: 700 !important; 
     letter-spacing: 0.02em;
-    color: #111 !important; /* 強制預設為深色，覆蓋全站連結色 */
+    color: #111 !important; /* 強制預設為深色 */
 }
 
 /* 針對標題連結的特殊處理 */
@@ -156,7 +156,6 @@ footer a:hover {
 
 .post-title, .card-title {
     font-family: var(--font-serif) !important;
-    /* [修改] 標題縮小一咪咪：從 1.4rem 改為 1.25rem */
     font-size: 1.25rem !important; 
     margin-bottom: 0.5rem;
 }
@@ -191,7 +190,7 @@ img.rounded-full, .user-avatar {
 }
 
 /* ==========================================================================
-   9. 目錄區域 (TOC) [古蹟區 - 請勿更動]
+   9. 目錄區域 (TOC) [古蹟區]
    ========================================================================== */
 .notion-table-of-contents,
 [class*="notion-table-of-contents"],
@@ -253,45 +252,65 @@ img.rounded-full, .user-avatar {
 }
 
 /* ==========================================================================
-   10. 目錄標題 (Header) [古蹟區 - 請勿更動]
+   10. 側邊欄標題統一 (目錄、公告、最新發布) [核彈級強制作業]
    ========================================================================== */
-div:has(> i.fa-bars),
-div:has(> svg.w-6),
+/* 策略：鎖定所有側邊欄 (aside) 卡片的第一個子元素，並使用通配符 (*) 炸開所有子層級
+   無論 JS 怎麼寫 style，全部用 !important 覆蓋 */
+
+/* 1. 容器層級：去除底線，統一間距 */
+aside .card > div:first-child,
+aside .shadow-md > div:first-child,
+#toc-header,
 [class*="catalog"] > div:first-child,
-[class*="toc"] > div:first-child,
-#toc-header {
+[class*="announcement"] > div:first-child {
+    border-bottom: none !important; /* 確保無框線 */
+    padding-bottom: 8px !important;
+    margin-bottom: 12px !important;
+    display: flex !important;
+    align-items: center !important;
+    background: transparent !important;
+}
+
+/* 2. 文字層級：暴力統一字體與顏色 */
+/* 這裡使用 * 選擇器，不管它是 h3, span, div 還是什麼鬼，全部聽令 */
+aside .card > div:first-child *,
+aside .shadow-md > div:first-child *,
+#toc-header,
+#toc-header * {
     font-family: var(--font-serif) !important;
     font-weight: 700 !important;
     font-size: 1.1rem !important;
-    color: var(--text-ink) !important;
-    border-bottom: 1px solid rgba(140, 123, 117, 0.2) !important;
-    padding-bottom: 8px !important;
-    margin-bottom: 16px !important;
-    padding-left: 4px !important; 
-    width: 100% !important;
-    display: flex !important;
-    align-items: center !important;
+    color: var(--text-ink) !important; /* 深墨色 */
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
-div:has(> i.fa-bars) i,
-div:has(> svg) svg,
+/* 3. 圖示層級：唯一允許有顏色的地方 */
+aside .card > div:first-child i,
+aside .card > div:first-child svg,
+aside .shadow-md > div:first-child i,
+aside .shadow-md > div:first-child svg,
 #toc-header i,
 #toc-header svg {
-    color: var(--color-accent) !important;
-    margin-right: 8px !important;
+    color: var(--color-accent) !important; /* 強調色 */
     fill: var(--color-accent) !important;
+    margin-right: 8px !important;
+    opacity: 1 !important;
+    /* 防止 icon 變形或過大 */
+    width: auto !important;
+    height: auto !important;
+    font-size: 1.1rem !important; 
 }
 
 /* ==========================================================================
-   11. 修復導覽列「幽靈漢堡」 [新增]
+   11. 修復導覽列「幽靈漢堡」
    ========================================================================== */
-/* 在電腦版 (大於 768px) 強制隱藏導覽列裡的漢堡選單圖示 */
 @media (min-width: 768px) {
     nav .fa-bars,
     .navbar .fa-bars,
     #header .fa-bars,
     .nav-item .fa-bars,
-    /* 針對 NotionNext 常見的手機選單按鈕 class */
     .mobile-nav-toggle,
     button[aria-label="Toggle navigation"] {
         display: none !important;
