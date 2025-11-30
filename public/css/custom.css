@@ -189,41 +189,32 @@ img.rounded-full, .user-avatar {
     color: #fff !important;
 }
 
-/* --- 目錄 (TOC) 樣式優化 --- */
-
-/* 1. 解決文字不換行與被切掉的問題 */
-.toc-link, .toc-text {
-    white-space: normal !important; /* 允許文字換行 */
-    overflow: visible !important;   /* 顯示溢出的文字 */
-    text-overflow: unset !important; /* 移除省略號 (...) */
-    display: block;                 /* 確保佔滿整行寬度 */
-    line-height: 1.6;               /* 增加行距，讓它像圖一一樣透氣 */
-    margin-bottom: 8px;             /* 每個條目之間增加一點距離 */
-}
-
-/* 2. 調整文字顏色與字體大小 */
+/* ==========================================================================
+   9. 目錄區域 (TOC) 優化 [新增]
+   ========================================================================== */
+.notion-table-of-contents-item,
+.catalog-list-item,
 .toc-link {
-    color: #999999; /* 未選中時是灰色（像圖一） */
-    font-size: 0.95rem; 
-    transition: all 0.2s ease;
+    /* 1. 解放換行：讓長標題完整顯示，不要變成 ... */
+    white-space: normal !important; 
+    overflow: visible !important;
+    text-overflow: clip !important;
+    
+    /* 2. 字體優化：改用黑體，閱讀負擔較小，且與文章標題區隔 */
+    font-family: var(--font-sans) !important; 
+    font-size: 0.9rem !important; /* 字稍微小一點點，比較精緻 */
+    line-height: 1.4 !important;   /* 行距縮小，避免換行後太佔空間 */
+    padding: 4px 0 !important;
+    
+    /* 3. 顏色微調：預設深灰，比較耐看 */
+    color: #666 !important; 
 }
 
-/* 3. 當文章滾動到該段落時的「高亮狀態」 */
-.toc-link.is-active-link, 
-.toc-link.is-active-link .toc-text {
-    color: #8c7b75 !important; /* 你的指定亮點色 */
-    font-weight: bold;
-    background-color: transparent !important; /* 移除可能的背景色 */
-}
-
-/* 4. 如果圖二左邊那個「粗直線」是你不要的，可以用這段隱藏 */
-.toc-link.is-active-link::before {
-    display: none !important; /* 隱藏左側指示條 */
-    /* 若想要圖一的「小圓點」效果，需要針對你的主題結構做更細的偽元素設定，
-       先把這行加上去看看左邊直線會不會消失 */
-}
-
-/* 5. 進度條顏色 (如果有顯示的話) */
-#nprogress .bar {
-    background: #8c7b75 !important;
+/* 當目錄被選中(Active)或滑鼠經過時 */
+.notion-table-of-contents-item-active,
+.catalog-list-item-active,
+.toc-link-active,
+.toc-link:hover {
+    color: var(--color-accent) !important; /* 變成你的強調色 */
+    font-weight: 700 !important; /* 加粗 */
 }
