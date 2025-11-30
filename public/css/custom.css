@@ -190,46 +190,80 @@ img.rounded-full, .user-avatar {
 }
 
 /* ==========================================================================
-   9. 目錄區域 (TOC) 優化 [強力修正版]
+   9. 目錄區域 (TOC) 核彈級修正 [精修版]
    ========================================================================== */
-/* 使用屬性選取器 (Attribute Selector) 通殺所有可能的目錄結構 */
-[class*="notion-table-of-contents"] a,
-[class*="notion-table-of-contents"] span,
-.catalog-list-item,
-.toc-link,
-#toc a {
-    /* 1. 強制解放換行：這是最關鍵的 */
+/* 使用萬用字元 * 強制覆寫裡面所有層級 */
+.notion-table-of-contents *,
+[class*="notion-table-of-contents"] *,
+.catalog-list *,
+#toc * {
     white-space: normal !important; 
     overflow: visible !important;
-    text-overflow: unset !important; /* 拿掉 ... 省略號 */
-    display: block !important;       /* 確保它佔據整行空間來換行 */
-    height: auto !important;         /* 高度自動，不然字多了會重疊 */
+    text-overflow: clip !important;
     
-    /* 2. 字體優化：改成黑體 */
     font-family: var(--font-sans) !important; 
     font-size: 0.9rem !important; 
     line-height: 1.5 !important;
-    padding: 6px 0 !important;       /* 稍微增加一點上下間距 */
     
-    /* 3. 顏色微調 */
-    color: #666 !important; 
+    display: block !important;
+    height: auto !important;
+    margin-bottom: 6px !important; 
+    padding-left: 0 !important; 
 }
 
-/* 針對目錄容器本身，防止它有固定高度 */
+/* 針對連結本身做懸掛縮排與動態 */
+.notion-table-of-contents a,
+[class*="notion-table-of-contents"] a,
+.toc-link {
+    display: block !important;
+    position: relative !important;
+    padding-left: 1rem !important;  
+    text-indent: -1rem !important;  
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important; 
+    border-left: 2px solid transparent !important; 
+}
+
+.notion-table-of-contents a:hover,
+[class*="notion-table-of-contents"] a:hover,
+.catalog-list a:hover,
+#toc a:hover {
+    color: var(--color-accent) !important;
+    font-weight: 700 !important;
+    background: transparent !important;
+    transform: translateX(4px); 
+    opacity: 1 !important;
+}
+
+.notion-table-of-contents,
 [class*="notion-table-of-contents"],
 .catalog-list,
 #toc {
     overflow: visible !important;
     max-height: none !important;
+    padding: 10px 0 !important; 
 }
 
-/* 激活狀態與 Hover */
-[class*="notion-table-of-contents"] a:hover,
-[class*="notion-table-of-contents"] .active,
-.catalog-list-item-active,
-.toc-link-active,
-.toc-link:hover {
-    color: var(--color-accent) !important; 
+/* ==========================================================================
+   10. 目錄標題美化 (Header) [新增]
+   ========================================================================== */
+/* 讓「目錄」兩個字變成宋體，跟文章標題呼應 */
+#toc-header,
+.catalog-header,
+.catalog-wrapper > div:first-child {
+    font-family: var(--font-serif) !important;
     font-weight: 700 !important;
-    background: transparent !important;
+    font-size: 1.1rem !important;
+    color: var(--text-ink) !important;
+    border-bottom: 1px solid rgba(140, 123, 117, 0.2) !important; /* 淡淡的底線 */
+    padding-bottom: 8px !important;
+    margin-bottom: 12px !important;
+}
+
+/* 讓前面的 icon (≡) 變色，當作視覺亮點 */
+#toc-header i,
+.catalog-header i,
+.catalog-wrapper > div:first-child i,
+.catalog-wrapper > div:first-child svg {
+    color: var(--color-accent) !important;
+    margin-right: 8px !important;
 }
