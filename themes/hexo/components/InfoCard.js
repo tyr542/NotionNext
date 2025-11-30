@@ -22,20 +22,23 @@ export function InfoCard(props) {
       {/* 1. 頭像與名字：並排區塊 */}
       <div className='flex items-center pt-8 px-6 pb-4 dark:text-gray-100'>
         
-        {/* 頭像區塊 */}
+        {/* 頭像區塊：用 DIV 包住，強制圓形裁切 */}
         <div
           className='transform duration-200 cursor-pointer flex-shrink-0'
           onClick={() => {
             router.push('/')
           }}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <LazyImage 
-            src={siteInfo?.icon} 
-            className='rounded-full hover:scale-105 transition-transform duration-300' // 【關鍵修改】: 增加 rounded-full
-            width={64} // 稍微縮小到 64px (md:w-16)
-            alt={siteConfig('AUTHOR')} 
-          />
+          {/* 【關鍵修改】：新增一個 DIV，強制設定尺寸、圓形、溢出隱藏 */}
+          <div className='w-16 h-16 rounded-full overflow-hidden hover:scale-105 transition-transform duration-300'> 
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <LazyImage 
+              src={siteInfo?.icon} 
+              className='w-full h-full object-cover' // 移除 rounded-full，讓父 div 控制
+              // width={64} // 移除 width，讓父 div w-16 h-16 控制
+              alt={siteConfig('AUTHOR')} 
+            />
+          </div>
         </div>
 
         {/* 標題區塊：放在頭像右邊 */}
