@@ -12,7 +12,7 @@
     --bg-paper: #f9f9f7;       /* 背景：米灰色 */
     --text-ink: #2c2c2c;       /* 文字：深墨色 */
     --card-bg: #ffffff;        /* 卡片：純白 */
-    --color-accent: #8c7b75;   /* 強調色：溫暖的灰褐色 (你的指定色) */
+    --color-accent: #8c7b75;   /* 強調色：溫暖的灰褐色 */
 }
 
 /* ==========================================================================
@@ -25,24 +25,24 @@ body, #__next, #layout-wrapper, .bg-white {
     line-height: 1.8;
 }
 
-/* [新增] 文字選取顏色：改成你的灰褐色 */
+/* 文字選取顏色 */
 ::selection {
     background: var(--color-accent);
-    color: #ffffff; /* 字變白，對比才夠 */
+    color: #ffffff; 
 }
 
-/* [新增] 連結顏色：統一用強調色，比較優雅 */
+/* 連結顏色：全站預設強調色 */
 a, .notion-link {
     color: var(--color-accent);
-    text-decoration-color: var(--color-accent); /* 底線也同色 */
-    transition: opacity 0.2s ease;
+    text-decoration-color: var(--color-accent);
+    transition: all 0.2s ease;
 }
 
 a:hover, .notion-link:hover {
-    opacity: 0.7; /* 懸停時稍微變淡 */
+    opacity: 0.7;
 }
 
-/* 修正：把特定區域改回白色，避免全部變灰 */
+/* 內容區透明 */
 .notion-page-content {
     background-color: transparent !important;
 }
@@ -54,7 +54,7 @@ a:hover, .notion-link:hover {
 }
 
 /* ==========================================================================
-   3. 標題系統 (字重 700)
+   3. 標題系統 (深墨色 -> Hover 變強調色)
    ========================================================================== */
 h1, h2, h3, h4, h5, h6,
 .notion-h1, .notion-h2, .notion-h3,
@@ -63,15 +63,41 @@ h1, h2, h3, h4, h5, h6,
     font-family: var(--font-serif) !important;
     font-weight: 700 !important; 
     letter-spacing: 0.02em;
-    color: #111;
+    color: #111 !important; /* 強制預設為深色，覆蓋全站連結色 */
 }
 
-/* 針對首頁的大標題做特化 */
+/* 針對標題連結的特殊處理 */
+h1 a, h2 a, h3 a,
+.post-title a,
+.article-title a {
+    color: #111 !important; /* 預設深色 */
+    text-decoration: none !important;
+}
+
+/* 標題 Hover 效果：變強調色 */
+h1 a:hover, h2 a:hover, h3 a:hover,
+.post-title a:hover, .post-title:hover,
+.article-title a:hover {
+    color: var(--color-accent) !important; /* 滑鼠移上去才變色 */
+}
+
+/* 首頁大標題尺寸 */
 h1 { font-size: 2.5rem !important; }
 h2 { font-size: 2rem !important; }
 
 /* ==========================================================================
-   4. 導覽列 (Navbar) (透明背景 + 強調色 Hover)
+   4. 文章分類 (Category)
+   ========================================================================== */
+/* 鎖定分類連結：保持強調色，但加粗一階 */
+.category-item, 
+.article-category, 
+.notion-collection-card-property .notion-link {
+   font-weight: 600 !important; /* 加粗 */
+   color: var(--color-accent) !important;
+}
+
+/* ==========================================================================
+   5. 導覽列 (Navbar)
    ========================================================================== */
 nav, .navbar, #header, .menu-link {
     font-family: var(--font-serif) !important;
@@ -81,7 +107,6 @@ nav, .navbar, #header, .menu-link {
     box-shadow: none !important;
 }
 
-/* 導覽列連結預設深色，滑鼠移過去變強調色 */
 .menu-link {
     color: var(--text-ink) !important;
 }
@@ -90,13 +115,20 @@ nav, .navbar, #header, .menu-link {
 }
 
 /* ==========================================================================
-   5. Footer (小巧精緻)
+   6. Footer (強制縮小術)
    ========================================================================== */
-footer, .footer, footer p, footer a, footer span {
+footer, #footer, .footer {
+    padding: 2rem 1rem !important; /* 縮減間距 */
+}
+
+/* 強制鎖定 footer 裡面的所有文字元素 */
+footer p, footer span, footer a, footer div, 
+#footer p, #footer span, #footer a,
+.footer p, .footer span, .footer a {
     font-family: var(--font-sans) !important;
-    font-size: 0.85rem !important; 
+    font-size: 13px !important; /* 強制設定為 13px */
     font-weight: 400 !important;
-    line-height: 1.5 !important;
+    line-height: 1.6 !important;
     opacity: 0.8;
 }
 
@@ -106,7 +138,7 @@ footer a:hover {
 }
 
 /* ==========================================================================
-   6. 卡片設計 (加入微小的強調色互動)
+   7. 卡片設計
    ========================================================================== */
 .shadow-md, .shadow-xl, .card, .notion-collection-card {
     background-color: var(--card-bg) !important; 
@@ -116,11 +148,10 @@ footer a:hover {
     transition: all 0.3s ease;
 }
 
-/* Hover 時，邊框稍微帶一點點你的強調色，非常低調的質感 */
 .shadow-md:hover, .shadow-xl:hover, .card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(140, 123, 117, 0.15) !important; /* 用了你的顏色做淡陰影 */
-    border-color: rgba(140, 123, 117, 0.3); /* 邊框也微微變色 */
+    box-shadow: 0 8px 24px rgba(140, 123, 117, 0.15) !important;
+    border-color: rgba(140, 123, 117, 0.3);
 }
 
 .post-title, .card-title {
@@ -136,17 +167,16 @@ footer a:hover {
 }
 
 /* ==========================================================================
-   7. 其他細節 (標籤使用強調色)
+   8. 其他細節
    ========================================================================== */
 img.rounded-full, .user-avatar {
     border: 2px solid #fff;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-/* 標籤改成你的強調色但調淡一點當背景 */
 .tag-container, .tag-item {
-    background-color: rgba(140, 123, 117, 0.1) !important; /* 強調色的 10% 透明度 */
-    color: var(--color-accent) !important; /* 字用原色 */
+    background-color: rgba(140, 123, 117, 0.1) !important;
+    color: var(--color-accent) !important;
     border-radius: 4px !important;
     font-size: 0.8rem !important;
     padding: 2px 8px !important;
