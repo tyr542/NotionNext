@@ -8,6 +8,7 @@ import { siteConfig } from '@/lib/config'
 /**
  * 社交資訊卡 (Hexo 主題側邊欄)
  * 風格：極簡、無邊框、頭像與名字並排。
+ * 優化：增加各區塊間距，讓視覺呼吸。
  * @param {*} props
  * @returns
  */
@@ -15,18 +16,13 @@ export function InfoCard(props) {
   const { className, siteInfo } = props
   const router = useRouter()
   
-  // 【修正 1, 3】移除所有 AI 猜測的 Vibe 資訊
-  // const profession = 'PHOTOGRAPHER / INTP' // 刪除
-  // const slogan = '"Vibe Coding" 實踐者，相信直覺跟邏輯並不衝突。' // 刪除
-
   return (
     <Card className={className}>
-      {/* 【修正 4】 移除 border-b */}
-      <div 
-        className='flex items-center py-6 px-6 dark:text-gray-100' // border-b 已移除
-      >
+      
+      {/* 1. 頭像與名字：並排區塊 */}
+      <div className='flex items-center pt-8 px-6 pb-4 dark:text-gray-100'>
         
-        {/* 1. 頭像區塊：點擊回首頁 */}
+        {/* 頭像區塊 */}
         <div
           className='transform duration-200 cursor-pointer flex-shrink-0'
           onClick={() => {
@@ -36,37 +32,30 @@ export function InfoCard(props) {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <LazyImage 
             src={siteInfo?.icon} 
-            className='rounded-full hover:scale-105 transition-transform duration-300' 
-            width={72} 
+            className='rounded-full hover:scale-105 transition-transform duration-300' // 【關鍵修改】: 增加 rounded-full
+            width={64} // 稍微縮小到 64px (md:w-16)
             alt={siteConfig('AUTHOR')} 
           />
         </div>
 
-        {/* 2. 標題區塊：放在頭像右邊 */}
+        {/* 標題區塊：放在頭像右邊 */}
         <div className='font-serif ml-4 flex flex-col justify-center text-left'>
-          {/* 【修正 2】 煎餃沾醬的字縮小 (從 text-2xl 降級為 text-xl) */}
+          {/* 名字：煎餃沾醬 (text-xl) */}
           <div className='text-xl font-bold leading-tight'>{siteConfig('AUTHOR')}</div>
-          {/* 【修正 3】 移除 profession 標語 */}
         </div>
       </div>
 
-      {/* 3. BIO 簡介（核心文案） */}
-      {/* 【修正 4】 移除所有 border 和 Slogan 區塊 */}
+      {/* 2. BIO 簡介（核心文案） */}
       <div className='text-sm text-left px-6 py-4 leading-relaxed text-gray-700 dark:text-gray-300'>
-        {/* 主要 BIO 描述 */}
         <p className=''>{siteConfig('BIO')}</p>
-        
-        {/* Vibe Slogan / 理念 區塊已刪除 */}
       </div>
       
-      {/* 4. 計數區塊 (MenuGroupCard) */}
-      {/* 【修正 4】 移除 border-t */}
-      <div className='pt-4'>
+      {/* 3. 計數區塊 (MenuGroupCard) - 增加 mt-4 呼吸間距 */}
+      <div className='pt-4 mt-4'> {/* 【關鍵間距】mt-4 讓它與上方 BIO 區隔 */}
         <MenuGroupCard {...props} /> 
       </div>
       
-      {/* 5. 社交連結按鈕 */}
-      {/* 【修正 4】 移除 border-t */}
+      {/* 4. 社交連結按鈕 - 增加 pt-4 間距 */}
       <div className='pt-4 px-6 pb-6'>
         <SocialButton />
       </div>
