@@ -55,9 +55,8 @@ const LayoutBase = props => {
   const router = useRouter()
   const showRandomButton = siteConfig('HEXO_MENU_RANDOM', false, CONFIG)
 
-  const headerSlot = post ? (
-    <PostHero {...props} />
-  ) : router.route === '/' &&
+  // Vibe Coding: 移除這裡的 PostHero，因為我們把它搬到文章容器裡了
+  const headerSlot = router.route === '/' &&
     siteConfig('HEXO_HOME_BANNER_ENABLE', null, CONFIG) ? (
     <Hero {...props} />
   ) : null
@@ -294,6 +293,10 @@ const LayoutSlug = props => {
               itemScope
               itemType='https://schema.org/Movie'
               className='subpixel-antialiased overflow-y-hidden'>
+              
+              {/* Vibe Coding: 將 PostHero 移植到這裡，讓它成為文章的一部分 */}
+              <PostHero {...props} />
+
               {/* Notion文章主体 */}
               <section className='px-5 justify-center mx-auto max-w-2xl lg:max-w-full'>
                 {post && <NotionPage post={post} />}
