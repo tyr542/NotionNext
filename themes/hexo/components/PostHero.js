@@ -7,11 +7,10 @@ import { siteConfig } from '@/lib/config'
 import CONFIG from '../config'
 
 /**
- * 文章內頁的 Hero 區塊 (終極完美版)
+ * 文章內頁的 Hero 區塊 (Boss 專屬客製版)
  * 修改點：
- * 1. 齊頭對齊微調
- * 2. Meta 資訊擴充：[分類] / [發佈] / [更新]
- * 3. 新增閱讀時間估算
+ * 1. 齊頭對齊：維持 -mt-4
+ * 2. 閱讀時間 Hack V3：使用「目錄長度」來估算，這比隨機數更準確反映文章結構
  */
 const PostHero = ({ post, siteInfo }) => {
   const { fullWidth } = useGlobal()
@@ -21,30 +20,33 @@ const PostHero = ({ post, siteInfo }) => {
     return <></>
   }
 
-  // 如果 Notion 設定為全寬頁面，則不顯示 Hero
   if (fullWidth) {
     return <div className='my-8' />
   }
 
-  // 取得封面圖 URL
   const headerImage = post?.pageCover ? post.pageCover : siteInfo?.pageCover
-
-  // 計算發佈與更新日期是否相同
   const datePublished = post?.publishDay
   const dateLastEdited = post?.lastEditedDay
   const showLastEdited = dateLastEdited && dateLastEdited !== datePublished
 
-  // 估算閱讀時間 (假設 NotionNext 後端沒算，我們前端簡單算一下)
-  // 如果 post.readingTime 存在就用它，不然就用字數/400
-  const readingTime = post?.readingTime || Math.ceil((post?.summary?.length || 0) * 2 / 400) + ' 分鐘' 
-  // 註：這只是粗略估計，因為拿不到完整純文字內容，通常 NotionNext 會在後端算好傳過來
-  // 如果你的 post 物件裡沒有 readingTime，這裡可能需要依賴後端支援，或者你可以開啟 WORD_COUNT 開關
+  // --- 閱讀時間 Hack V3 (基於目錄結構) ---
+  let readingTime = post?.readingTime
+
+  if (!readingTime || readingTime === '0 分鐘' || readingTime === '1 分鐘') {
+    const tocLength = post?.toc?.length || 0
+    // 演算法：每個目錄標題算 1 分鐘，再加上基本分 1 分鐘
+    // 如果沒有目錄 (短文)，就預設 2 分鐘
+    // 如果目錄很多 (長文)，時間就會自動變長
+    const estimatedMinutes = tocLength > 0 ? (tocLength * 1.5) + 1 : 2
+    readingTime = Math.round(estimatedMinutes) + ' 分鐘'
+  }
 
   return (
-    <div id='post-hero' className='w-full mb-8 animate-fade-in px-5 md:px-0'>
+    // 【關鍵修改】： md:-mt-4 
+    // 負邊距提拉，確保跟右邊齊頭
+    <div id='post-hero' className='w-full mb-8 animate-fade-in px-5 md:px-0 md:-mt-4'>
       
       {/* 1. 回到列表按鈕 */}
-      {/* 保持無 margin-top，讓 index.js 的 lg:mt-4 控制齊頭 */}
       <div className='w-full flex justify-start mb-6'>
         <button 
           onClick={() => router.push('/')}
@@ -55,13 +57,12 @@ const PostHero = ({ post, siteInfo }) => {
         </button>
       </div>
 
-      {/* 2. Meta 資訊：[分類] / [發佈] / [更新] / [閱讀時間] */}
+      {/* 2. Meta 資訊 */}
       <div className='flex flex-wrap items-center gap-3 text-sm font-bold tracking-widest mb-3 text-gray-400 leading-6'>
           
-          {/* A. 分類 */}
+          {/* 分類 */}
           {post?.category && (
           <>
-            {/* 分類使用你的強調色 #8c7b75 */}
             <SmartLink href={`/category/${post.category}`} className='text-[#8c7b75] hover:underline transition-colors'>
                 {post.category}
             </SmartLink>
@@ -69,12 +70,12 @@ const PostHero = ({ post, siteInfo }) => {
           </>
           )}
 
-          {/* B. 發佈日期 */}
+          {/* 發佈日期 */}
           <span className='font-sans whitespace-nowrap'>
             {formatDateFmt(datePublished, 'yyyy.MM.dd')} 發佈
           </span>
 
-          {/* C. 更新日期 (如果有不同才顯示) */}
+          {/* 更新日期 */}
           {showLastEdited && (
             <>
               <span className='text-gray-300'>/</span>
@@ -84,10 +85,10 @@ const PostHero = ({ post, siteInfo }) => {
             </>
           )}
 
-          {/* D. 閱讀時間 (前面加一個小 icon) */}
+          {/* 閱讀時間 */}
           <span className='text-gray-300'>/</span>
           <span className='font-sans whitespace-nowrap flex items-center gap-1'>
-            <i className='fas fa-clock text-xs opacity-70'></i> {/* FontAwesome Icon */}
+            <i className='fas fa-clock text-xs opacity-70'></i>
             閱讀約 {readingTime}
           </span>
       </div>
@@ -97,7 +98,7 @@ const PostHero = ({ post, siteInfo }) => {
         {post.title}
       </h1>
 
-      {/* 4. Tags 標籤：背景加深為 bg-gray-200 */}
+      {/* 4. Tags 標籤 */}
       {post.tagItems?.length > 0 && (
         <div className='flex flex-wrap gap-2 mb-8'>
           {post.tagItems.map(tag => (
@@ -133,7 +134,6 @@ const PostHero = ({ post, siteInfo }) => {
         </div>
       )}
 
-      {/* 分隔線 */}
       <hr className='mt-8 border-gray-100 dark:border-gray-800' />
     </div>
   )
