@@ -1,4 +1,3 @@
-// BlogPostCardInfo.js
 import NotionIcon from '@/components/NotionIcon'
 import NotionPage from '@/components/NotionPage'
 import TwikooCommentCount from '@/components/TwikooCommentCount'
@@ -16,39 +15,47 @@ export const BlogPostCardInfo = ({
   showPreview,
   showPageCover,
   showSummary,
-  align = 'left' // 'left' | 'right'
+  align = 'left' // 'left' | 'right' (僅影響電腦版)
 }) => {
   const dateText = post?.publishDay || post.lastEditedDay
+  
+  // 邏輯核心：判斷是否靠右
+  // 注意：這裡的邏輯是「電腦版 reversed 才靠右」，手機版永遠強制靠左
   const isRight = align === 'right'
 
-  // 設定各個區塊的對齊 class
-  const justifyClass = isRight ? 'justify-end' : 'justify-start'
-  const alignClass = isRight ? 'items-end text-right' : 'items-start text-left'
-  
+  // 設定對齊 class：手機版預設 left/start，電腦版(md)才啟用 isRight 判斷
+  const justifyClass = isRight 
+    ? 'justify-start md:justify-end' 
+    : 'justify-start'
+    
+  const alignClass = isRight 
+    ? 'text-left items-start md:text-right md:items-end' 
+    : 'text-left items-start'
+
   // 預覽模式通常強制置中，若非預覽則跟隨 align
   const metaJustify = showPreview ? 'justify-center' : justifyClass
 
   return (
     <article
-      className={`flex flex-col h-full lg:p-6 p-4 ${
+      className={`flex flex-col h-full lg:p-8 p-6 ${
         showPageCover && !showPreview
-          ? 'w-full md:max-h-60'
+          ? 'w-full'
           : 'w-full'
       }`}
     >
       {/* 整個文字縱向區塊 */}
-      <div className={`flex flex-col h-full w-full ${alignClass}`}>
+      <div className={`flex flex-col justify-center h-full w-full ${alignClass}`}>
         
         {/* 第一排：分類 + 日期 */}
         {(post?.category || dateText) && (
           <div
-            className={`flex w-full items-center text-xs md:text-sm text-gray-400 dark:text-gray-500 ${metaJustify}`}
+            className={`flex w-full items-center mb-4 text-xs md:text-sm font-medium tracking-widest text-gray-400 dark:text-gray-500 ${metaJustify}`}
           >
             {post?.category && (
               <>
                 <SmartLink
                   href={`/category/${post.category}`}
-                  className='tracking-wide hover:underline'
+                  className='hover:text-blue-500 uppercase transition-colors'
                 >
                   {post.category}
                 </SmartLink>
@@ -56,15 +63,15 @@ export const BlogPostCardInfo = ({
               </>
             )}
             {dateText && (
-              <span>{formatDateFmt(dateText, 'yyyy.MM.dd')}</span>
+              <span className='tabular-nums font-sans'>{formatDateFmt(dateText, 'yyyy.MM.dd')}</span>
             )}
           </div>
         )}
 
         {/* 標題 */}
-        <h2 className='mt-3 text-lg md:text-2xl font-bold text-gray-800 dark:text-gray-100'>
+        <h2 className='text-xl md:text-3xl font-extrabold text-gray-800 dark:text-gray-100 leading-tight mb-4'>
           <SmartLink href={post?.href}>
-            <span className='transition-all group-hover:text-blue-600 dark:group-hover:text-blue-400'>
+            <span className='transition-all hover:text-blue-600 dark:hover:text-blue-400'>
               {post?.title}
             </span>
           </SmartLink>
@@ -72,21 +79,21 @@ export const BlogPostCardInfo = ({
 
         {/* 摘要或預覽內容 */}
         {showPreview && post?.blockMap ? (
-          <div className='mt-3 w-full'>
+          <div className='mt-2 w-full'>
             <NotionPage post={post} />
           </div>
         ) : (
           showSummary &&
           post?.summary && (
-            <p className='mt-3 text-sm md:text-base text-gray-600 dark:text-gray-300 line-clamp-3'>
+            <p className='text-sm md:text-base text-gray-600 dark:text-gray-300 line-clamp-3 leading-relaxed opacity-80 mb-6'>
               {post.summary}
             </p>
           )
         )}
 
-        {/* Tag 列：重點修改，讓 Tag 也可以跟著靠左或靠右 */}
+        {/* Tag 列：跟著文字方向對齊 */}
         {post.tagItems?.length > 0 && (
-          <div className={`mt-3 flex flex-wrap gap-2 w-full ${justifyClass}`}>
+          <div className={`flex flex-wrap gap-2 w-full mb-6 ${justifyClass}`}>
             {post.tagItems.map(tag => (
               <TagItemMini key={tag.name} tag={tag} />
             ))}
@@ -95,7 +102,7 @@ export const BlogPostCardInfo = ({
 
         {/* 底部：留言數 + 閱讀全文 */}
         <div
-          className={`mt-4 flex w-full items-center gap-4 ${justifyClass}`}
+          className={`flex w-full items-center gap-4 ${justifyClass}`}
         >
           {siteConfig('BLOG_COMMENT', null, CONFIG) &&
             siteConfig('BLOG_COMMENT_TWIKOO_ENV_ID', null, CONFIG) && (
@@ -107,10 +114,10 @@ export const BlogPostCardInfo = ({
 
           <SmartLink
             href={post?.href}
-            className='inline-flex items-center text-sm font-medium text-gray-700 dark:text-gray-200 hover:underline'
+            className='group inline-flex items-center text-sm font-bold text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors'
           >
             閱讀全文
-            <span className='ml-1'>↗</span>
+            <span className='ml-1 transform group-hover:translate-x-1 transition-transform'>→</span>
           </SmartLink>
         </div>
       </div>
