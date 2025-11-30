@@ -190,31 +190,46 @@ img.rounded-full, .user-avatar {
 }
 
 /* ==========================================================================
-   9. 目錄區域 (TOC) 優化 [新增]
+   9. 目錄區域 (TOC) 優化 [強力修正版]
    ========================================================================== */
-.notion-table-of-contents-item,
+/* 使用屬性選取器 (Attribute Selector) 通殺所有可能的目錄結構 */
+[class*="notion-table-of-contents"] a,
+[class*="notion-table-of-contents"] span,
 .catalog-list-item,
-.toc-link {
-    /* 1. 解放換行：讓長標題完整顯示，不要變成 ... */
+.toc-link,
+#toc a {
+    /* 1. 強制解放換行：這是最關鍵的 */
     white-space: normal !important; 
     overflow: visible !important;
-    text-overflow: clip !important;
+    text-overflow: unset !important; /* 拿掉 ... 省略號 */
+    display: block !important;       /* 確保它佔據整行空間來換行 */
+    height: auto !important;         /* 高度自動，不然字多了會重疊 */
     
-    /* 2. 字體優化：改用黑體，閱讀負擔較小，且與文章標題區隔 */
+    /* 2. 字體優化：改成黑體 */
     font-family: var(--font-sans) !important; 
-    font-size: 0.9rem !important; /* 字稍微小一點點，比較精緻 */
-    line-height: 1.4 !important;   /* 行距縮小，避免換行後太佔空間 */
-    padding: 4px 0 !important;
+    font-size: 0.9rem !important; 
+    line-height: 1.5 !important;
+    padding: 6px 0 !important;       /* 稍微增加一點上下間距 */
     
-    /* 3. 顏色微調：預設深灰，比較耐看 */
+    /* 3. 顏色微調 */
     color: #666 !important; 
 }
 
-/* 當目錄被選中(Active)或滑鼠經過時 */
-.notion-table-of-contents-item-active,
+/* 針對目錄容器本身，防止它有固定高度 */
+[class*="notion-table-of-contents"],
+.catalog-list,
+#toc {
+    overflow: visible !important;
+    max-height: none !important;
+}
+
+/* 激活狀態與 Hover */
+[class*="notion-table-of-contents"] a:hover,
+[class*="notion-table-of-contents"] .active,
 .catalog-list-item-active,
 .toc-link-active,
 .toc-link:hover {
-    color: var(--color-accent) !important; /* 變成你的強調色 */
-    font-weight: 700 !important; /* 加粗 */
+    color: var(--color-accent) !important; 
+    font-weight: 700 !important;
+    background: transparent !important;
 }
