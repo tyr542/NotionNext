@@ -97,7 +97,7 @@ h2 { font-size: 2rem !important; }
 }
 
 /* ==========================================================================
-   5. 導覽列 (Navbar)
+   5. 導覽列 (Navbar) [修正：防止被擠壓，優先處理 Flex 佈局]
    ========================================================================== */
 nav, .navbar, #header, .menu-link {
     font-family: var(--font-serif) !important;
@@ -107,8 +107,27 @@ nav, .navbar, #header, .menu-link {
     box-shadow: none !important;
 }
 
+/* 確保導覽列容器 (包含Logo, 選單, 搜尋) 有足夠空間且不換行 */
+.nav-container,
+.nav-bar-wrapper,
+.header-wrapper,
+header nav {
+    display: flex !important;
+    flex-wrap: nowrap !important; /* 絕對禁止換行 */
+    width: 100% !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+}
+
+/* 確保選單項目本身也保持橫向 */
+.nav-items {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+}
+
 .menu-link {
     color: var(--text-ink) !important;
+    white-space: nowrap !important; /* 確保選單文字本身不換行 */
 }
 .menu-link:hover {
     color: var(--color-accent) !important;
@@ -138,7 +157,7 @@ footer a:hover {
 }
 
 /* ==========================================================================
-   7. 卡片設計
+   7. 卡片設計 [修正：移除 Hover 浮起動畫]
    ========================================================================== */
 .shadow-md, .shadow-xl, .card, .notion-collection-card {
     background-color: var(--card-bg) !important; 
@@ -149,8 +168,11 @@ footer a:hover {
 }
 
 .shadow-md:hover, .shadow-xl:hover, .card:hover {
-    transform: translateY(-3px);
-    box-shadow: 8px 24px rgba(140, 123, 117, 0.15) !important;
+    /* 移除浮起動畫 */
+    transform: none !important; 
+    
+    /* 陰影和邊框保持，但只在原地變深一點點 */
+    box-shadow: 0 8px 24px rgba(140, 123, 117, 0.1) !important; /* 讓陰影更淡 */
     border-color: rgba(140, 123, 117, 0.3);
 }
 
@@ -190,7 +212,7 @@ img.rounded-full, .user-avatar {
 }
 
 /* ==========================================================================
-   9. 目錄區域 (TOC) [古蹟區]
+   9. 目錄區域 (TOC) [古蹟區 - 已定案]
    ========================================================================== */
 .notion-table-of-contents,
 [class*="notion-table-of-contents"],
@@ -312,7 +334,8 @@ aside .shadow-md > div:first-child svg,
     #header .fa-bars,
     .nav-item .fa-bars,
     .mobile-nav-toggle,
-    button[aria-label="Toggle navigation"] {
+    /* 修正：針對可能彈出的漢堡按鈕，強制隱藏 */
+    button[aria-label="Toggle navigation"] { 
         display: none !important;
     }
 }
