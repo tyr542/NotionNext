@@ -230,7 +230,7 @@ const LayoutSearch = props => {
 }
 
 /**
- * 归档
+ * 歸檔
  * @param {*} props
  * @returns
  */
@@ -254,7 +254,7 @@ const LayoutArchive = props => {
 }
 
 /**
- * 文章详情
+ * 文章詳情
  * @param {*} props
  * @returns
  */
@@ -271,7 +271,7 @@ const LayoutSlug = props => {
             const article = document.querySelector('#article-wrapper #notion-article')
             if (!article) {
               router.push('/404').then(() => {
-                console.warn('找不到页面', router.asPath)
+                console.warn('找不到頁面', router.asPath)
               })
             }
           }
@@ -282,8 +282,8 @@ const LayoutSlug = props => {
   }, [post])
   return (
     <>
-      {/* 修改點：從 lg:mt-6 加大到 lg:mt-10，讓文章容器更往下沉，實現齊頭對齊 */}
-      <div className='w-full lg:mt-10 lg:hover:shadow lg:border rounded-t-xl lg:rounded-xl lg:px-2 lg:py-4 bg-white dark:bg-hexo-black-gray dark:border-black article'>
+      {/* 最終微調：使用自定義像素值 [36px]，這是介於 mt-8 (32px) 和 mt-10 (40px) 之間的完美折衷 */}
+      <div className='w-full lg:mt-[36px] lg:hover:shadow lg:border rounded-t-xl lg:rounded-xl lg:px-2 lg:py-4 bg-white dark:bg-hexo-black-gray dark:border-black article'>
         {lock && <ArticleLock validPassword={validPassword} />}
 
         {!lock && post && (
@@ -315,7 +315,7 @@ const LayoutSlug = props => {
 
             <div className='pt-4 border-dashed'></div>
 
-            {/* 评论互动 */}
+            {/* 評論互動 */}
             <div className='duration-200 overflow-x-auto bg-white dark:bg-hexo-black-gray px-3'>
               <Comment frontMatter={post} />
             </div>
@@ -324,7 +324,6 @@ const LayoutSlug = props => {
       </div>
     </>
   )
-  // ... (rest of the file remains the same)
 }
 
 /**
@@ -336,13 +335,13 @@ const Layout404 = props => {
   const router = useRouter()
   const { locale } = useGlobal()
   useEffect(() => {
-    // 延时3秒如果加载失败就返回首页
+    // 延時3秒如果加載失敗就返回首頁
     setTimeout(() => {
       if (isBrowser) {
         const article = document.querySelector('#article-wrapper #notion-article')
         if (!article) {
           router.push('/').then(() => {
-            // console.log('找不到页面', router.asPath)
+            // console.log('找不到頁面', router.asPath)
           })
         }
       }
@@ -365,7 +364,7 @@ const Layout404 = props => {
 }
 
 /**
- * 分类列表
+ * 分類列表
  * @param {*} props
  * @returns
  */
@@ -403,7 +402,7 @@ const LayoutCategoryIndex = props => {
 }
 
 /**
- * 标签列表
+ * 標籤列表
  * @param {*} props
  * @returns
  */
