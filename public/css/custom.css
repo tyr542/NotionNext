@@ -1,182 +1,111 @@
-/* -----------------------------------------------------------
-   8. 全站字體全面放大（18px 基準）
-   ----------------------------------------------------------- */
+/* ==========================================================================
+   1. 核心基礎：引入「鏡頭」 (Google Fonts)
+   這步最重要！我們要引入 Noto Serif TC (標題用) 和 Noto Sans TC (內文用)
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;900&display=swap');
 
-/* 基準字體大小：整站拉大 */
-html {
-  font-size: 18px; /* 原本 16 → 現在 18，整體大約 12% 放大 */
+:root {
+    /* 定義你的「底片風格」 */
+    --font-serif: 'Noto Serif TC', serif;    /* 標題用的宋體 */
+    --font-sans: 'Noto Sans TC', sans-serif; /* 內文用的黑體 */
+    --bg-paper: #f9f9f7;                     /* 參考圖那種暖暖的米灰色 */
+    --text-ink: #2c2c2c;                     /* 像墨水一樣的深灰，不要純黑 */
+    --card-bg: #ffffff;
 }
 
-/* 內文字體（Noto Sans） */
+/* ==========================================================================
+   2. 全站氛圍設定 (白平衡與色調)
+   ========================================================================== */
 body {
-  font-size: 1rem;           /* 18px */
-  line-height: 1.8;          /* 更紙本、更舒服 */
-  font-family: var(--font-sans);
+    background-color: var(--bg-paper) !important; /* 把背景改成高級米灰 */
+    font-family: var(--font-sans) !important;
+    color: var(--text-ink);
+    line-height: 1.8; /* 呼吸感 */
 }
 
-/* -----------------------------------------------------------
-   9. 全站標題：襯線 + 粗體 + 放大
-   ----------------------------------------------------------- */
+/* 讓深色模式 (Dark Mode) 還是保持深色，避免眼睛瞎掉 */
+.dark body {
+    background-color: #1a1a1a !important; 
+    color: #e5e5e5;
+}
 
+/* ==========================================================================
+   3. 標題系統：雜誌感的靈魂 (Serif + Bold)
+   所有標題都換成宋體，並且加粗，製造視覺衝擊
+   ========================================================================== */
 h1, h2, h3, h4, h5, h6,
-.post-card-title,
-.notion-page .notion-title,
-.notion-page h1,
-.notion-page h2,
-.notion-page h3 {
-  font-family: var(--font-serif) !important;
-  font-weight: 700 !important;   /* 你要求的 Bold */
-  letter-spacing: 0.02em;
-  color: var(--color-ink);
+.notion-h1, .notion-h2, .notion-h3,
+.post-title, 
+.article-title {
+    font-family: var(--font-serif) !important;
+    font-weight: 900 !important; /* 用最重的字重，像參考圖那樣 */
+    letter-spacing: 0.02em;
+    color: #111; /* 標題要比內文更黑一點 */
 }
 
-/* 標題尺寸（整體提高） */
-h1, .notion-page h1 {
-  font-size: 2.4rem;      /* 約 43px */
-  line-height: 1.25;
+/* 針對首頁的大標題做特化 */
+h1 { font-size: 2.5rem !important; }
+h2 { font-size: 2rem !important; }
+
+/* ==========================================================================
+   4. 導覽列 (Navbar)：優雅的襯線體
+   ========================================================================== */
+nav, .navbar, #header, .menu-link {
+    font-family: var(--font-serif) !important;
+    font-weight: 600 !important;
+    background-color: rgba(249, 249, 247, 0.9) !important; /* 跟背景融合 */
+    backdrop-filter: blur(8px);
 }
 
-h2, .notion-page h2 {
-  font-size: 2rem;        /* 約 36px */
-  line-height: 1.35;
+/* ==========================================================================
+   5. 卡片設計：極簡 + 懸浮感
+   ========================================================================== */
+/* 文章卡片、個人介紹卡片 */
+.shadow-md, .shadow-xl, .card, .notion-collection-card {
+    background-color: var(--card-bg) !important;
+    border: 1px solid rgba(0,0,0,0.03); /* 極細的邊框 */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03) !important; /* 像紙張輕輕浮起 */
+    border-radius: 12px !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-h3, .notion-page h3 {
-  font-size: 1.6rem;      /* 約 29px */
-  line-height: 1.45;
+/* 滑鼠移過去的效果 */
+.shadow-md:hover, .shadow-xl:hover, .card:hover {
+    transform: translateY(-3px); /* 微微浮起 */
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08) !important;
 }
 
-h4, .notion-page h4 {
-  font-size: 1.3rem;      /* 約 23px */
-  line-height: 1.5;
+/* 卡片裡的標題 */
+.post-title, .card-title {
+    font-family: var(--font-serif) !important;
+    font-size: 1.4rem !important;
+    margin-bottom: 0.5rem;
 }
 
-
-/* -----------------------------------------------------------
-   10. 導覽列：襯線體 + Bold（你有要求）
-   ----------------------------------------------------------- */
-
-.navbar,
-.nav-item,
-.header-container,
-#navbar,
-#top-nav,
-#nav {
-  font-family: var(--font-serif) !important;
-  font-weight: 700 !important;
-  font-size: 1rem;   /* 導覽列字體也變大 */
+/* 卡片裡的摘要內文 */
+.post-summary, .card-text {
+    font-family: var(--font-sans) !important;
+    font-size: 0.95rem !important;
+    color: #666; /* 次要文字淡一點 */
 }
 
-/* 如果你的主題 nav 使用 .menu-link（大部分都這樣），一起加 */
-.menu-link {
-  font-family: var(--font-serif) !important;
-  font-weight: 700 !important;
-  font-size: 1rem;
+/* ==========================================================================
+   6. 你的個人頭像 (參考圖是圓的)
+   ========================================================================== */
+img.rounded-full, .user-avatar {
+    border: 2px solid #fff; /* 加個白框比較精緻 */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-/* -----------------------------------------------------------
-   11. 文章內容：段落、清單、引用等
-   ----------------------------------------------------------- */
-
-/* 文章段落 */
-.notion-page p {
-  font-size: 1.1rem;        /* 18px → 提高到 19.8px */
-  line-height: 1.85;
-  margin: 1rem 0;
-}
-
-/* 清單 */
-.notion-page ul,
-.notion-page ol {
-  font-size: 1.1rem;
-  line-height: 1.85;
-}
-
-/* 引用 blockquote */
-.notion-page blockquote {
-  font-size: 1.1rem;
-  border-left: 4px solid var(--color-accent);
-  padding-left: 1rem;
-  opacity: 0.9;
-}
-
-/* 程式碼區塊 */
-.notion-page pre {
-  font-size: 0.9rem; /* 可以略小以避免爆版 */
-  line-height: 1.7;
-}
-
-
-/* -----------------------------------------------------------
-   12. 卡片內容也放大（首頁文章卡片）
-   ----------------------------------------------------------- */
-
-.post-card-content {
-  font-size: 1.05rem;     /* 內文略微放大 */
-  line-height: 1.7;
-}
-
-.post-card-title {
-  font-size: 1.4rem;      /* 卡片標題更醒目 */
-  font-weight: 700 !important;
-}
-
-
-/* -----------------------------------------------------------
-   13. 手機版字體微調，避免太大爆版
-   ----------------------------------------------------------- */
-
-@media (max-width: 768px) {
-  html {
-    font-size: 17px; /* 手機稍微降低，避免爆字爆排版 */
-  }
-
-  h1, .notion-page h1 {
-    font-size: 2rem;
-  }
-
-  h2, .notion-page h2 {
-    font-size: 1.7rem;
-  }
-
-  h3, .notion-page h3 {
-    font-size: 1.4rem;
-  }
-
-  .post-card-title {
-    font-size: 1.25rem;
-  }
-}
-
-/* 基本字體：內文用 Sans，標題/導覽用 Serif */
-body {
-  font-family: var(--font-sans);
-}
-
-/* 標題：襯線體 + 粗體，只改家族跟字重，大小交給原本 Tailwind/主題 */
-h1, h2, h3, h4, h5, h6,
-.post-card-title,
-.notion-page .notion-title {
-  font-family: var(--font-serif) !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.02em;
-}
-
-/* Notion 內文標題（很多是 div + class，不是真正 h1/h2） */
-.notion-page .notion-h-title {
-  font-family: var(--font-serif) !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.02em;
-}
-
-/* 導覽列：襯線 + Bold，只動字體不要動大小，避免排版爆炸 */
-header,
-header nav,
-header nav a,
-#nav,
-#top-nav,
-#navbar,
-.menu-link {
-  font-family: var(--font-serif) !important;
-  font-weight: 700 !important;
+/* ==========================================================================
+   7. 標籤 (Tags) 樣式
+   參考圖的標籤是灰底黑字，小小的
+   ========================================================================== */
+.tag-container, .tag-item {
+    background-color: #f0f0f0 !important;
+    color: #444 !important;
+    border-radius: 4px !important;
+    font-size: 0.8rem !important;
+    padding: 2px 8px !important;
+    font-family: var(--font-sans) !important;
 }
