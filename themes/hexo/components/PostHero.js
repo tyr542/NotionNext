@@ -3,13 +3,12 @@ import { formatDateFmt } from '@/lib/utils/formatDate'
 import SmartLink from '@/components/SmartLink'
 import { useGlobal } from '@/lib/global'
 import { useRouter } from 'next/router'
-import WordCount from '@/components/WordCount' // 【新增】引入原生字數統計組件
+import WordCount from '@/components/WordCount'
 
 /**
- * 文章內頁的 Hero 區塊 (原生組件版)
+ * 文章內頁的 Hero 區塊 (Final Fix)
  * 修改點：
- * 1. 移除負邊距 (-mt)，修復「回到列表」被遮擋的問題
- * 2. 使用 <WordCount /> 原生組件顯示字數與時間
+ * 1. 閱讀時間：利用 post.wordCount 準確計算分鐘數 (除以400)，並只傳遞數字給 WordCount 組件
  */
 const PostHero = ({ post, siteInfo }) => {
   const { fullWidth } = useGlobal()
@@ -28,8 +27,33 @@ const PostHero = ({ post, siteInfo }) => {
   const dateLastEdited = post?.lastEditedDay
   const showLastEdited = dateLastEdited && dateLastEdited !== datePublished
 
+  // --- 閱讀時間修復邏輯 ---
+  // 1. 取得字數 (可能是字串 "11865" 或 數字)
+  const wordCountStr = post?.wordCount
+  // 轉成數字，移除逗號
+  const wordCountNum = typeof wordCountStr === 'string' ? parseInt(wordCountStr.replace(/,/g, '')) : wordCountStr
+
+  // 2. 計算閱讀時間 (分鐘數)
+  let readingTime = post?.readingTime
+  
+  // 如果後端沒給有效的時間，我們用字數算 (400字/分)
+  // 並且只保留「數字」，因為 WordCount 組件會自己加 "分鐘"
+  if (!readingTime || readingTime === '0 分鐘' || readingTime.startsWith('~')) {
+    if (wordCountNum > 0) {
+      readingTime = Math.ceil(wordCountNum / 400) // 得到 30
+    } else {
+      readingTime = 1 // 保底 1 分鐘
+    }
+  } else {
+    // 如果後端給的是 "30 分鐘"，我們嘗試只取數字部分，以免 WordCount 重複顯示 "分鐘"
+    // (看你的截圖 WordCount 似乎會強制加後綴，所以最好只傳數字)
+    const match = readingTime.match(/\d+/)
+    if (match) {
+        readingTime = match[0]
+    }
+  }
+
   return (
-    // 【修改點 1】 移除了 md:-mt-4，改回正常的無邊距，確保內容不被切掉
     <div id='post-hero' className='w-full mb-8 animate-fade-in px-5 md:px-0'>
       
       {/* 1. 回到列表按鈕 */}
@@ -70,10 +94,6 @@ const PostHero = ({ post, siteInfo }) => {
               </span>
             </>
           )}
-
-          {/* 【修改點 2】 使用原生 WordCount 組件 */}
-          <span className='text-gray-300'>/</span>
-          <WordCount wordCount={post.wordCount} readTime={post.readingTime} />
       </div>
 
       {/* 3. 文章標題 */}
@@ -83,7 +103,7 @@ const PostHero = ({ post, siteInfo }) => {
 
       {/* 4. Tags 標籤 */}
       {post.tagItems?.length > 0 && (
-        <div className='flex flex-wrap gap-2 mb-8'>
+        <div className='flex flex-wrap gap-2 mb-4'>
           {post.tagItems.map(tag => (
             <SmartLink
               key={tag.name}
@@ -103,7 +123,13 @@ const PostHero = ({ post, siteInfo }) => {
         </div>
       )}
 
-      {/* 5. 封面大圖 */}
+      {/* 5. 字數與閱讀時間 (放到 Tag 下方獨立一行) */}
+      <div className='flex items-center text-xs text-gray-400 mb-8'>
+         {/* 傳入純數字的 readingTime */}
+         <WordCount wordCount={wordCountStr} readTime={readingTime} />
+      </div>
+
+      {/* 6. 封面大圖 */}
       {headerImage && (
         <div className='w-full relative rounded-xl overflow-hidden shadow-sm bg-gray-50 dark:bg-gray-900 mt-4 border border-gray-100 dark:border-gray-800'>
             <div className='relative w-full max-h-[400px] overflow-hidden'>
