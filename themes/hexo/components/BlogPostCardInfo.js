@@ -63,16 +63,21 @@ export const BlogPostCardInfo = ({
           </SmartLink>
         </h2>
 
-        {/* 3. 內文預覽區塊：修復版 */}
+        {/* 3. 內文預覽區塊：整合原始摘要邏輯 */}
         <div className={`w-full flex-grow relative overflow-hidden text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4 opacity-90 ${isRight ? 'md:text-right' : 'md:text-left'}`}>
-             {/* 優先顯示 BlockMap (內文)，如果沒有則顯示 Summary (摘要)，避免開天窗 */}
-             {post?.blockMap ? (
+             
+             {/* 情況 1: 預覽模式 (顯示 Notion 內文) */}
+             {showPreview && post?.blockMap && (
                <div className='max-h-[80px] overflow-hidden pointer-events-none'>
                  <NotionPage post={post} />
                </div>
-             ) : (
+             )}
+
+             {/* 情況 2: 摘要模式 (復刻原始邏輯：非預覽 或 強制顯示摘要 時) */}
+             {(!showPreview || showSummary) && !post.results && (
                <p className='line-clamp-3'>{post.summary}</p>
              )}
+             
         </div>
         
         {/* 2. Tag 區塊：灰色背景 -> Hover 變強調色 #8c7b75 */}
