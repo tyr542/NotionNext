@@ -55,7 +55,8 @@ const LayoutBase = props => {
   const router = useRouter()
   const showRandomButton = siteConfig('HEXO_MENU_RANDOM', false, CONFIG)
 
-  // Vibe Coding: 移除這裡的 PostHero，因為我們把它搬到文章容器裡了
+  // 【修改點 1】 移除這裡原本的 PostHero 呼叫
+  // 只保留首頁的 Hero (Banner)
   const headerSlot = router.route === '/' &&
     siteConfig('HEXO_HOME_BANNER_ENABLE', null, CONFIG) ? (
     <Hero {...props} />
@@ -294,7 +295,8 @@ const LayoutSlug = props => {
               itemType='https://schema.org/Movie'
               className='subpixel-antialiased overflow-y-hidden'>
               
-              {/* Vibe Coding: 將 PostHero 移植到這裡，讓它成為文章的一部分 */}
+              {/* 【修改點 2】 Vibe Coding: 將 PostHero 移植到這裡！ */}
+              {/* 它現在是文章的一部分，會乖乖待在框框裡 */}
               <PostHero {...props} />
 
               {/* Notion文章主体 */}
