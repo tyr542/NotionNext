@@ -5,9 +5,11 @@ import CONFIG from '../config'
 import { BlogPostCardInfo } from './BlogPostCardInfo'
 
 const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
-  const showPreview =
-    siteConfig('HEXO_POST_LIST_PREVIEW', null, CONFIG) && post.blockMap
-
+  // 強制開啟預覽模式 (為了顯示內文而非摘要)
+  // 如果你覺得內文載入太慢，可以把這裡改回 siteConfig 的設定
+  const showPreview = post.blockMap
+  
+  // 封面圖邏輯
   if (
     post &&
     !post.pageCoverThumbnail &&
@@ -18,8 +20,7 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
 
   const showPageCover =
     siteConfig('HEXO_POST_LIST_COVER', null, CONFIG) &&
-    post?.pageCoverThumbnail &&
-    !showPreview
+    post?.pageCoverThumbnail
 
   const crossoverEnabled = siteConfig('HEXO_POST_LIST_IMG_CROSSOVER', null, CONFIG)
   const isReversed = crossoverEnabled && index % 2 === 1
@@ -37,24 +38,24 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
         data-aos-anchor-placement='top-bottom'
         id='blog-post-card'
         className={`group
-          w-[96%]              /* 手機版寬度 */
-          md:max-w-[900px]     /* 電腦版最大寬度 (這裡控制胖瘦！) */
-          mx-auto              /* 置中 */
+          w-[96%]              
+          md:max-w-[900px]     
+          mx-auto              
           flex
-          md:flex-row          /* 電腦版左右排 */
-          flex-col-reverse     /* 手機版圖上文下 */
-          items-stretch        /* 讓左右兩邊高度拉伸一致 */
+          md:flex-row          
+          flex-col-reverse     
+          items-stretch        
           overflow-hidden
-          rounded-xl           /* 圓角稍微小一點點，比較俐落 */
+          rounded-xl           
           bg-white/40
           dark:bg-black/40
-          shadow-sm            /* 陰影改小一點，比較扁平 */
+          shadow-sm            
           backdrop-blur-md
           border border-white/20
           transition-all duration-300
           hover:shadow-lg
-          mb-8                 /* 卡片之間的間距 */
-          md:h-[260px]         /* 電腦版固定高度 (這裡控制高度！) */
+          mb-8                 
+          md:h-[280px]         /* 稍微增加高度給內文空間 */
           ${isReversed ? 'md:flex-row-reverse' : ''}
         `}
       >
@@ -64,9 +65,10 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
             index={index}
             post={post}
             showPageCover={showPageCover}
-            showPreview={showPreview}
+            showPreview={showPreview} // 傳入 true 以顯示內文
             showSummary={showSummary}
-            align={isReversed ? 'right' : 'left'}
+            // 修正對齊邏輯：圖在左(Reversed)則文靠左，圖在右則文靠右
+            align={isReversed ? 'left' : 'right'}
           />
         </div>
 
