@@ -159,4 +159,370 @@ footer > div, #footer > div, .footer > div {
 }
 
 /* 強制鎖定 footer 裡面的所有文字元素 */
-footer p, footer span, footer a, footer div,
+footer p, footer span, footer a, footer div, 
+#footer p, #footer span, #footer a,
+.footer p, .footer span, .footer a {
+    font-family: var(--font-sans) !important;
+    font-size: 13px !important; /* 強制設定為 13px */
+    font-weight: 400 !important;
+    line-height: 1.6 !important;
+    opacity: 0.8;
+}
+
+footer a:hover {
+    color: var(--color-accent) !important;
+    text-decoration: underline;
+}
+
+/* ==========================================================================
+   7. 卡片設計 [修正：增加呼吸感與縮小標題]
+   ========================================================================== */
+.shadow-md, .shadow-xl, .card, .notion-collection-card {
+    background-color: var(--card-bg) !important; 
+    border: 1px solid rgba(0,0,0,0.03);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03) !important;
+    border-radius: 12px !important;
+    transition: all 0.3s ease;
+}
+
+.shadow-md:hover, .shadow-xl:hover, .card:hover {
+    /* 移除浮起動畫 */
+    transform: none !important; 
+    
+    /* 陰影和邊框保持，但只在原地變深一點點 */
+    box-shadow: 0 8px 24px rgba(140, 123, 117, 0.1) !important; /* 讓陰影更淡 */
+    border-color: rgba(140, 123, 117, 0.3);
+}
+
+.post-title, .card-title, .article-title {
+    font-family: var(--font-serif) !important;
+    
+    /* [修正] 標題進一步縮小至 0.95rem，視覺更精緻 */
+    font-size: 0.95rem !important; 
+    
+    /* [修正] 加大行距至 1.75，創造明顯的呼吸空間 */
+    line-height: 1.75 !important; 
+
+    /* [修正] 增加下方留白 */
+    margin-bottom: 0.8rem !important; 
+    
+    /* 限制 3 行 */
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 3 !important; 
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    
+    white-space: normal !important; 
+    height: auto !important;
+    max-height: none !important;
+}
+
+.post-summary, .card-text {
+    font-family: var(--font-sans) !important;
+    font-size: 0.9rem !important;
+    color: #666;
+    
+    /* [修正] 加回間距 */
+    margin-bottom: 1rem !important;
+    
+    /* 限制 5 行 */
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 5 !important; 
+    overflow: hidden !important;
+    line-height: 1.6 !important; 
+}
+
+/* [新增] 閱讀全文連結優化 */
+.article-card-readmore a,
+.post-card-readmore a {
+    color: var(--color-accent) !important;
+    text-decoration: none !important; /* 拿掉底線 */
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    font-size: 0.9rem !important; 
+}
+
+.article-card-readmore a:hover,
+.post-card-readmore a:hover {
+    transform: translateX(4px); /* 往右滑動 */
+    opacity: 0.8;
+}
+
+/* [新增] 文章內圖片最大寬度限制 */
+.notion-page img {
+    max-width: 100% !important;
+    height: auto !important;
+    object-fit: contain;
+}
+
+/* ==========================================================================
+   8. 其他細節 [修正：頭像完整顯示]
+   ========================================================================== */
+img.rounded-full, .user-avatar {
+    border: 2px solid #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    
+    /* [新增] 確保正方形圖片完整顯示在圓框內，不裁切 */
+    aspect-ratio: 1 / 1 !important; /* 強制正方形比例 */
+    object-fit: contain !important;  /* 完整顯示圖片內容 */
+    background-color: var(--bg-paper) !important; /* 填補可能的空隙背景色 */
+}
+
+.tag-container, .tag-item {
+    background-color: rgba(140, 123, 117, 0.1) !important;
+    color: var(--color-accent) !important;
+    border-radius: 4px !important;
+    font-size: 0.8rem !important;
+    padding: 2px 8px !important;
+    font-family: var(--font-sans) !important;
+    transition: background-color 0.2s;
+}
+
+.tag-item:hover {
+    background-color: var(--color-accent) !important;
+    color: #fff !important;
+}
+
+/* ==========================================================================
+   9. 目錄區域 (TOC) [修復：強制換行 + 回歸黑體]
+   ========================================================================== */
+.notion-table-of-contents,
+[class*="notion-table-of-contents"],
+.catalog-list,
+#toc {
+    /* [修正] 大幅減少容器內距，讓文字往左靠 */
+    padding-left: 5px !important; 
+    padding-right: 5px !important;
+    padding-top: 5px !important;
+    line-height: 1.6 !important;
+    box-sizing: border-box !important;
+}
+
+/* [重點修正] 針對目錄連結的強力重置 */
+.notion-table-of-contents a,
+.notion-table-of-contents span,
+[class*="notion-table-of-contents"] a,
+[class*="notion-table-of-contents"] span,
+.toc-link,
+.toc-link span,
+.catalog-list-item,
+.catalog-list-item span,
+/* [新增] 暴力針對所有目錄內的子元素，防止被宋體污染 */
+.notion-table-of-contents *,
+#toc * {
+    font-family: var(--font-sans) !important; /* 強制回歸黑體 */
+    font-size: 0.9rem !important;
+    font-weight: 400 !important;
+    color: #666 !important; /* 預設顏色調深一點點，增加可讀性 */
+    
+    /* [防切邊關鍵] 強制換行 */
+    white-space: normal !important; 
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    display: block !important; /* 確保佔滿整行 */
+    
+    text-indent: 0 !important;
+    margin-left: 0 !important; 
+    text-decoration: none !important;
+    transition: all 0.2s ease !important;
+}
+
+/* 確保目錄標題 (如「前言：」) 與連結樣式一致 */
+.notion-table-of-contents a:hover,
+.notion-table-of-contents a:hover span,
+.toc-link:hover,
+.toc-link:hover span {
+    color: var(--color-accent) !important; 
+    cursor: pointer !important;
+    background-color: transparent !important; /* 防止背景變色 */
+}
+
+/* 修正 Active 狀態的樣式 */
+.notion-table-of-contents .active,
+.notion-table-of-contents .active span,
+.catalog-list-item-active,
+.toc-link-active {
+    color: var(--color-accent) !important;
+    font-weight: 600 !important; /* 稍微加粗就好 */
+    background-color: rgba(140, 123, 117, 0.05) !important; /* 淡淡的背景色 */
+    border-radius: 4px;
+}
+
+/* ==========================================================================
+   10. 側邊欄標題統一 (目錄、公告、最新發布) [核彈級強制作業 - 最終字體修正]
+   ========================================================================== */
+/* 1. 容器層級：去除底線，統一間距 */
+aside .card > div:first-child,
+aside .shadow-md > div:first-child,
+#toc-header,
+[class*="catalog"] > div:first-child,
+[class*="announcement"] > div:first-child {
+    border-bottom: none !important; /* 確保無框線 */
+    padding-bottom: 8px !important;
+    margin-bottom: 12px !important;
+    display: flex !important;
+    align-items: center !important;
+    background: transparent !important;
+}
+
+/* 2. 文字層級：暴力統一字體與顏色 */
+/* 我們用兩種方式鎖定文字，這次加入針對 span/div 的精準打擊，確保宋體覆蓋 */
+aside .card > div:first-child *,
+aside .shadow-md > div:first-child *,
+#toc-header,
+#toc-header *,
+/* [關鍵修正] 針對 div 和 span 進行高權重覆蓋 */
+aside .card > div:first-child div,
+aside .card > div:first-child span,
+aside .shadow-md > div:first-child div,
+aside .shadow-md > div:first-child span {
+    font-family: var(--font-serif) !important; /* 確保是宋體！ */
+    font-weight: 700 !important;
+    font-size: 1.1rem !important;
+    color: var(--text-ink) !important; /* 深墨色 */
+    
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* 3. 圖示層級：唯一允許有顏色的地方 */
+aside .card > div:first-child i,
+aside .card > div:first-child svg,
+aside .shadow-md > div:first-child i,
+aside .shadow-md > div:first-child svg,
+#toc-header i,
+#toc-header svg {
+    color: var(--color-accent) !important; /* 強調色 */
+    fill: var(--color-accent) !important;
+    margin-right: 8px !important;
+    opacity: 1 !important;
+    /* 防止 icon 變形或過大 */
+    width: auto !important;
+    height: auto !important;
+    font-size: 1.1rem !important; 
+}
+
+/* ==========================================================================
+   11. 修復導覽列「幽靈漢堡」
+   ========================================================================== */
+@media (min-width: 768px) {
+    nav .fa-bars,
+    .navbar .fa-bars,
+    #header .fa-bars,
+    .nav-item .fa-bars,
+    .mobile-nav-toggle,
+    /* 修正：針對可能彈出的漢堡按鈕，強制隱藏 */
+    button[aria-label="Toggle navigation"] { 
+        display: none !important;
+    }
+}
+
+/* ==========================================================================
+   12. 程式碼區塊優化 (Code Block Readability)
+   ========================================================================== */
+.notion-code {
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace !important;
+    font-size: 0.95rem !important; /* 略大於預設，保持可讀性 */
+    line-height: 1.6 !important;
+    padding: 1.5rem !important;
+    border-radius: 8px !important;
+    background-color: #f5f5f5 !important; /* 淺灰色背景，增加對比 */
+    border: 1px solid rgba(0,0,0,0.05) !important;
+}
+
+/* 確保行內程式碼與內文對齊，且有圓角 */
+.notion-code-inline {
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace !important;
+    background-color: #eee !important;
+    padding: 2px 6px !important;
+    border-radius: 4px !important;
+    color: #333 !important;
+}
+
+/* ==========================================================================
+   13. 最終修正：強制封印深色模式 (Force Light Mode)
+   ========================================================================== */
+/* 1. 隱藏深色模式切換按鈕 */
+#darkModeButton, 
+.dark-mode-toggle, 
+button[aria-label="Toggle Dark Mode"],
+.fas.fa-moon,
+.fas.fa-sun {
+    display: none !important;
+}
+
+/* 2. 暴力鎖定：就算系統強制切換到 dark class，我們也要把它蓋回亮色 */
+html.dark body, 
+html.dark #__next, 
+html.dark #layout-wrapper, 
+html.dark .bg-white,
+html.dark .dark\:bg-hexo-black-gray {
+    background-color: var(--bg-paper) !important;
+    color: var(--text-ink) !important;
+}
+
+/* 確保卡片在 Dark Mode 下還是白的 */
+html.dark .shadow-md, 
+html.dark .shadow-xl, 
+html.dark .card,
+html.dark .notion-collection-card {
+    background-color: var(--card-bg) !important;
+    color: var(--text-ink) !important;
+}
+
+/* 確保標題不會在深色模式下變成白色或淺灰 */
+html.dark h1, html.dark h2, html.dark h3,
+html.dark .post-title, 
+html.dark .article-title,
+html.dark .notion-h1,
+html.dark .notion-h2,
+html.dark .notion-h3 {
+    color: #111 !important;
+}
+
+/* 確保側邊欄標題在深色模式下還是深色 */
+html.dark aside .card > div:first-child *,
+html.dark #toc-header * {
+    color: var(--text-ink) !important;
+}
+
+/* ==========================================================================
+   14. 手機版排版細節優化 (Mobile Spacing)
+   ========================================================================== */
+@media (max-width: 768px) {
+    /* 相關文章區域：增加左右呼吸空間 */
+    .recommend-sections,
+    .recommend-posts,
+    #recommend-wrapper,
+    /* 嘗試抓取可能的主題容器 Class */
+    [class*="recommend"],
+    /* 針對沒有特徵 class 的 grid 容器 (NotionNext 常見結構) */
+    .w-full .grid {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+        box-sizing: border-box !important;
+    }
+
+    /* 確保裡面的圖片不會因為容器 padding 而跑版 */
+    .recommend-sections img,
+    .recommend-posts img {
+        max-width: 100% !important;
+        height: auto !important;
+        border-radius: 8px !important;
+    }
+}
+
+/* ==========================================================================
+   15. 首圖裁切修正 (Hero Image Position) [修正：裝飾模式]
+   ========================================================================== */
+/* 針對首頁或文章頁面的 Hero Image，重置為正中央對齊 */
+.header-cover, 
+#header-cover,
+.w-full.h-96.object-cover,
+div[style*="background-image"] {
+    /* 確保裝飾圖片永遠置中，呈現最穩定的構圖 */
+    background-position: center center !important; 
+    object-position: center center !important;
+}
