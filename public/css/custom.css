@@ -175,7 +175,7 @@ footer a:hover {
 }
 
 /* ==========================================================================
-   7. 卡片設計 [修正：保留精緻字體設定，恢復原生交錯排版]
+   7. 卡片設計 [修正：標題縮小至 1.0rem]
    ========================================================================== */
 .shadow-md, .shadow-xl, .card, .notion-collection-card {
     background-color: var(--card-bg) !important; 
@@ -196,12 +196,10 @@ footer a:hover {
 
 .post-title, .card-title {
     font-family: var(--font-serif) !important;
-    /* [保持] 標題字體縮小 */
+    /* [修正] 標題縮小至 1.0rem，更加精緻 */
     font-size: 1.0rem !important; 
-    margin-bottom: 0.5rem;
-    
-    /* [保持] 行距加寬 */
-    line-height: 1.6 !important; 
+    /* 加回間距，保持呼吸感 */
+    margin-bottom: 0.5rem !important; 
     
     /* 限制 3 行 */
     display: -webkit-box !important;
@@ -211,6 +209,7 @@ footer a:hover {
     text-overflow: ellipsis !important;
     
     white-space: normal !important; 
+    line-height: 1.4 !important; 
     height: auto !important;
     max-height: none !important;
 }
@@ -220,6 +219,7 @@ footer a:hover {
     font-size: 0.9rem !important;
     color: #666;
     
+    /* [修正] 加回間距 */
     margin-bottom: 1rem !important;
     
     /* 限制 5 行 */
@@ -281,13 +281,15 @@ img.rounded-full, .user-avatar {
 }
 
 /* ==========================================================================
-   9. 目錄區域 (TOC) [古蹟區 - 已定案]
+   9. 目錄區域 (TOC) [修正：減少左側留白，靠左對齊]
    ========================================================================== */
 .notion-table-of-contents,
 [class*="notion-table-of-contents"],
 .catalog-list,
 #toc {
-    padding-left: 1.5em !important; 
+    /* [修正] 大幅減少容器內距，讓文字往左靠 */
+    /* 從 1.5em (24px) 改為 5px，大幅減少左側留白 */
+    padding-left: 5px !important; 
     padding-right: 5px !important;
     padding-top: 5px !important;
     line-height: 1.6 !important;
@@ -519,5 +521,3 @@ div[style*="background-image"] {
     background-position: center center !important; 
     object-position: center center !important;
 }
-
-/* [刪除] 原本的 Section 16 強制靠右代碼已移除，恢復原生的左右交錯排版 */
