@@ -1,12 +1,17 @@
 /* ==========================================================================
    1. 核心基礎：引入「鏡頭」 (Google Fonts)
+   [策略修正] 斷捨離！只下載「思源宋體」，放棄「思源黑體」。
+   讓內文直接用系統字體 (秒開)，把頻寬全部留給標題的宋體，減少載入延遲。
    ========================================================================== */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;700&display=swap');
 
 :root {
     /* 定義你的「底片風格」 */
-    --font-serif: 'Noto Serif TC', serif;    /* 標題用的宋體 */
-    --font-sans: 'Noto Sans TC', sans-serif; /* 內文用的黑體 */
+    /* 標題：優先抓取系統內的宋體，抓不到才用下載的 Noto Serif TC */
+    --font-serif: 'Songti TC', 'Noto Serif TC', 'STSong', 'PMingLiU', 'MingLiU', 'Georgia', serif; 
+    
+    /* 內文：直接使用系統內建的最強黑體 (Mac的蘋方、Android的Roboto/Noto Sans)，不下載字體 */
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Helvetica, 'PingFang TC', 'Hiragino Sans GB', 'Microsoft JhengHei', Arial, sans-serif;
     
     /* 色票系統 */
     --bg-paper: #f9f9f7;       /* 背景：米灰色 */
