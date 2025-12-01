@@ -175,7 +175,7 @@ footer a:hover {
 }
 
 /* ==========================================================================
-   7. 卡片設計 [修正：標題解放 - 允許換行]
+   7. 卡片設計 [修正：防大爆炸 - 限制行數]
    ========================================================================== */
 .shadow-md, .shadow-xl, .card, .notion-collection-card {
     background-color: var(--card-bg) !important; 
@@ -199,19 +199,31 @@ footer a:hover {
     font-size: 1.25rem !important; 
     margin-bottom: 0.5rem;
     
-    /* [新增] 解放標題限制，讓手機版可以換行顯示完整標題 */
-    white-space: normal !important;   /* 允許換行 */
-    overflow: visible !important;     /* 顯示溢出內容 */
-    text-overflow: unset !important;  /* 移除省略號 (...) */
-    line-height: 1.4 !important;      /* 設定舒適的多行行距 */
-    height: auto !important;          /* 高度自動撐開 */
-    max-height: none !important;      /* 移除任何高度限制 */
+    /* [修正] 雜誌感紀律：最多顯示 2 行，超過打點點點 */
+    /* 解決「大爆炸」問題，同時比單行顯示更多資訊 */
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 2 !important; /* 限制 2 行 */
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    
+    white-space: normal !important; /* 允許換行才能計算行數 */
+    line-height: 1.4 !important;
+    height: auto !important;
+    max-height: none !important;
 }
 
 .post-summary, .card-text {
     font-family: var(--font-sans) !important;
     font-size: 0.95rem !important;
     color: #666;
+    
+    /* [修正] 大綱也同步限制 3 行，保持卡片高度整齊 */
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 3 !important; /* 限制 3 行 */
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
 }
 
 /* [新增] 閱讀全文連結優化 */
