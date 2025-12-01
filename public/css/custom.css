@@ -37,7 +37,6 @@ body, #__next, #layout-wrapper, .bg-white {
     color: #ffffff; 
 }
 
-
 /* 連結顏色：全站預設強調色 */
 a, .notion-link {
     color: var(--color-accent);
@@ -52,12 +51,6 @@ a:hover, .notion-link:hover {
 /* 內容區透明 */
 .notion-page-content {
     background-color: transparent !important;
-}
-
-/* 深色模式保護 */
-.dark body, .dark #__next, .dark #layout-wrapper {
-    background-color: #1a1a1a !important; 
-    color: #e5e5e5;
 }
 
 /* ==========================================================================
@@ -97,7 +90,6 @@ h2 { font-size: 2rem !important; }
     font-family: var(--font-serif) !important;
     font-weight: 700 !important;
 }
-
 
 /* ==========================================================================
    4. 文章分類 (Category)
@@ -178,7 +170,7 @@ footer a:hover {
 }
 
 /* ==========================================================================
-   7. 卡片設計 [修正：移除 Hover 浮起動畫]
+   7. 卡片設計 [修正：標題解放 - 允許換行]
    ========================================================================== */
 .shadow-md, .shadow-xl, .card, .notion-collection-card {
     background-color: var(--card-bg) !important; 
@@ -201,6 +193,14 @@ footer a:hover {
     font-family: var(--font-serif) !important;
     font-size: 1.25rem !important; 
     margin-bottom: 0.5rem;
+    
+    /* [新增] 解放標題限制，讓手機版可以換行顯示完整標題 */
+    white-space: normal !important;   /* 允許換行 */
+    overflow: visible !important;     /* 顯示溢出內容 */
+    text-overflow: unset !important;  /* 移除省略號 (...) */
+    line-height: 1.4 !important;      /* 設定舒適的多行行距 */
+    height: auto !important;          /* 高度自動撐開 */
+    max-height: none !important;      /* 移除任何高度限制 */
 }
 
 .post-summary, .card-text {
@@ -231,11 +231,16 @@ footer a:hover {
 }
 
 /* ==========================================================================
-   8. 其他細節
+   8. 其他細節 [修正：頭像完整顯示]
    ========================================================================== */
 img.rounded-full, .user-avatar {
     border: 2px solid #fff;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    
+    /* [新增] 確保正方形圖片完整顯示在圓框內，不裁切 */
+    aspect-ratio: 1 / 1 !important; /* 強制正方形比例 */
+    object-fit: contain !important;  /* 完整顯示圖片內容 */
+    background-color: var(--bg-paper) !important; /* 填補可能的空隙背景色 */
 }
 
 .tag-container, .tag-item {
@@ -318,9 +323,6 @@ img.rounded-full, .user-avatar {
 /* ==========================================================================
    10. 側邊欄標題統一 (目錄、公告、最新發布) [核彈級強制作業 - 最終字體修正]
    ========================================================================== */
-/* 策略：鎖定所有側邊欄 (aside) 卡片的第一個子元素，並使用通配符 (*) 炸開所有子層級
-   無論 JS 怎麼寫 style，全部用 !important 覆蓋 */
-
 /* 1. 容器層級：去除底線，統一間距 */
 aside .card > div:first-child,
 aside .shadow-md > div:first-child,
@@ -389,7 +391,7 @@ aside .shadow-md > div:first-child svg,
 }
 
 /* ==========================================================================
-   12. 程式碼區塊優化 (Code Block Readability) [新增]
+   12. 程式碼區塊優化 (Code Block Readability)
    ========================================================================== */
 .notion-code {
     font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace !important;
@@ -408,4 +410,90 @@ aside .shadow-md > div:first-child svg,
     padding: 2px 6px !important;
     border-radius: 4px !important;
     color: #333 !important;
+}
+
+/* ==========================================================================
+   13. 最終修正：強制封印深色模式 (Force Light Mode)
+   ========================================================================== */
+/* 1. 隱藏深色模式切換按鈕 */
+#darkModeButton, 
+.dark-mode-toggle, 
+button[aria-label="Toggle Dark Mode"],
+.fas.fa-moon,
+.fas.fa-sun {
+    display: none !important;
+}
+
+/* 2. 暴力鎖定：就算系統強制切換到 dark class，我們也要把它蓋回亮色 */
+html.dark body, 
+html.dark #__next, 
+html.dark #layout-wrapper, 
+html.dark .bg-white,
+html.dark .dark\:bg-hexo-black-gray {
+    background-color: var(--bg-paper) !important;
+    color: var(--text-ink) !important;
+}
+
+/* 確保卡片在 Dark Mode 下還是白的 */
+html.dark .shadow-md, 
+html.dark .shadow-xl, 
+html.dark .card,
+html.dark .notion-collection-card {
+    background-color: var(--card-bg) !important;
+    color: var(--text-ink) !important;
+}
+
+/* 確保標題不會在深色模式下變成白色或淺灰 */
+html.dark h1, html.dark h2, html.dark h3,
+html.dark .post-title, 
+html.dark .article-title,
+html.dark .notion-h1,
+html.dark .notion-h2,
+html.dark .notion-h3 {
+    color: #111 !important;
+}
+
+/* 確保側邊欄標題在深色模式下還是深色 */
+html.dark aside .card > div:first-child *,
+html.dark #toc-header * {
+    color: var(--text-ink) !important;
+}
+
+/* ==========================================================================
+   14. 手機版排版細節優化 (Mobile Spacing)
+   ========================================================================== */
+@media (max-width: 768px) {
+    /* 相關文章區域：增加左右呼吸空間 */
+    .recommend-sections,
+    .recommend-posts,
+    #recommend-wrapper,
+    /* 嘗試抓取可能的主題容器 Class */
+    [class*="recommend"],
+    /* 針對沒有特徵 class 的 grid 容器 (NotionNext 常見結構) */
+    .w-full .grid {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+        box-sizing: border-box !important;
+    }
+
+    /* 確保裡面的圖片不會因為容器 padding 而跑版 */
+    .recommend-sections img,
+    .recommend-posts img {
+        max-width: 100% !important;
+        height: auto !important;
+        border-radius: 8px !important;
+    }
+}
+
+/* ==========================================================================
+   15. 首圖裁切修正 (Hero Image Position) [修正：裝飾模式]
+   ========================================================================== */
+/* 針對首頁或文章頁面的 Hero Image，重置為正中央對齊 */
+.header-cover, 
+#header-cover,
+.w-full.h-96.object-cover,
+div[style*="background-image"] {
+    /* 確保裝飾圖片永遠置中，呈現最穩定的構圖 */
+    background-position: center center !important; 
+    object-position: center center !important;
 }
