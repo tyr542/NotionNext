@@ -54,12 +54,12 @@ export const BlogPostCardInfo = ({
           </div>
         )}
 
-        {/* 標題 - 強制修正版
-            !text-lg: 強制設定為大字體 (約 18px)，不再受全域樣式干擾
-            md:!text-xl: 電腦版稍微大一點 (約 20px)
-            !leading-normal: 強制設定行高為正常值 (1.5倍)，解決重疊問題
+        {/* 標題 - 精準微調版
+            !text-xl: 手機版提升到 20px (原本 lg 是 18px)
+            md:!text-[22px]: 電腦版設定為 22px (介於 xl 和 2xl 之間)
+            !leading-normal: 維持舒適行高 (1.5倍)
         */}
-        <h2 className='!text-lg md:!text-xl font-bold text-gray-800 dark:text-gray-100 !leading-normal mb-3 line-clamp-1 md:line-clamp-2'>
+        <h2 className='!text-xl md:!text-[22px] font-bold text-gray-800 dark:text-gray-100 !leading-normal mb-3 line-clamp-1 md:line-clamp-2'>
           <SmartLink href={post?.href}>
             <span className='hover:text-[#8c7b75] dark:hover:text-[#8c7b75] transition-colors'> {/* 強調色 #8c7b75 */}
               {post?.title}
