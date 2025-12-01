@@ -175,7 +175,7 @@ footer a:hover {
 }
 
 /* ==========================================================================
-   7. 卡片設計 [修正：標題字體調整為 1.1rem]
+   7. 卡片設計 [修正：保留精緻字體設定，恢復原生交錯排版]
    ========================================================================== */
 .shadow-md, .shadow-xl, .card, .notion-collection-card {
     background-color: var(--card-bg) !important; 
@@ -196,10 +196,12 @@ footer a:hover {
 
 .post-title, .card-title {
     font-family: var(--font-serif) !important;
-    /* [修正] 老大指示：標題調整為 1.1rem，更加精緻且不佔空間 */
-    font-size: 1.1rem !important; 
-    /* 加回間距，保持呼吸感 */
-    margin-bottom: 0.5rem !important; 
+    /* [保持] 標題字體縮小 */
+    font-size: 1.0rem !important; 
+    margin-bottom: 0.5rem;
+    
+    /* [保持] 行距加寬 */
+    line-height: 1.6 !important; 
     
     /* 限制 3 行 */
     display: -webkit-box !important;
@@ -209,7 +211,6 @@ footer a:hover {
     text-overflow: ellipsis !important;
     
     white-space: normal !important; 
-    line-height: 1.4 !important; 
     height: auto !important;
     max-height: none !important;
 }
@@ -219,7 +220,6 @@ footer a:hover {
     font-size: 0.9rem !important;
     color: #666;
     
-    /* [修正] 加回間距 */
     margin-bottom: 1rem !important;
     
     /* 限制 5 行 */
@@ -519,3 +519,5 @@ div[style*="background-image"] {
     background-position: center center !important; 
     object-position: center center !important;
 }
+
+/* [刪除] 原本的 Section 16 強制靠右代碼已移除，恢復原生的左右交錯排版 */
