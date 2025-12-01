@@ -175,7 +175,7 @@ footer a:hover {
 }
 
 /* ==========================================================================
-   7. 卡片設計 [修正：防大爆炸 - 限制行數]
+   7. 卡片設計 [修正：標題字體調整為 1.1rem]
    ========================================================================== */
 .shadow-md, .shadow-xl, .card, .notion-collection-card {
     background-color: var(--card-bg) !important; 
@@ -196,34 +196,38 @@ footer a:hover {
 
 .post-title, .card-title {
     font-family: var(--font-serif) !important;
-    font-size: 1.25rem !important; 
-    margin-bottom: 0.5rem;
+    /* [修正] 老大指示：標題調整為 1.1rem，更加精緻且不佔空間 */
+    font-size: 1.1rem !important; 
+    /* 加回間距，保持呼吸感 */
+    margin-bottom: 0.5rem !important; 
     
-    /* [修正] 雜誌感紀律：最多顯示 2 行，超過打點點點 */
-    /* 解決「大爆炸」問題，同時比單行顯示更多資訊 */
+    /* 限制 3 行 */
     display: -webkit-box !important;
     -webkit-box-orient: vertical !important;
-    -webkit-line-clamp: 2 !important; /* 限制 2 行 */
+    -webkit-line-clamp: 3 !important; 
     overflow: hidden !important;
     text-overflow: ellipsis !important;
     
-    white-space: normal !important; /* 允許換行才能計算行數 */
-    line-height: 1.4 !important;
+    white-space: normal !important; 
+    line-height: 1.4 !important; 
     height: auto !important;
     max-height: none !important;
 }
 
 .post-summary, .card-text {
     font-family: var(--font-sans) !important;
-    font-size: 0.95rem !important;
+    font-size: 0.9rem !important;
     color: #666;
     
-    /* [修正] 大綱也同步限制 3 行，保持卡片高度整齊 */
+    /* [修正] 加回間距 */
+    margin-bottom: 1rem !important;
+    
+    /* 限制 5 行 */
     display: -webkit-box !important;
     -webkit-box-orient: vertical !important;
-    -webkit-line-clamp: 3 !important; /* 限制 3 行 */
+    -webkit-line-clamp: 5 !important; 
     overflow: hidden !important;
-    text-overflow: ellipsis !important;
+    line-height: 1.6 !important; 
 }
 
 /* [新增] 閱讀全文連結優化 */
@@ -232,6 +236,7 @@ footer a:hover {
     color: var(--color-accent) !important;
     text-decoration: none !important; /* 拿掉底線 */
     transition: transform 0.2s ease, opacity 0.2s ease;
+    font-size: 0.9rem !important; 
 }
 
 .article-card-readmore a:hover,
@@ -282,7 +287,7 @@ img.rounded-full, .user-avatar {
 [class*="notion-table-of-contents"],
 .catalog-list,
 #toc {
-    padding-left: 12px !important; 
+    padding-left: 1.5em !important; 
     padding-right: 5px !important;
     padding-top: 5px !important;
     line-height: 1.6 !important;
@@ -304,8 +309,8 @@ img.rounded-full, .user-avatar {
     fill: #999999 !important;
     display: block !important; 
     position: relative !important;
-    padding-left: 1.5em !important; 
-    text-indent: -1.5em !important;
+    padding-left: 8px !important; 
+    text-indent: 0 !important;
     margin-left: 0 !important; 
     white-space: normal !important;
     overflow: visible !important;
@@ -333,8 +338,8 @@ img.rounded-full, .user-avatar {
     color: var(--color-accent) !important;
     font-weight: 700 !important;
     border-left: 3px solid var(--color-accent) !important;
-    padding-left: calc(1.5em - 6px) !important; 
-    margin-left: 3px !important;
+    padding-left: 5px !important; 
+    margin-left: 0 !important;
 }
 
 /* ==========================================================================
