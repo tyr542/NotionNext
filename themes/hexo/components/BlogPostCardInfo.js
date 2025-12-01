@@ -54,8 +54,8 @@ export const BlogPostCardInfo = ({
           </div>
         )}
 
-        {/* 標題 */}
-        <h2 className='text-xl md:text-2xl font-bold text-gray-800 dark:text-gray-100 leading-tight mb-3 line-clamp-1 md:line-clamp-2'>
+        {/* 標題 - 已調整縮小字級 (text-lg md:text-xl) */}
+        <h2 className='text-lg md:text-xl font-bold text-gray-800 dark:text-gray-100 leading-tight mb-3 line-clamp-1 md:line-clamp-2'>
           <SmartLink href={post?.href}>
             <span className='hover:text-[#8c7b75] dark:hover:text-[#8c7b75] transition-colors'> {/* 強調色 #8c7b75 */}
               {post?.title}
@@ -65,7 +65,7 @@ export const BlogPostCardInfo = ({
 
         {/* 3. 內文預覽區塊：整合原始摘要邏輯 */}
         <div className={`w-full flex-grow relative overflow-hidden text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4 opacity-90 ${isRight ? 'md:text-right' : 'md:text-left'}`}>
-             
+              
              {/* 情況 1: 預覽模式 (顯示 Notion 內文) */}
              {showPreview && post?.blockMap && (
                <div className='max-h-[80px] overflow-hidden pointer-events-none'>
@@ -97,7 +97,7 @@ export const BlogPostCardInfo = ({
                         hover:text-white dark:hover:text-white
                       '
                    >
-                     #{tag.name}
+                      #{tag.name}
                    </SmartLink>
                 ))}
               </div>
