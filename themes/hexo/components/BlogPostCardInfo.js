@@ -54,8 +54,8 @@ export const BlogPostCardInfo = ({
           </div>
         )}
 
-        {/* 標題 - 已調整縮小字級 (text-lg md:text-xl) */}
-        <h2 className='text-lg md:text-xl font-bold text-gray-800 dark:text-gray-100 leading-tight mb-3 line-clamp-1 md:line-clamp-2'>
+        {/* 標題 - 已調整縮小字級 (text-base md:text-lg) 並增加行高 (leading-normal) */}
+        <h2 className='text-base md:text-lg font-bold text-gray-800 dark:text-gray-100 leading-normal mb-3 line-clamp-1 md:line-clamp-2'>
           <SmartLink href={post?.href}>
             <span className='hover:text-[#8c7b75] dark:hover:text-[#8c7b75] transition-colors'> {/* 強調色 #8c7b75 */}
               {post?.title}
