@@ -5,8 +5,7 @@ import CONFIG from '../config'
 import { BlogPostCardInfo } from './BlogPostCardInfo'
 
 const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
-  // 強制開啟預覽模式 (為了顯示內文而非摘要)
-  // 如果你覺得內文載入太慢，可以把這裡改回 siteConfig 的設定
+  // 強制開啟預覽模式
   const showPreview = post.blockMap
   
   // 封面圖邏輯
@@ -38,45 +37,51 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
         data-aos-anchor-placement='top-bottom'
         id='blog-post-card'
         className={`group
-          w-[96%]              
-          md:max-w-[900px]     
-          mx-auto              
+          w-[96%]
+          md:max-w-[900px]
+          mx-auto
           flex
-          md:flex-row          
-          flex-col-reverse     
-          items-stretch        
+          md:flex-row
+          flex-col-reverse
+          items-stretch
           overflow-hidden
-          rounded-xl           
+          rounded-xl
           bg-white/40
           dark:bg-black/40
-          shadow-sm            
+          shadow-sm
           backdrop-blur-md
           border border-white/20
           transition-all duration-300
           hover:shadow-lg
-          mb-8                 
-          md:h-[280px]         /* 稍微增加高度給內文空間 */
+          mb-8
+          /* --- Vibe Coding 修改重點 --- */
+          /* 舊設定: md:h-[280px] -> 會鎖死高度導致爆框 */
+          /* 新設定: md:min-h-[280px] md:h-auto -> 設低消，但也允許無線暢飲 */
+          md:min-h-[280px] 
+          md:h-auto
+          /* -------------------------- */
           ${isReversed ? 'md:flex-row-reverse' : ''}
         `}
       >
         {/* 文字欄位 */}
-        <div className='w-full md:w-7/12 flex flex-col justify-center'>
+        <div className='w-full md:w-7/12 flex flex-col justify-center py-6 px-4 md:px-8'> 
+          {/* 加入 py-6 確保文字爆多時，上下還有呼吸空間 */}
           <BlogPostCardInfo
             index={index}
             post={post}
             showPageCover={showPageCover}
-            showPreview={showPreview} // 傳入 true 以顯示內文
+            showPreview={showPreview}
             showSummary={showSummary}
-            // 修正對齊邏輯：圖在左(Reversed)則文靠左，圖在右則文靠右
             align={isReversed ? 'left' : 'right'}
           />
         </div>
 
         {/* 圖片欄位 */}
         {showPageCover && (
-          <div className='w-full md:w-5/12 h-48 md:h-full overflow-hidden relative'>
+          <div className='w-full md:w-5/12 h-48 md:h-auto overflow-hidden relative'>
+             {/* 圖片容器改為 h-auto 配合 items-stretch 自動跟隨文字區高度 */}
             <SmartLink href={post?.href} className='block h-full w-full'>
-                 <LazyImage
+                <LazyImage
                   priority={index === 1}
                   alt={post?.title}
                   src={post?.pageCoverThumbnail}
