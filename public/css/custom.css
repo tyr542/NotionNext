@@ -93,9 +93,15 @@ h1 a:hover, h2 a:hover, h3 a:hover,
     color: var(--color-accent) !important; 
 }
 
-/* 首頁大標題尺寸 */
-h1 { font-size: 2.5rem !important; }
-h2 { font-size: 2rem !important; }
+/* 首頁大標題尺寸 [修正：降壓處方生效] */
+h1 { 
+    font-size: 2.0rem !important; /* 原本 2.5rem -> 2.0rem */
+    line-height: 1.6 !important;   /* 拉開行距 */
+    margin-bottom: 1.5rem !important; /* 增加下方留白 */
+}
+
+/* 配合 h1 微調 h2 */
+h2 { font-size: 1.75rem !important; }
 
 .notion-page .notion-callout-title {
     font-family: var(--font-serif) !important;
@@ -377,7 +383,7 @@ aside .shadow-md > div:first-child svg,
 }
 
 /* ==========================================================================
-   11-15. 其他修復 (隱藏漢堡/Code Block/深色模式封印/手機版/首圖)
+   11-15. 其他修復 (隱藏漢堡/Code Block/手機版/首圖)
    ========================================================================== */
 @media (min-width: 768px) {
     nav .fa-bars, .navbar .fa-bars, #header .fa-bars, .nav-item .fa-bars, .mobile-nav-toggle, button[aria-label="Toggle navigation"] { 
@@ -401,28 +407,6 @@ aside .shadow-md > div:first-child svg,
     padding: 2px 6px !important;
     border-radius: 4px !important;
     color: #333 !important;
-}
-
-#darkModeButton, .dark-mode-toggle, button[aria-label="Toggle Dark Mode"], .fas.fa-moon, .fas.fa-sun {
-    display: none !important;
-}
-
-html.dark body, html.dark #__next, html.dark #layout-wrapper, html.dark .bg-white, html.dark .dark\:bg-hexo-black-gray {
-    background-color: var(--bg-paper) !important;
-    color: var(--text-ink) !important;
-}
-
-html.dark .shadow-md, html.dark .shadow-xl, html.dark .card, html.dark .notion-collection-card {
-    background-color: var(--card-bg) !important;
-    color: var(--text-ink) !important;
-}
-
-html.dark h1, html.dark h2, html.dark h3, html.dark .post-title, html.dark .article-title, html.dark .notion-h1, html.dark .notion-h2, html.dark .notion-h3 {
-    color: #111 !important;
-}
-
-html.dark aside .card > div:first-child *, html.dark #toc-header * {
-    color: var(--text-ink) !important;
 }
 
 @media (max-width: 768px) {
