@@ -274,7 +274,7 @@ img.rounded-full, .user-avatar {
 }
 
 /* ==========================================================================
-   9. 目錄區域 (TOC) [12px 甜蜜點 + 黑體]
+   9. 目錄區域 (TOC) [12px 甜蜜點 + 黑體 + H3縮排]
    ========================================================================== */
 .notion-table-of-contents,
 [class*="notion-table-of-contents"],
@@ -314,6 +314,23 @@ img.rounded-full, .user-avatar {
     transition: all 0.2s ease !important;
 }
 
+/* [新增] 針對 H3 (第三層級) 的縮排與視覺區隔 */
+/* 散彈槍模式：捕捉常見的 NotionNext/Hexo H3 Class 命名 */
+[class*="indent-level-2"],   /* Notion 官方結構常見 */
+.toc-level-3,                /* Hexo 結構常見 */
+.toc-item.toc-level-3,
+.notion-table-of-contents-item-indent-level-2 {
+     padding-left: 32px !important; /* H2 是 12px，H3 往內縮 20px */
+     font-size: 0.85rem !important; /* 稍微縮小一點點，增加層次感 */
+     opacity: 0.9;
+}
+
+/* 針對巢狀列表結構 (以防萬一) */
+.notion-table-of-contents ul ul,
+#toc ul ul {
+    padding-left: 20px !important;
+}
+
 .notion-table-of-contents a:hover,
 .notion-table-of-contents a:hover span,
 .toc-link:hover,
@@ -332,7 +349,6 @@ img.rounded-full, .user-avatar {
     background-color: rgba(140, 123, 117, 0.05) !important; 
     border-radius: 4px;
 }
-
 /* ==========================================================================
    10. 側邊欄標題 (宋體 + 強調色 Icon)
    ========================================================================== */
