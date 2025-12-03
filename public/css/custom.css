@@ -274,13 +274,12 @@ img.rounded-full, .user-avatar {
 }
 
 /* ==========================================================================
-   9. 目錄區域 (TOC) [12px 甜蜜點 + 黑體 + H3縮排]
+   9. 目錄區域 (TOC) [修復：階梯式縮排 + 12px 甜蜜點]
    ========================================================================== */
 .notion-table-of-contents,
 [class*="notion-table-of-contents"],
 .catalog-list,
 #toc {
-    /* 12px 甜蜜點 */
     padding-left: 12px !important; 
     padding-right: 5px !important;
     padding-top: 5px !important;
@@ -288,60 +287,63 @@ img.rounded-full, .user-avatar {
     box-sizing: border-box !important;
 }
 
+/* [通用重置] 針對所有連結與文字 */
 .notion-table-of-contents a,
 .notion-table-of-contents span,
-[class*="notion-table-of-contents"] a,
-[class*="notion-table-of-contents"] span,
-.toc-link,
-.toc-link span,
 .catalog-list-item,
-.catalog-list-item span,
-.notion-table-of-contents *,
-#toc * {
-    font-family: var(--font-sans) !important; /* 目錄維持黑體好讀 */
+.toc-link {
+    font-family: var(--font-sans) !important; 
     font-size: 0.9rem !important;
-    font-weight: 400 !important;
     color: #666 !important; 
     
     white-space: normal !important; 
     word-break: break-word !important;
-    overflow-wrap: break-word !important;
     display: block !important; 
-    
-    text-indent: 0 !important;
-    margin-left: 0 !important; 
     text-decoration: none !important;
     transition: all 0.2s ease !important;
+    
+    /* [關鍵修正] 這裡只設「基礎」縮排，不要用 !important 鎖死，讓下面的階層可以覆蓋 */
+    padding-left: 8px; 
+    text-indent: 0;
+    margin-left: 0;
 }
 
-/* [新增] 針對 H3 (第三層級) 的縮排與視覺區隔 */
-/* 散彈槍模式：捕捉常見的 NotionNext/Hexo H3 Class 命名 */
-[class*="indent-level-2"],   /* Notion 官方結構常見 */
-.toc-level-3,                /* Hexo 結構常見 */
-.toc-item.toc-level-3,
-.notion-table-of-contents-item-indent-level-2 {
-     padding-left: 32px !important; /* H2 是 12px，H3 往內縮 20px */
-     font-size: 0.85rem !important; /* 稍微縮小一點點，增加層次感 */
-     opacity: 0.9;
+/* [階梯式縮排] 針對 NotionNext 常見的縮排 Class 進行全面覆蓋 */
+/* H2 (通常是 Level 0 或 Level 1) */
+[class*="indent-level-0"], .toc-level-1 {
+    padding-left: 8px !important;
+    font-weight: 500 !important;
 }
 
-/* 針對巢狀列表結構 (以防萬一) */
-.notion-table-of-contents ul ul,
-#toc ul ul {
-    padding-left: 20px !important;
+/* H3 (關鍵目標：給它明顯的縮排) */
+[class*="indent-level-1"], .toc-level-2 {
+    padding-left: 32px !important; /* 往內縮 24px */
+    font-size: 0.88rem !important;
+    opacity: 0.9;
 }
 
+/* H4 (如果有用到，再縮更深) */
+[class*="indent-level-2"], .toc-level-3 {
+    padding-left: 48px !important; /* 再縮 */
+    font-size: 0.85rem !important;
+    opacity: 0.8;
+}
+
+/* H5 (深層結構) */
+[class*="indent-level-3"], .toc-level-4 {
+    padding-left: 60px !important;
+    opacity: 0.7;
+}
+
+/* 針對滑鼠 Hover 的互動 */
 .notion-table-of-contents a:hover,
-.notion-table-of-contents a:hover span,
-.toc-link:hover,
-.toc-link:hover span {
+.toc-link:hover {
     color: var(--color-accent) !important; 
-    cursor: pointer !important;
     background-color: transparent !important; 
 }
 
+/* Active 狀態 */
 .notion-table-of-contents .active,
-.notion-table-of-contents .active span,
 .catalog-list-item-active,
 .toc-link-active {
     color: var(--color-accent) !important;
