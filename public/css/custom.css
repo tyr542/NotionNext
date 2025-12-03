@@ -274,7 +274,7 @@ img.rounded-full, .user-avatar {
 }
 
 /* ==========================================================================
-   9. 目錄區域 (TOC) [修復：階梯式縮排 + 12px 甜蜜點]
+   9. 目錄區域 (TOC) [修復：精準命中縮排 + 12px 甜蜜點]
    ========================================================================== */
 .notion-table-of-contents,
 [class*="notion-table-of-contents"],
@@ -289,7 +289,6 @@ img.rounded-full, .user-avatar {
 
 /* [通用重置] 針對所有連結與文字 */
 .notion-table-of-contents a,
-.notion-table-of-contents span,
 .catalog-list-item,
 .toc-link {
     font-family: var(--font-sans) !important; 
@@ -302,40 +301,51 @@ img.rounded-full, .user-avatar {
     text-decoration: none !important;
     transition: all 0.2s ease !important;
     
-    /* [關鍵修正] 這裡只設「基礎」縮排，不要用 !important 鎖死，讓下面的階層可以覆蓋 */
-    padding-left: 8px; 
-    text-indent: 0;
-    margin-left: 0;
+    /* 基礎內距，確保所有項目至少有一點點空間 */
+    padding-left: 12px !important; 
 }
 
-/* [階梯式縮排] 針對 NotionNext 常見的縮排 Class 進行全面覆蓋 */
-/* H2 (通常是 Level 0 或 Level 1) */
-[class*="indent-level-0"], .toc-level-1 {
-    padding-left: 8px !important;
+/* [精準縮排系統] 
+   根據截圖證據，直接鎖定 notion-table-of-contents-item-indent-level-X
+*/
+
+/* Level 0 (H2) - 保持基礎縮排 */
+.notion-table-of-contents-item-indent-level-0,
+[class*="indent-level-0"] {
+    padding-left: 12px !important; 
     font-weight: 500 !important;
+    color: #444 !important; /* 稍微深一點 */
 }
 
-/* H3 (關鍵目標：給它明顯的縮排) */
-[class*="indent-level-1"], .toc-level-2 {
-    padding-left: 32px !important; /* 往內縮 24px */
+/* Level 1 (H3) - 關鍵！大幅增加縮排 */
+.notion-table-of-contents-item-indent-level-1,
+[class*="indent-level-1"] {
+    /* 原廠是用 pl-4 (16px) + span margin (16px) = 32px 
+       我們這裡直接強制覆蓋 a 標籤的 padding，讓它縮得更明顯 
+       設定為 42px，讓它明顯比 H2 退後兩步
+    */
+    padding-left: 42px !important; 
     font-size: 0.88rem !important;
     opacity: 0.9;
 }
 
-/* H4 (如果有用到，再縮更深) */
-[class*="indent-level-2"], .toc-level-3 {
-    padding-left: 48px !important; /* 再縮 */
+/* Level 2 (H4) - 如果有的話，再縮更深 */
+.notion-table-of-contents-item-indent-level-2,
+[class*="indent-level-2"] {
+    padding-left: 62px !important; 
     font-size: 0.85rem !important;
     opacity: 0.8;
 }
 
-/* H5 (深層結構) */
-[class*="indent-level-3"], .toc-level-4 {
-    padding-left: 60px !important;
-    opacity: 0.7;
+/* [修正] 針對裡面的 span，防止它的 inline-style margin 搗亂 */
+/* 我們希望由外層 a 標籤統一控制縮排，所以把 span 的 margin 歸零或微調 */
+.notion-table-of-contents a span,
+.notion-table-of-contents-item-indent-level-1 span {
+    margin-left: 0 !important; /* 把兇手二號的 margin 拿掉，由上面的 padding 接管 */
+    display: inline !important;
 }
 
-/* 針對滑鼠 Hover 的互動 */
+/* Hover 效果 */
 .notion-table-of-contents a:hover,
 .toc-link:hover {
     color: var(--color-accent) !important; 
