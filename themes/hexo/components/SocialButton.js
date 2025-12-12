@@ -79,9 +79,9 @@ const SocialButton = () => {
           <a
             target='_blank'
             rel='noreferrer'
-            title={'weibo'}
+            title={'Threads'}
             href={CONTACT_WEIBO}>
-            <i className='transform hover:scale-125 duration-150 fab fa-weibo dark:hover:text-indigo-400 hover:text-indigo-600' />
+            <i className='transform hover:scale-125 duration-150 fa-threads dark:hover:text-indigo-400 hover:text-indigo-600' />
           </a>
         )}
         {CONTACT_INSTAGRAM && (
