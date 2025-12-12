@@ -81,7 +81,7 @@ const SocialButton = () => {
             rel='noreferrer'
             title={'Threads'}
             href={CONTACT_WEIBO}>
-            <i className='transform hover:scale-125 duration-150 fab fa-threads dark:hover:text-indigo-400 hover:text-indigo-600' />
+            <i className='transform hover:scale-125 duration-150 fab fa-at dark:hover:text-indigo-400 hover:text-indigo-600' />
           </a>
         )}
         {CONTACT_INSTAGRAM && (
