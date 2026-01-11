@@ -129,15 +129,13 @@ const PostHero = ({ post, siteInfo }) => {
          {/* 傳入純數字的 readingTime */}
          <WordCount wordCount={wordCountStr} readTime={readingTime} />
          
-         {/* Busuanzi 頁面訪問量 */}
-         {siteConfig('ANALYTICS_BUSUANZI_ENABLE', null, false) && (
-           <>
+         {/* Busuanzi 頁面訪問量 - 初始隱藏，由 busuanzi.js 控制顯示 */}
+         {siteConfig('ANALYTICS_BUSUANZI_ENABLE') && (
+           <span className='busuanzi_container_page_pv' style={{ display: 'none' }}>
              <span className='text-gray-300'>•</span>
-             <span className='busuanzi_container_page_pv whitespace-nowrap'>
-               <i className='fas fa-eye' />
-               <span className='ml-1 busuanzi_value_page_pv'></span>
-             </span>
-           </>
+             <i className='fas fa-eye ml-2' />
+             <span className='ml-1 busuanzi_value_page_pv'></span>
+           </span>
          )}
       </div>
 
