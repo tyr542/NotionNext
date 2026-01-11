@@ -4,6 +4,7 @@ import SmartLink from '@/components/SmartLink'
 import { useGlobal } from '@/lib/global'
 import { useRouter } from 'next/router'
 import WordCount from '@/components/WordCount'
+import { siteConfig } from '@/lib/config'
 
 /**
  * 文章內頁的 Hero 區塊 (Final Fix)
@@ -123,10 +124,21 @@ const PostHero = ({ post, siteInfo }) => {
         </div>
       )}
 
-      {/* 5. 字數與閱讀時間 (放到 Tag 下方獨立一行) */}
-      <div className='flex items-center text-xs text-gray-400 mb-8'>
+      {/* 5. 字數與閱讀時間 + Busuanzi 計數器 */}
+      <div className='flex items-center gap-3 text-xs text-gray-400 mb-8'>
          {/* 傳入純數字的 readingTime */}
          <WordCount wordCount={wordCountStr} readTime={readingTime} />
+         
+         {/* Busuanzi 頁面訪問量 */}
+         {siteConfig('ANALYTICS_BUSUANZI_ENABLE', null, false) && (
+           <>
+             <span className='text-gray-300'>•</span>
+             <span className='busuanzi_container_page_pv whitespace-nowrap'>
+               <i className='fas fa-eye' />
+               <span className='ml-1 busuanzi_value_page_pv'></span>
+             </span>
+           </>
+         )}
       </div>
 
       {/* 6. 封面大圖 */}
