@@ -54,13 +54,18 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
           transition-all duration-300
           hover:shadow-lg
           mb-8
+          /* --- Vibe Coding 修改重點 --- */
+          /* 舊設定: md:h-[280px] -> 會鎖死高度導致爆框 */
+          /* 新設定: md:min-h-[280px] md:h-auto -> 設低消，但也允許無線暢飲 */
           md:min-h-[280px] 
           md:h-auto
+          /* -------------------------- */
           ${isReversed ? 'md:flex-row-reverse' : ''}
         `}
       >
         {/* 文字欄位 */}
         <div className='w-full md:w-7/12 flex flex-col justify-center py-6 px-4 md:px-8'> 
+          {/* 加入 py-6 確保文字爆多時，上下還有呼吸空間 */}
           <BlogPostCardInfo
             index={index}
             post={post}
@@ -74,6 +79,7 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
         {/* 圖片欄位 */}
         {showPageCover && (
           <div className='w-full md:w-5/12 h-48 md:h-auto overflow-hidden relative'>
+             {/* 圖片容器改為 h-auto 配合 items-stretch 自動跟隨文字區高度 */}
             <SmartLink href={post?.href} className='block h-full w-full'>
                 <LazyImage
                   priority={index === 1}
