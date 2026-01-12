@@ -1,5 +1,6 @@
 import LazyImage from '@/components/LazyImage'
 import { useGlobal } from '@/lib/global'
+// import Image from 'next/image'
 import SmartLink from '@/components/SmartLink'
 import { useRouter } from 'next/router'
 
@@ -20,9 +21,11 @@ const LatestPostsGroup = ({ latestPosts, siteInfo }) => {
 
   return (
     <>
-      <div className='section-title mb-2'>
-        <i className='fas fas fa-history' />
-        {locale.COMMON.LATEST_POSTS}
+      <div className=' mb-2 px-1 flex flex-nowrap justify-between'>
+        <div>
+          <i className='mr-2 fas fas fa-history' />
+          {locale.COMMON.LATEST_POSTS}
+        </div>
       </div>
       {latestPosts.map(post => {
         const headerImage = post?.pageCoverThumbnail
@@ -36,7 +39,7 @@ const LatestPostsGroup = ({ latestPosts, siteInfo }) => {
             title={post.title}
             href={post?.href}
             passHref
-            className={`latest-post-item my-3 ${selected ? 'selected' : ''}`}>
+            className={'my-3 flex'}>
             <div className='w-20 h-14 overflow-hidden relative'>
               <LazyImage
                 alt={post?.title}
@@ -44,7 +47,12 @@ const LatestPostsGroup = ({ latestPosts, siteInfo }) => {
                 className='object-cover w-full h-full'
               />
             </div>
-            <div className='text-sm overflow-x-hidden px-2 w-full rounded items-center flex'>
+            <div
+              className={
+                (selected ? ' text-indigo-400 ' : 'dark:text-gray-400 ') +
+                ' text-sm overflow-x-hidden hover:text-indigo-600 px-2 duration-200 w-full rounded ' +
+                ' hover:text-indigo-400 cursor-pointer items-center flex'
+              }>
               <div>
                 <div className='line-clamp-2 menu-link'>{post.title}</div>
                 <div className='text-gray-500'>{post.lastEditedDay}</div>
