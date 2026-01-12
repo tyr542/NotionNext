@@ -79,12 +79,19 @@ a:hover, .notion-link:hover {
 .accent-hover:hover {
     color: var(--color-accent) !important;
 }
+.dark .accent-hover:hover {
+    color: var(--color-accent) !important;
+}
 
 /* --- 強調色 Hover（背景） --- */
 .accent-hover-bg {
     transition: background-color 0.2s ease, color 0.2s ease;
 }
 .accent-hover-bg:hover {
+    background-color: var(--color-accent) !important;
+    color: #ffffff !important;
+}
+.dark .accent-hover-bg:hover {
     background-color: var(--color-accent) !important;
     color: #ffffff !important;
 }
@@ -132,6 +139,22 @@ a:hover, .notion-link:hover {
     color: var(--color-accent);
 }
 
+/* --- 區塊標題（通用） --- */
+.section-title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    padding: 0 0.25rem;
+}
+.section-title i,
+.section-title svg {
+    margin-right: 0.5rem;
+    color: var(--color-accent);
+}
+.dark .section-title {
+    color: #e5e7eb; /* gray-200 */
+}
+
 /* --- Tag 膠囊 --- */
 .tag-pill {
     display: inline-block;
@@ -158,9 +181,161 @@ a:hover, .notion-link:hover {
     color: #ffffff !important;
 }
 
+/* --- Tag Mini（較小版本） --- */
+.tag-mini {
+    display: inline-block;
+    padding: 0.125rem 0.25rem; /* py-0.5 px-1 */
+    margin-right: 0.5rem;
+    border-radius: 0.25rem; /* rounded */
+    font-size: 0.75rem; /* text-xs */
+    font-weight: 300; /* font-light */
+    white-space: nowrap;
+    color: #4b5563; /* text-gray-600 */
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.tag-mini:hover {
+    background-color: var(--color-accent) !important;
+    color: #ffffff !important;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+}
+.tag-mini.selected {
+    background-color: #000000;
+    color: #ffffff;
+}
+.dark .tag-mini {
+    border-color: #9ca3af; /* gray-400 */
+}
+.dark .tag-mini:hover {
+    color: #ffffff !important;
+}
+.dark .tag-mini.selected {
+    background-color: #000000;
+    color: #d1d5db;
+}
+
+/* --- 社交圖標 --- */
+.social-icon {
+    transform: scale(1);
+    transition: transform 0.15s ease, color 0.15s ease;
+}
+.social-icon:hover {
+    transform: scale(1.25);
+    color: var(--color-accent) !important;
+}
+.dark .social-icon:hover {
+    color: var(--color-accent) !important;
+}
+
+/* --- 文章卡片容器 --- */
+.post-card {
+    width: 96%;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: stretch;
+    overflow: hidden;
+    border-radius: 0.75rem; /* rounded-xl */
+    background-color: rgba(255, 255, 255, 0.4); /* bg-white/40 */
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); /* shadow-sm */
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2); /* border-white/20 */
+    transition: all 0.3s ease;
+    margin-bottom: 2rem;
+}
+.post-card:hover {
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1); /* shadow-lg */
+}
+@media (min-width: 768px) {
+    .post-card {
+        max-width: 900px;
+        flex-direction: row;
+        min-height: 280px;
+        height: auto;
+    }
+    .post-card.reversed {
+        flex-direction: row-reverse;
+    }
+}
+.dark .post-card {
+    background-color: rgba(0, 0, 0, 0.4); /* dark:bg-black/40 */
+}
+
 /* --- Footer 文字 --- */
 .footer-text {
     font-family: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+}
+
+/* --- 進度條 --- */
+.progress-bar {
+    height: 100%;
+    border-radius: 9999px;
+    background-color: var(--color-accent);
+    transition: width 0.2s ease;
+}
+
+/* --- 分類項目 --- */
+.category-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0.25rem 0.5rem; /* py-1 px-2 */
+    font-size: 0.875rem; /* text-sm */
+    font-weight: 300; /* font-light */
+    color: #6b7280; /* text-gray-500 */
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.category-item:hover {
+    background-color: var(--color-accent);
+    color: #ffffff;
+}
+.category-item.selected {
+    background-color: #4f46e5; /* bg-indigo-600 */
+    color: #ffffff;
+}
+.dark .category-item {
+    color: #9ca3af; /* dark:text-gray-400 */
+}
+.dark .category-item:hover {
+    color: #ffffff;
+}
+
+/* --- 最新文章項目 --- */
+.latest-post-item {
+    display: flex;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    transition: all 0.2s ease;
+}
+.latest-post-item:hover {
+    color: var(--color-accent);
+}
+.dark .latest-post-item {
+    color: #9ca3af; /* gray-400 */
+}
+.dark .latest-post-item:hover {
+    color: var(--color-accent);
+}
+.latest-post-item.selected {
+    color: var(--color-accent);
+}
+
+/* --- 選單計數項目 --- */
+.menu-count-item {
+    padding: 0.375rem 0.5rem; /* py-1.5 px-2 */
+    margin: 0.25rem 0;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+.menu-count-item:hover {
+    transform: scale(1.05);
+    color: var(--color-accent);
+}
+.dark .menu-count-item:hover {
+    color: var(--color-accent);
 }
 
 /* ==========================================================================
@@ -211,7 +386,6 @@ h2 { font-size: 1.75rem !important; }
 /* ==========================================================================
    4. 文章分類 (Category)
    ========================================================================== */
-.category-item, 
 .article-category, 
 .notion-collection-card-property .notion-link {
    font-weight: 600 !important; 
@@ -358,7 +532,7 @@ img.rounded-full, .user-avatar {
     background-color: var(--bg-paper) !important; 
 }
 
-.tag-container, .tag-item {
+.tag-container {
     background-color: rgba(140, 123, 117, 0.1) !important;
     color: var(--color-accent) !important;
     border-radius: 4px !important;
@@ -368,7 +542,7 @@ img.rounded-full, .user-avatar {
     transition: background-color 0.2s;
 }
 
-.tag-item:hover {
+.tag-container:hover {
     background-color: var(--color-accent) !important;
     color: #fff !important;
 }
@@ -441,7 +615,7 @@ img.rounded-full, .user-avatar {
 /* 我們希望由外層 a 標籤統一控制縮排，所以把 span 的 margin 歸零或微調 */
 .notion-table-of-contents a span,
 .notion-table-of-contents-item-indent-level-1 span {
-    margin-left: 0 !important; /* 把兇手二號的 margin 拿掉，由上面的 padding 接管 */
+    margin-left: 0 !important; /* 把兩手二號的 margin 拿掉，由上面的 padding 接管 */
     display: inline !important;
 }
 

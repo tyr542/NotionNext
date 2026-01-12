@@ -22,11 +22,9 @@ export default function ArticleRecommend({ recommendPosts, siteInfo }) {
 
   return (
     <div className='pt-8'>
-      <div className=' mb-2 px-1 flex flex-nowrap justify-between'>
-        <div className='dark:text-gray-300'>
-          <i className='mr-2 fas fa-thumbs-up' />
-          {locale.COMMON.RELATE_POSTS}
-        </div>
+      <div className='section-title mb-2 dark:text-gray-300'>
+        <i className='fas fa-thumbs-up' />
+        {locale.COMMON.RELATE_POSTS}
       </div>
       <div className='grid grid-cols-2 md:grid-cols-3 gap-4'>
         {recommendPosts.map(post => {
@@ -42,7 +40,7 @@ export default function ArticleRecommend({ recommendPosts, siteInfo }) {
               passHref
               className='flex h-40 cursor-pointer overflow-hidden'>
               <div className='h-full w-full relative group'>
-                <div className='flex items-center justify-center w-full h-full duration-300 '>
+                <div className='flex items-center justify-center w-full h-full duration-300'>
                   <div className='z-10 text-lg px-4 font-bold text-white text-center shadow-text select-none'>
                     {post.title}
                   </div>
