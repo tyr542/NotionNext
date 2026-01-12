@@ -1,10 +1,6 @@
-import NotionIcon from '@/components/NotionIcon'
 import NotionPage from '@/components/NotionPage'
-import TwikooCommentCount from '@/components/TwikooCommentCount'
-import { siteConfig } from '@/lib/config'
 import { formatDateFmt } from '@/lib/utils/formatDate'
 import SmartLink from '@/components/SmartLink'
-import CONFIG from '../config'
 
 /**
  * 博客列表的文字内容
@@ -57,7 +53,7 @@ export const BlogPostCardInfo = ({
         {/* 標題 */}
         <h2 className='!text-xl md:!text-2xl font-bold text-gray-800 dark:text-gray-100 !leading-normal mb-3 line-clamp-2'>
           <SmartLink href={post?.href}>
-            <span className='accent-hover dark:hover:text-gray-300 transition-colors'>
+            <span className='accent-hover transition-colors'>
               {post?.title}
             </span>
           </SmartLink>

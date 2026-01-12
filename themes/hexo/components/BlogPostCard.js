@@ -36,7 +36,28 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
         data-aos-once='false'
         data-aos-anchor-placement='top-bottom'
         id='blog-post-card'
-        className={`group post-card ${isReversed ? 'reversed' : ''}`}
+        className={`group
+          w-[96%]
+          md:max-w-[900px]
+          mx-auto
+          flex
+          md:flex-row
+          flex-col-reverse
+          items-stretch
+          overflow-hidden
+          rounded-xl
+          bg-white/40
+          dark:bg-black/40
+          shadow-sm
+          backdrop-blur-md
+          border border-white/20
+          transition-all duration-300
+          hover:shadow-lg
+          mb-8
+          md:min-h-[280px] 
+          md:h-auto
+          ${isReversed ? 'md:flex-row-reverse' : ''}
+        `}
       >
         {/* 文字欄位 */}
         <div className='w-full md:w-7/12 flex flex-col justify-center py-6 px-4 md:px-8'> 
