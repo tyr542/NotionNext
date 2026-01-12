@@ -41,7 +41,7 @@ export const BlogPostCardInfo = ({
               <>
                 <SmartLink 
                   href={`/category/${post.category}`} 
-                  className='hover:text-[#8c7b75] uppercase transition-colors' // 強調色 #8c7b75
+                  className='accent-hover uppercase transition-colors'
                 >
                   {post.category}
                 </SmartLink>
@@ -54,21 +54,16 @@ export const BlogPostCardInfo = ({
           </div>
         )}
 
-        {/* 標題 - 最終定案版
-            !text-xl: 手機版 20px
-            md:!text-2xl: 電腦版 24px (Tailwind 預設 text-2xl 就是 24px)
-            !leading-normal: 行高正常
-            line-clamp-2: 統一限制顯示 2 行，超過出 ...
-        */}
+        {/* 標題 */}
         <h2 className='!text-xl md:!text-2xl font-bold text-gray-800 dark:text-gray-100 !leading-normal mb-3 line-clamp-2'>
           <SmartLink href={post?.href}>
-            <span className='hover:text-[#8c7b75] dark:hover:text-[#8c7b75] transition-colors'> {/* 強調色 #8c7b75 */}
+            <span className='accent-hover dark:hover:text-gray-300 transition-colors'>
               {post?.title}
             </span>
           </SmartLink>
         </h2>
 
-        {/* 3. 內文預覽區塊：整合原始摘要邏輯 */}
+        {/* 3. 內文預覽區塊 */}
         <div className={`w-full flex-grow relative overflow-hidden text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4 opacity-90 ${isRight ? 'md:text-right' : 'md:text-left'}`}>
               
              {/* 情況 1: 預覽模式 (顯示 Notion 內文) */}
@@ -78,14 +73,14 @@ export const BlogPostCardInfo = ({
                </div>
              )}
 
-             {/* 情況 2: 摘要模式 (復刻原始邏輯：非預覽 或 強制顯示摘要 時) */}
+             {/* 情況 2: 摘要模式 */}
              {(!showPreview || showSummary) && !post.results && (
                <p className='line-clamp-3'>{post.summary}</p>
              )}
              
         </div>
         
-        {/* 2. Tag 區塊：灰色背景 -> Hover 變強調色 #8c7b75 */}
+        {/* 2. Tag 區塊 */}
         {post.tagItems?.length > 0 && (
             <div className={`mb-4 w-full flex items-center overflow-hidden ${justifyClass}`}>
               <div className='flex flex-nowrap gap-2 overflow-x-hidden text-ellipsis whitespace-nowrap'>
@@ -93,14 +88,7 @@ export const BlogPostCardInfo = ({
                    <SmartLink 
                       key={tag.name} 
                       href={`/tag/${encodeURIComponent(tag.name)}`}
-                      className='
-                        px-3 py-1 rounded-full border border-gray-100 dark:border-gray-700
-                        bg-gray-100 dark:bg-gray-800 
-                        text-xs font-bold text-gray-700 dark:text-gray-300
-                        transition-all duration-200
-                        hover:bg-[#8c7b75] dark:hover:bg-[#8c7b75]
-                        hover:text-white dark:hover:text-white
-                      '
+                      className='tag-pill'
                    >
                       #{tag.name}
                    </SmartLink>
@@ -113,7 +101,7 @@ export const BlogPostCardInfo = ({
         <div className={`flex w-full items-center ${justifyClass} mt-auto`}> 
            <SmartLink
              href={post?.href}
-             className='group inline-flex items-center text-sm font-bold text-gray-800 dark:text-white hover:text-[#8c7b75] dark:hover:text-[#8c7b75] transition-colors'
+             className='group inline-flex items-center text-sm font-bold text-gray-800 dark:text-white accent-hover transition-colors'
            >
              閱讀全文
              <span className='ml-1 transform group-hover:translate-x-1 transition-transform'>→</span>

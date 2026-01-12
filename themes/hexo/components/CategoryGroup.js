@@ -10,16 +10,13 @@ const CategoryGroup = ({ currentCategory, categories }) => {
 
   return (
     <div id='category-group-wrapper'>
-      {/* 這裡保留卡片外框，為了配合標題的韓系風格 */}
-      <section className="dark:text-gray-300 border dark:border-black rounded-xl lg:p-6 p-4 bg-white dark:bg-hexo-black-gray shadow-sm transition-shadow duration-300 hover:shadow-md">
+      <section className='sidebar-card'>
         
-        {/* 標題區：只改這裡 -> 放大字體、加寬字距、Icon 使用強調色 #8c7b75 */}
-        <div className="text-gray-900 dark:text-white text-base tracking-[0.2em] font-medium mb-4 flex items-center">
-          <i className='mr-2 fas fa-folder' style={{ color: '#8c7b75' }} />
+        <div className='sidebar-title'>
+          <i className='fas fa-folder' />
           {locale.COMMON.CATEGORY}
         </div>
 
-        {/* 內容區：完全還原你原本的代碼邏輯 (indigo 色、mx-4、w-full) */}
         <div id='category-list' className='dark:border-gray-600 flex flex-wrap mx-4'>
           {categories.map(category => {
             const selected = currentCategory === category.name

@@ -64,6 +64,106 @@ a:hover, .notion-link:hover {
 }
 
 /* ==========================================================================
+   2.5 共用 Utility Classes（組件樣式統一管理）
+   ========================================================================== */
+
+/* --- 強調色 Icon --- */
+.accent-icon {
+    color: var(--color-accent) !important;
+}
+
+/* --- 強調色 Hover（文字） --- */
+.accent-hover {
+    transition: color 0.2s ease;
+}
+.accent-hover:hover {
+    color: var(--color-accent) !important;
+}
+
+/* --- 強調色 Hover（背景） --- */
+.accent-hover-bg {
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+.accent-hover-bg:hover {
+    background-color: var(--color-accent) !important;
+    color: #ffffff !important;
+}
+
+/* --- 側邊欄卡片容器 --- */
+.sidebar-card {
+    border-radius: 0.75rem; /* rounded-xl */
+    padding: 1rem; /* p-4 */
+    background-color: #ffffff;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); /* shadow-sm */
+    border: 1px solid transparent;
+    transition: box-shadow 0.3s ease;
+}
+.sidebar-card:hover {
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); /* shadow-md */
+}
+@media (min-width: 1024px) {
+    .sidebar-card {
+        padding: 1.5rem; /* lg:p-6 */
+    }
+}
+/* Dark mode */
+.dark .sidebar-card {
+    background-color: #101414; /* hexo-black-gray */
+    border-color: #000000;
+    color: #d1d5db; /* gray-300 */
+}
+
+/* --- 側邊欄標題 --- */
+.sidebar-title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem; /* mb-4 */
+    font-size: 1rem; /* text-base */
+    font-weight: 500; /* font-medium */
+    letter-spacing: 0.2em; /* tracking-[0.2em] */
+    color: #111827; /* gray-900 */
+}
+.dark .sidebar-title {
+    color: #ffffff;
+}
+.sidebar-title i,
+.sidebar-title svg {
+    margin-right: 0.5rem; /* mr-2 */
+    color: var(--color-accent);
+}
+
+/* --- Tag 膠囊 --- */
+.tag-pill {
+    display: inline-block;
+    padding: 0.25rem 0.75rem; /* py-1 px-3 */
+    border-radius: 9999px; /* rounded-full */
+    border: 1px solid #f3f4f6; /* border-gray-100 */
+    background-color: #f3f4f6; /* bg-gray-100 */
+    font-size: 0.75rem; /* text-xs */
+    font-weight: 700; /* font-bold */
+    color: #374151; /* text-gray-700 */
+    transition: all 0.2s ease;
+}
+.tag-pill:hover {
+    background-color: var(--color-accent) !important;
+    color: #ffffff !important;
+}
+.dark .tag-pill {
+    border-color: #374151; /* dark:border-gray-700 */
+    background-color: #1f2937; /* dark:bg-gray-800 */
+    color: #d1d5db; /* dark:text-gray-300 */
+}
+.dark .tag-pill:hover {
+    background-color: var(--color-accent) !important;
+    color: #ffffff !important;
+}
+
+/* --- Footer 文字 --- */
+.footer-text {
+    font-family: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+}
+
+/* ==========================================================================
    3. 標題系統 (深墨色 + 宋體回歸)
    ========================================================================== */
 h1, h2, h3, h4, h5, h6,
