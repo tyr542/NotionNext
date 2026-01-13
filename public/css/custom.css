@@ -811,7 +811,7 @@ aside .shadow-md > div:first-child svg,
     margin-bottom: 1.25rem !important;
     
     /* 背景：淡米褐色，與主背景形成柔和對比 */
-    background-color: rgba(140, 123, 117, 0.08) !important;
+    background-color: rgba(140, 123, 117, 0.1) !important;
     
     /* 左邊框：強調色作為視覺錨點 */
     border-left: 4px solid var(--color-accent) !important;
@@ -844,19 +844,26 @@ aside .shadow-md > div:first-child svg,
 }
 
 /* ==========================================================================
-   17. Notion Callout 提示框樣式
+   17. Notion Callout 提示框樣式 [加強版]
    ========================================================================== */
 .notion-callout {
-    /* 圓角 & 邊框 */
-    border-radius: 12px !important;
-    border: 1px solid rgba(140, 123, 117, 0.15) !important;
+    /* 左側強調色邊線 - 明顯的視覺錨點 */
+    border-left: 4px solid var(--color-accent) !important;
     
-    /* 背景：比引言更淡，保持輕盈 */
-    background-color: rgba(140, 123, 117, 0.04) !important;
+    /* 圓角 */
+    border-radius: 0 12px 12px 0 !important;
+    
+    /* 邊框：右/上/下邊框淡一點 */
+    border-top: 1px solid rgba(140, 123, 117, 0.12) !important;
+    border-right: 1px solid rgba(140, 123, 117, 0.12) !important;
+    border-bottom: 1px solid rgba(140, 123, 117, 0.12) !important;
+    
+    /* 背景：加深一點，更明顯 */
+    background-color: rgba(140, 123, 117, 0.06) !important;
     
     /* 內距 */
-    padding: 1rem 1.25rem !important;
-    margin: 1rem 0 !important;
+    padding: 1.25rem 1.5rem !important;
+    margin: 1.25rem 0 !important;
     
     /* 對齊方式：讓 icon 和文字頂部對齊 */
     align-items: flex-start !important;
@@ -865,15 +872,15 @@ aside .shadow-md > div:first-child svg,
 /* Callout 內文：增加行距 */
 .notion-callout-text {
     font-size: 0.95rem !important;
-    line-height: 1.85 !important; /* 微增行距 */
+    line-height: 1.9 !important; /* 加大行距 */
     color: var(--text-ink) !important;
 }
 
 /* Callout 內的段落間距 */
 .notion-callout-text .notion-text {
-    margin-bottom: 0.5rem !important; /* 段落之間的間距 */
+    margin-bottom: 0.6rem !important; /* 段落之間的間距 */
     padding: 0 !important;
-    line-height: 1.85 !important;
+    line-height: 1.9 !important;
 }
 
 /* 最後一個段落不需要下邊距 */
@@ -883,14 +890,18 @@ aside .shadow-md > div:first-child svg,
 
 /* Callout Icon */
 .notion-callout .notion-page-icon {
-    margin-top: 0.15rem !important; /* 微調讓 icon 與文字第一行對齊 */
-    font-size: 1.2em !important;
+    margin-top: 0.2rem !important; /* 微調讓 icon 與文字第一行對齊 */
+    font-size: 1.3em !important;
+    margin-right: 0.75rem !important;
 }
 
 /* Dark mode Callout */
 .dark .notion-callout {
-    background-color: rgba(255, 255, 255, 0.03) !important;
-    border-color: rgba(255, 255, 255, 0.1) !important;
+    background-color: rgba(255, 255, 255, 0.04) !important;
+    border-left-color: var(--color-accent) !important;
+    border-top-color: rgba(255, 255, 255, 0.08) !important;
+    border-right-color: rgba(255, 255, 255, 0.08) !important;
+    border-bottom-color: rgba(255, 255, 255, 0.08) !important;
 }
 
 .dark .notion-callout-text {
