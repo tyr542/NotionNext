@@ -275,6 +275,17 @@ a:hover, .notion-link:hover {
     transition: width 0.2s ease;
 }
 
+/* --- 分類列表容器 --- */
+.category-list {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+.dark .category-list {
+    border-color: #4b5563; /* dark:border-gray-600 */
+}
+
 /* --- 分類項目 --- */
 .category-item {
     display: flex;
@@ -292,14 +303,24 @@ a:hover, .notion-link:hover {
     color: #ffffff;
 }
 .category-item.selected {
-    background-color: #4f46e5; /* bg-indigo-600 */
+    background-color: var(--color-accent); /* 統一使用強調色 */
     color: #ffffff;
 }
 .dark .category-item {
     color: #9ca3af; /* dark:text-gray-400 */
 }
 .dark .category-item:hover {
+    background-color: var(--color-accent);
     color: #ffffff;
+}
+.dark .category-item.selected {
+    background-color: var(--color-accent);
+    color: #ffffff;
+}
+
+/* 分類項目內的 icon */
+.category-item i {
+    margin-right: 0.5rem;
 }
 
 /* --- 最新文章項目 --- */
