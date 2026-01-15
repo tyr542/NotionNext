@@ -658,8 +658,8 @@ img.rounded-full, .user-avatar {
 .catalog-list-item,
 .toc-link,
 .catalog-item {
-    font-family: var(--font-sans) !important; 
-    font-size: 0.9rem !important;
+    font-family: var(--font-serif) !important; 
+    font-size: 1rem !important;
     color: #666 !important; 
     
     white-space: normal !important; 
@@ -685,25 +685,22 @@ img.rounded-full, .user-avatar {
     padding-left: 12px !important; 
     font-weight: 500 !important;
     color: #444 !important; /* 稍微深一點 */
+    font-size: 1rem !important;
 }
 
-/* Level 1 (H3) - 關鍵！大幅增加縮排 */
+/* Level 1 (H3) - 減少縮排 */
 .notion-table-of-contents-item-indent-level-1,
 [class*="indent-level-1"] {
-    /* 原廠是用 pl-4 (16px) + span margin (16px) = 32px 
-       我們這裡直接強制覆蓋 a 標籤的 padding，讓它縮得更明顯 
-       設定為 42px，讓它明顯比 H2 退後兩步
-    */
-    padding-left: 42px !important; 
-    font-size: 0.88rem !important;
+    padding-left: 28px !important; 
+    font-size: 0.95rem !important;
     opacity: 0.9;
 }
 
 /* Level 2 (H4) - 如果有的話，再縮更深 */
 .notion-table-of-contents-item-indent-level-2,
 [class*="indent-level-2"] {
-    padding-left: 62px !important; 
-    font-size: 0.85rem !important;
+    padding-left: 48px !important; 
+    font-size: 0.9rem !important;
     opacity: 0.8;
 }
 
