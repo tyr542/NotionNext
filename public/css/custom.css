@@ -804,38 +804,30 @@ aside .shadow-md > div:first-child svg,
    16. 引言 (Quote) 樣式
    ========================================================================== */
 
-/* --- Notion Quote --- */
-.notion-quote {
-    /* 間距 */
-    margin: 1.5rem 1rem !important;
+/* --- 優化後的 Notion Quote --- */
+.notion-quote, blockquote {
+    /* 增加縮排：左邊距從 1rem 增加到 2.5rem */
+    margin: 1.5rem 1rem 1.5rem 2.5rem !important; 
     
-    /* 淡背景 + 左邊框 */
-    background-color: rgba(140, 123, 117, 0.08) !important;
+    /* 減輕背景：透明度從 0.08 降到 0.04，更輕盈 */
+    background-color: rgba(140, 123, 117, 0.04) !important;
     border: none !important;
-    border-left: 3px solid var(--color-accent) !important;
-    border-radius: 0 6px 6px 0 !important;
+    border-left: 4px solid var(--color-accent) !important; /* 稍微加粗邊框，增加支撐感 */
+    border-radius: 0 8px 8px 0 !important;
     
-    /* 內距 */
-    padding: 1rem 1.5rem !important;
+    /* 增加內距：文字離邊框遠一點，讀起來才舒服 */
+    padding: 1.2rem 2rem !important; 
     
-    /* 字體 */
     font-size: 0.95rem !important;
     font-style: italic !important;
     line-height: 1.85 !important;
     color: #555 !important;
-    
-    /* 移除陰影 */
     box-shadow: none !important;
 }
 
-.notion-quote .notion-text {
-    margin: 0 !important;
-    padding: 0 !important;
-}
-
-.dark .notion-quote {
-    background-color: rgba(255, 255, 255, 0.05) !important;
-    border-left-color: var(--color-accent) !important;
+/* 深色模式同步調整 */
+.dark .notion-quote, .dark blockquote {
+    background-color: rgba(255, 255, 255, 0.03) !important;
     color: #b0b0b0 !important;
 }
 
