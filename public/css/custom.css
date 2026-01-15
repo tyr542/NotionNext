@@ -66,47 +66,39 @@ a:hover, .notion-link:hover {
 }
 
 /* ==========================================================================
-   2.6 內文樣式（確保與標題、粗體區隔）
+   2.5 統一強調色 Utility Classes（取代硬編碼的 #8c7b75 / indigo）
    ========================================================================== */
-/* 一般段落和內文 */
-p, .notion-text, .notion-page-content p {
-    font-size: 1.125rem !important;
-    font-weight: 400 !important;
-    line-height: 1.8;
+
+/* --- 強調色文字 --- */
+.text-accent {
+    color: var(--color-accent) !important;
 }
 
-/* 確保粗體保持較重的字重，與內文區隔 */
-strong, b, .notion-bold {
-    font-weight: 600 !important;
+/* --- 強調色文字 Hover（用於 Tailwind 的 hover: 替代）--- */
+.hover\:text-accent:hover {
+    color: var(--color-accent) !important;
+}
+.dark .hover\:text-accent:hover {
+    color: var(--color-accent) !important;
 }
 
-/* 注意：標題的字重已在「標題系統」區塊設定為 700，此處不重複設定 */
-
-/* ==========================================================================
-   2.7 列表樣式（統一字體大小、收緊間距）
-   ========================================================================== */
-ul li, ol li, 
-.notion-list li,
-.notion-bulleted_list,
-.notion-numbered_list,
-.notion-bulleted_list-item,
-.notion-numbered_list-item {
-    font-size: 1.125rem !important;   /* 跟內文一樣 18px */
-    font-weight: 400 !important;
-    line-height: 1.75 !important;     /* 稍微收一點 */
-    margin-bottom: 0.35rem !important; /* 項目間距收緊 */
-    color: var(--text-ink) !important;
+/* --- 強調色背景 --- */
+.bg-accent {
+    background-color: var(--color-accent) !important;
 }
 
-/* 列表容器的上下間距 */
-ul, ol, .notion-bulleted_list, .notion-numbered_list {
-    margin-top: 0.5rem !important;
-    margin-bottom: 1rem !important;
+/* --- 強調色背景 Hover --- */
+.hover\:bg-accent:hover {
+    background-color: var(--color-accent) !important;
+}
+.dark .hover\:bg-accent:hover {
+    background-color: var(--color-accent) !important;
 }
 
-/* ==========================================================================
-   2.5 共用 Utility Classes（組件樣式統一管理）
-   ========================================================================== */
+/* --- 強調色邊框 --- */
+.border-accent {
+    border-color: var(--color-accent) !important;
+}
 
 /* --- 強調色 Icon --- */
 .accent-icon {
@@ -137,46 +129,108 @@ ul, ol, .notion-bulleted_list, .notion-numbered_list {
     color: #ffffff !important;
 }
 
+/* ==========================================================================
+   2.6 內文樣式（確保與標題、粗體區隔）
+   ========================================================================== */
+/* 一般段落和內文 */
+p, .notion-text, .notion-page-content p {
+    font-size: 1.125rem !important;
+    font-weight: 400 !important;
+    line-height: 1.8;
+}
+
+/* 確保粗體保持較重的字重，與內文區隔 */
+strong, b, .notion-bold {
+    font-weight: 600 !important;
+}
+
+/* ==========================================================================
+   2.7 列表樣式（統一字體大小、收緊間距）
+   ========================================================================== */
+ul li, ol li, 
+.notion-list li,
+.notion-bulleted_list,
+.notion-numbered_list,
+.notion-bulleted_list-item,
+.notion-numbered_list-item {
+    font-size: 1.125rem !important;
+    font-weight: 400 !important;
+    line-height: 1.75 !important;
+    margin-bottom: 0.35rem !important;
+    color: var(--text-ink) !important;
+}
+
+/* 列表容器的上下間距 */
+ul, ol, .notion-bulleted_list, .notion-numbered_list {
+    margin-top: 0.5rem !important;
+    margin-bottom: 1rem !important;
+}
+
+/* ==========================================================================
+   2.8 導航模糊效果（取代 inline style）
+   ========================================================================== */
+.nav-blur {
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+}
+
+/* ==========================================================================
+   2.9 Header Hero z-index（取代 inline style）
+   ========================================================================== */
+.header-hero {
+    z-index: 1;
+}
+
+/* ==========================================================================
+   2.10 Busuanzi 計數器初始隱藏（取代 inline style）
+   ========================================================================== */
+.busuanzi-hidden {
+    display: none;
+}
+
+/* ==========================================================================
+   3. 共用組件樣式
+   ========================================================================== */
+
 /* --- 側邊欄卡片容器 --- */
 .sidebar-card {
-    border-radius: 0.75rem; /* rounded-xl */
-    padding: 1rem; /* p-4 */
+    border-radius: 0.75rem;
+    padding: 1rem;
     background-color: #ffffff;
-    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); /* shadow-sm */
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     border: 1px solid transparent;
     transition: box-shadow 0.3s ease;
 }
 .sidebar-card:hover {
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); /* shadow-md */
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
 }
 @media (min-width: 1024px) {
     .sidebar-card {
-        padding: 1.5rem; /* lg:p-6 */
+        padding: 1.5rem;
     }
 }
-/* Dark mode */
 .dark .sidebar-card {
-    background-color: #101414; /* hexo-black-gray */
+    background-color: #101414;
     border-color: #000000;
-    color: #d1d5db; /* gray-300 */
+    color: #d1d5db;
 }
 
 /* --- 側邊欄標題 --- */
 .sidebar-title {
     display: flex;
     align-items: center;
-    margin-bottom: 1rem; /* mb-4 */
-    font-size: 1rem; /* text-base */
-    font-weight: 500; /* font-medium */
-    letter-spacing: 0.2em; /* tracking-[0.2em] */
-    color: #111827; /* gray-900 */
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    color: #111827;
 }
 .dark .sidebar-title {
     color: #ffffff;
 }
 .sidebar-title i,
 .sidebar-title svg {
-    margin-right: 0.5rem; /* mr-2 */
+    margin-right: 0.5rem;
     color: var(--color-accent);
 }
 
@@ -193,19 +247,19 @@ ul, ol, .notion-bulleted_list, .notion-numbered_list {
     color: var(--color-accent);
 }
 .dark .section-title {
-    color: #e5e7eb; /* gray-200 */
+    color: #e5e7eb;
 }
 
 /* --- Tag 膠囊 --- */
 .tag-pill {
     display: inline-block;
-    padding: 0.25rem 0.75rem; /* py-1 px-3 */
-    border-radius: 9999px; /* rounded-full */
-    border: 1px solid #f3f4f6; /* border-gray-100 */
-    background-color: #f3f4f6; /* bg-gray-100 */
-    font-size: 0.75rem; /* text-xs */
-    font-weight: 700; /* font-bold */
-    color: #374151; /* text-gray-700 */
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    border: 1px solid #f3f4f6;
+    background-color: #f3f4f6;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #374151;
     transition: all 0.2s ease;
 }
 .tag-pill:hover {
@@ -213,9 +267,9 @@ ul, ol, .notion-bulleted_list, .notion-numbered_list {
     color: #ffffff !important;
 }
 .dark .tag-pill {
-    border-color: #374151; /* dark:border-gray-700 */
-    background-color: #1f2937; /* dark:bg-gray-800 */
-    color: #d1d5db; /* dark:text-gray-300 */
+    border-color: #374151;
+    background-color: #1f2937;
+    color: #d1d5db;
 }
 .dark .tag-pill:hover {
     background-color: var(--color-accent) !important;
@@ -225,13 +279,13 @@ ul, ol, .notion-bulleted_list, .notion-numbered_list {
 /* --- Tag Mini（較小版本） --- */
 .tag-mini {
     display: inline-block;
-    padding: 0.125rem 0.25rem; /* py-0.5 px-1 */
+    padding: 0.125rem 0.25rem;
     margin-right: 0.5rem;
-    border-radius: 0.25rem; /* rounded */
-    font-size: 0.75rem; /* text-xs */
-    font-weight: 300; /* font-light */
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 300;
     white-space: nowrap;
-    color: #4b5563; /* text-gray-600 */
+    color: #4b5563;
     cursor: pointer;
     transition: all 0.2s ease;
 }
@@ -245,7 +299,7 @@ ul, ol, .notion-bulleted_list, .notion-numbered_list {
     color: #ffffff;
 }
 .dark .tag-mini {
-    border-color: #9ca3af; /* gray-400 */
+    border-color: #9ca3af;
 }
 .dark .tag-mini:hover {
     color: #ffffff !important;
@@ -277,16 +331,17 @@ ul, ol, .notion-bulleted_list, .notion-numbered_list {
     flex-direction: column-reverse;
     align-items: stretch;
     overflow: hidden;
-    border-radius: 0.75rem; /* rounded-xl */
-    background-color: rgba(255, 255, 255, 0.4); /* bg-white/40 */
-    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); /* shadow-sm */
+    border-radius: 0.75rem;
+    background-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.2); /* border-white/20 */
+    border: 1px solid rgba(255, 255, 255, 0.2);
     transition: all 0.3s ease;
     margin-bottom: 2rem;
+    min-height: auto;
 }
 .post-card:hover {
-    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1); /* shadow-lg */
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
 }
 @media (min-width: 768px) {
     .post-card {
@@ -300,7 +355,7 @@ ul, ol, .notion-bulleted_list, .notion-numbered_list {
     }
 }
 .dark .post-card {
-    background-color: rgba(0, 0, 0, 0.4); /* dark:bg-black/40 */
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 /* --- Footer 文字 --- */
@@ -324,7 +379,7 @@ ul, ol, .notion-bulleted_list, .notion-numbered_list {
     margin-right: 1rem;
 }
 .dark .category-list {
-    border-color: #4b5563; /* dark:border-gray-600 */
+    border-color: #4b5563;
 }
 
 /* --- 分類項目 --- */
@@ -332,10 +387,10 @@ ul, ol, .notion-bulleted_list, .notion-numbered_list {
     display: flex;
     align-items: flex-start;
     width: 100%;
-    padding: 0.25rem 0.5rem; /* py-1 px-2 */
-    font-size: 0.875rem; /* text-sm */
-    font-weight: 300; /* font-light */
-    color: #6b7280; /* text-gray-500 */
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 300;
+    color: #6b7280;
     cursor: pointer;
     transition: all 0.3s ease;
     white-space: normal;
@@ -347,11 +402,11 @@ ul, ol, .notion-bulleted_list, .notion-numbered_list {
     color: #ffffff;
 }
 .category-item.selected {
-    background-color: var(--color-accent); /* 統一使用強調色 */
+    background-color: var(--color-accent);
     color: #ffffff;
 }
 .dark .category-item {
-    color: #9ca3af; /* dark:text-gray-400 */
+    color: #9ca3af;
 }
 .dark .category-item:hover {
     background-color: var(--color-accent);
@@ -361,17 +416,13 @@ ul, ol, .notion-bulleted_list, .notion-numbered_list {
     background-color: var(--color-accent);
     color: #ffffff;
 }
-
-/* 分類項目內的 icon */
 .category-item i {
     margin-right: 0.5rem;
-    flex-shrink: 0; /* icon 不縮小 */
+    flex-shrink: 0;
 }
-
-/* 分類項目內的文字容器，確保可以換行 */
 .category-item > div {
     flex: 1;
-    min-width: 0; /* 允許 flex 項目縮小 */
+    min-width: 0;
     white-space: normal;
     word-break: break-word;
     overflow-wrap: break-word;
@@ -389,7 +440,7 @@ ul, ol, .notion-bulleted_list, .notion-numbered_list {
     color: var(--color-accent);
 }
 .dark .latest-post-item {
-    color: #9ca3af; /* gray-400 */
+    color: #9ca3af;
 }
 .dark .latest-post-item:hover {
     color: var(--color-accent);
@@ -400,7 +451,7 @@ ul, ol, .notion-bulleted_list, .notion-numbered_list {
 
 /* --- 選單計數項目 --- */
 .menu-count-item {
-    padding: 0.375rem 0.5rem; /* py-1.5 px-2 */
+    padding: 0.375rem 0.5rem;
     margin: 0.25rem 0;
     text-align: center;
     cursor: pointer;
@@ -418,10 +469,10 @@ ul, ol, .notion-bulleted_list, .notion-numbered_list {
 .info-card-header {
     display: flex;
     align-items: center;
-    padding: 2rem 1.5rem 1rem 1.5rem; /* pt-8 px-6 pb-4 */
+    padding: 2rem 1.5rem 1rem 1.5rem;
 }
 .dark .info-card-header {
-    color: #f3f4f6; /* gray-100 */
+    color: #f3f4f6;
 }
 
 /* --- 頭像容器 --- */
@@ -430,11 +481,10 @@ ul, ol, .notion-bulleted_list, .notion-numbered_list {
     cursor: pointer;
     transition: transform 0.2s ease;
 }
-
 .avatar-wrapper {
-    width: 4rem; /* w-16 */
-    height: 4rem; /* h-16 */
-    border-radius: 9999px; /* rounded-full */
+    width: 4rem;
+    height: 4rem;
+    border-radius: 9999px;
     overflow: hidden;
     transition: transform 0.3s ease;
 }
@@ -449,50 +499,102 @@ ul, ol, .notion-bulleted_list, .notion-numbered_list {
 
 /* --- 作者資訊 --- */
 .author-info {
-    margin-left: 1rem; /* ml-4 */
+    margin-left: 1rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
     text-align: left;
     font-family: var(--font-serif);
 }
-
 .author-name {
-    font-size: 1.25rem; /* text-xl */
-    font-weight: 700; /* font-bold */
-    line-height: 1.25; /* leading-tight */
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.25;
 }
 
 /* --- BIO 文字 --- */
 .bio-text {
-    font-size: 0.875rem; /* text-sm */
+    font-size: 0.875rem;
     text-align: left;
-    padding: 1rem 1.5rem; /* py-4 px-6 */
-    line-height: 1.625; /* leading-relaxed */
-    color: #374151; /* text-gray-700 */
+    padding: 1rem 1.5rem;
+    line-height: 1.625;
+    color: #374151;
 }
 .dark .bio-text {
-    color: #d1d5db; /* dark:text-gray-300 */
+    color: #d1d5db;
 }
 
 /* --- InfoCard 區塊間距 --- */
 .info-card-section {
-    padding-top: 1rem; /* pt-4 */
-    margin-top: 1rem; /* mt-4 */
+    padding-top: 1rem;
+    margin-top: 1rem;
 }
-
 .info-card-footer {
-    padding: 1rem 1.5rem 1.5rem 1.5rem; /* pt-4 px-6 pb-6 */
+    padding: 1rem 1.5rem 1.5rem 1.5rem;
 }
 
 /* ==========================================================================
-   3. 標題系統 (深墨色 + 宋體回歸)
+   4. 分頁按鈕樣式（取代硬編碼的 indigo）
+   ========================================================================== */
+.pagination-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    font-weight: 500;
+    color: var(--color-accent);
+    padding: 0.75rem 0;
+    gap: 0.5rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.25rem;
+}
+
+.pagination-item {
+    padding-bottom: 0.125rem;
+    width: 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.5s ease;
+    border-bottom: 1px solid var(--color-accent);
+    color: var(--color-accent);
+}
+.pagination-item:hover {
+    background-color: var(--color-accent);
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.pagination-item.active {
+    font-weight: 700;
+    background-color: var(--color-accent);
+    color: #ffffff;
+}
+.pagination-item.active:hover {
+    background-color: #6b5f5a; /* 深一點的強調色 */
+}
+.dark .pagination-item.active {
+    background-color: var(--color-accent);
+}
+
+.pagination-arrow {
+    padding-bottom: 0.125rem;
+    width: 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.pagination-arrow:hover {
+    background-color: var(--color-accent);
+    color: #ffffff;
+    font-weight: 700;
+}
+
+/* ==========================================================================
+   5. 標題系統 (深墨色 + 宋體回歸)
    ========================================================================== */
 h1, h2, h3, h4, h5, h6,
 .notion-h1, .notion-h2, .notion-h3,
 .post-title, 
 .article-title {
-    /* [修復] 絕對強制宋體 */
     font-family: var(--font-serif) !important;
     font-weight: 700 !important; 
     letter-spacing: 0.02em;
@@ -503,7 +605,7 @@ h1, h2, h3, h4, h5, h6,
 h1 a, h2 a, h3 a,
 .post-title a,
 .article-title a {
-    font-family: var(--font-serif) !important; /* 再次確保連結也是宋體 */
+    font-family: var(--font-serif) !important;
     color: #111 !important; 
     text-decoration: none !important;
 }
@@ -515,14 +617,12 @@ h1 a:hover, h2 a:hover, h3 a:hover,
     color: var(--color-accent) !important; 
 }
 
-/* 首頁大標題尺寸 [修正：降壓處方生效] */
+/* 首頁大標題尺寸 */
 h1 { 
-    font-size: 2.0rem !important; /* 原本 2.5rem -> 2.0rem */
-    line-height: 1.6 !important;   /* 拉開行距 */
-    margin-bottom: 1.5rem !important; /* 增加下方留白 */
+    font-size: 2.0rem !important;
+    line-height: 1.6 !important;
+    margin-bottom: 1.5rem !important;
 }
-
-/* 配合 h1 微調 h2 */
 h2 { font-size: 1.75rem !important; }
 
 .notion-page .notion-callout-title {
@@ -531,7 +631,7 @@ h2 { font-size: 1.75rem !important; }
 }
 
 /* ==========================================================================
-   4. 文章分類 (Category)
+   6. 文章分類 (Category)
    ========================================================================== */
 .article-category, 
 .notion-collection-card-property .notion-link {
@@ -540,7 +640,7 @@ h2 { font-size: 1.75rem !important; }
 }
 
 /* ==========================================================================
-   5. 導覽列 (Navbar)
+   7. 導覽列 (Navbar)
    ========================================================================== */
 nav, .navbar, #header, .menu-link {
     font-family: var(--font-serif) !important;
@@ -575,7 +675,7 @@ header nav {
 }
 
 /* ==========================================================================
-   6. Footer (強制縮小術)
+   8. Footer (強制縮小術)
    ========================================================================== */
 footer, #footer, .footer {
     padding: 2rem 1rem !important; 
@@ -602,7 +702,7 @@ footer a:hover {
 }
 
 /* ==========================================================================
-   7. 卡片設計 (呼吸感 + 宋體標題)
+   9. 卡片設計 (呼吸感 + 宋體標題)
    ========================================================================== */
 .shadow-md, .shadow-xl, .card, .notion-collection-card {
     background-color: var(--card-bg) !important; 
@@ -619,12 +719,10 @@ footer a:hover {
 }
 
 .post-title, .card-title, .article-title {
-    /* [修復] 這裡也要確保是宋體 */
     font-family: var(--font-serif) !important;
     font-size: 0.95rem !important; 
     line-height: 1.75 !important; 
     margin-bottom: 0.8rem !important; 
-    
     display: -webkit-box !important;
     -webkit-box-orient: vertical !important;
     -webkit-line-clamp: 3 !important; 
@@ -640,7 +738,6 @@ footer a:hover {
     font-size: 0.9rem !important;
     color: #666;
     margin-bottom: 1rem !important;
-    
     display: -webkit-box !important;
     -webkit-box-orient: vertical !important;
     -webkit-line-clamp: 5 !important; 
@@ -669,7 +766,7 @@ footer a:hover {
 }
 
 /* ==========================================================================
-   8. 頭像與標籤
+   10. 頭像與標籤
    ========================================================================== */
 img.rounded-full, .user-avatar {
     border: 2px solid #fff;
@@ -695,7 +792,7 @@ img.rounded-full, .user-avatar {
 }
 
 /* ==========================================================================
-   9. 目錄區域 (TOC) [修復：精準命中縮排 + 12px 甜蜜點]
+   11. 目錄區域 (TOC)
    ========================================================================== */
 .notion-table-of-contents,
 [class*="notion-table-of-contents"],
@@ -708,7 +805,6 @@ img.rounded-full, .user-avatar {
     box-sizing: border-box !important;
 }
 
-/* [通用重置] 針對所有連結與文字 */
 .notion-table-of-contents a,
 .catalog-list-item,
 .toc-link,
@@ -716,7 +812,6 @@ img.rounded-full, .user-avatar {
     font-family: var(--font-serif) !important; 
     font-size: 1rem !important;
     color: #666 !important; 
-    
     white-space: normal !important; 
     word-break: break-word !important;
     overflow-wrap: break-word !important;
@@ -725,27 +820,21 @@ img.rounded-full, .user-avatar {
     max-width: 100% !important;
     text-decoration: none !important;
     transition: all 0.2s ease !important;
-    
-    /* 基礎內距，確保所有項目至少有一點點空間 */
     padding-left: 12px !important;
     padding-top: 0.25rem !important;
     padding-bottom: 0.25rem !important;
 }
 
-/* [精準縮排系統] 
-   根據截圖證據，直接鎖定 notion-table-of-contents-item-indent-level-X
-*/
-
-/* Level 0 (H2) - 保持基礎縮排 */
+/* Level 0 (H2) */
 .notion-table-of-contents-item-indent-level-0,
 [class*="indent-level-0"] {
     padding-left: 12px !important; 
     font-weight: 500 !important;
-    color: #444 !important; /* 稍微深一點 */
+    color: #444 !important;
     font-size: 1rem !important;
 }
 
-/* Level 1 (H3) - 減少縮排 */
+/* Level 1 (H3) */
 .notion-table-of-contents-item-indent-level-1,
 [class*="indent-level-1"] {
     padding-left: 28px !important; 
@@ -753,7 +842,7 @@ img.rounded-full, .user-avatar {
     opacity: 0.9;
 }
 
-/* Level 2 (H4) - 如果有的話，再縮更深 */
+/* Level 2 (H4) */
 .notion-table-of-contents-item-indent-level-2,
 [class*="indent-level-2"] {
     padding-left: 48px !important; 
@@ -761,7 +850,6 @@ img.rounded-full, .user-avatar {
     opacity: 0.8;
 }
 
-/* [修正] 針對裡面的 span，確保可以換行且無額外 margin */
 .notion-table-of-contents a span,
 .catalog-item span,
 .toc-link span,
@@ -795,8 +883,9 @@ img.rounded-full, .user-avatar {
     border-radius: 4px;
     border-left: 2px solid var(--color-accent) !important;
 }
+
 /* ==========================================================================
-   10. 側邊欄標題 (宋體 + 強調色 Icon)
+   12. 側邊欄標題 (宋體 + 強調色 Icon)
    ========================================================================== */
 aside .card > div:first-child,
 aside .shadow-md > div:first-child,
@@ -819,11 +908,10 @@ aside .card > div:first-child div,
 aside .card > div:first-child span,
 aside .shadow-md > div:first-child div,
 aside .shadow-md > div:first-child span {
-    font-family: var(--font-serif) !important; /* 側邊欄標題維持宋體 */
+    font-family: var(--font-serif) !important;
     font-weight: 700 !important;
     font-size: 1.1rem !important;
     color: var(--text-ink) !important; 
-    
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
@@ -845,7 +933,7 @@ aside .shadow-md > div:first-child svg,
 }
 
 /* ==========================================================================
-   11-15. 其他修復 (隱藏漢堡/Code Block/手機版/首圖)
+   13. 其他修復 (隱藏漢堡/Code Block/手機版/首圖)
    ========================================================================== */
 @media (min-width: 768px) {
     nav .fa-bars, .navbar .fa-bars, #header .fa-bars, .nav-item .fa-bars, .mobile-nav-toggle, button[aria-label="Toggle navigation"] { 
@@ -890,54 +978,33 @@ aside .shadow-md > div:first-child svg,
 }
 
 /* ==========================================================================
-   16. 引言 (Quote) 樣式 - 響應式設計
+   14. 引言 (Quote) 樣式
    ========================================================================== */
-
-/* --- 基礎樣式（手機版優先）--- */
 .notion-quote, blockquote {
-    /* 手機版：無縮排，貼齊內容區 */
     margin: 1.5rem 0 !important; 
-    
-    /* 背景極輕量化 */
     background-color: rgba(140, 123, 117, 0.03) !important; 
-    
-    /* 確保不溢出 */
     width: auto !important;
     max-width: 100% !important;
     box-sizing: border-box !important;
-    
-    /* 內部空間 */
     padding: 1rem 1.25rem !important; 
-    
-    /* 邊框：左側強調線，手機版不圓角 */
     border: none !important;
     border-left: 3px solid var(--color-accent) !important;
     border-radius: 0 !important;
-    
-    /* 字體排版 */
     font-size: 0.98rem !important;
     font-style: italic !important;
     line-height: 1.95 !important;
     color: #444 !important;
-    
     box-shadow: none !important;
 }
 
-/* --- 網頁版（768px 以上）--- */
 @media (min-width: 768px) {
     .notion-quote, blockquote {
-        /* 加入左側縮排，營造層次感 */
         margin: 2rem 1.5rem 2rem 3rem !important; 
-        
-        /* 內部空間加大，右邊留足空間避免文字卡邊框 */
         padding: 1.5rem 2rem !important; 
-        
-        /* 右側圓角 */
         border-radius: 0 10px 10px 0 !important;
     }
 }
 
-/* 深色模式 */
 .dark .notion-quote, .dark blockquote {
     background-color: rgba(255, 255, 255, 0.02) !important;
     color: #a5a5a5 !important;
@@ -945,25 +1012,17 @@ aside .shadow-md > div:first-child svg,
 }
 
 /* ==========================================================================
-   17. Callout 提示框樣式
+   15. Callout 提示框樣式
    ========================================================================== */
 .notion-callout {
-    /* 不覆蓋背景色，讓 Notion 原生顏色生效 */
-    
-    /* 細邊框包圍 */
     border: 1px solid rgba(140, 123, 117, 0.25) !important;
     border-radius: 8px !important;
-    
-    /* 內距與間距 */
     padding: 1.25rem 1.5rem !important;
     margin: 1.5rem 0 !important;
-    
-    /* 移除多餘效果 */
     box-shadow: none !important;
     overflow: visible !important;
 }
 
-/* Callout 標題：深墨色宋體 */
 .notion-callout .notion-callout-title {
     color: var(--text-ink) !important;
     font-size: 1rem !important;
@@ -973,14 +1032,12 @@ aside .shadow-md > div:first-child svg,
     margin-top: 0;
 }
 
-/* Callout 內文 */
 .notion-callout-text {
     font-size: 0.95rem !important;
     line-height: 1.85 !important;
     color: var(--text-ink) !important;
 }
 
-/* Callout 內的段落間距 */
 .notion-callout-text .notion-text {
     margin-bottom: 0.5rem !important;
     padding: 0 !important;
@@ -991,14 +1048,12 @@ aside .shadow-md > div:first-child svg,
     margin-bottom: 0 !important;
 }
 
-/* Callout Icon */
 .notion-callout .notion-page-icon {
     margin-top: 0.15rem !important;
     font-size: 1.2em !important;
     margin-right: 0.75rem !important;
 }
 
-/* Dark mode Callout */
 .dark .notion-callout {
     border-color: rgba(255, 255, 255, 0.15) !important;
 }
@@ -1009,4 +1064,11 @@ aside .shadow-md > div:first-child svg,
 
 .dark .notion-callout-text {
     color: #d1d5db !important;
+}
+
+/* ==========================================================================
+   16. ArticleCopyright 版權聲明樣式（取代 border-indigo-500）
+   ========================================================================== */
+.copyright-box {
+    border-left: 2px solid var(--color-accent) !important;
 }
