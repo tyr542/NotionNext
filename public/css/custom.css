@@ -804,31 +804,42 @@ aside .shadow-md > div:first-child svg,
    16. 引言 (Quote) 樣式
    ========================================================================== */
 
-/* --- 優化後的 Notion Quote --- */
+/* --- 深度優化版 Notion Quote --- */
 .notion-quote, blockquote {
-    /* 增加縮排：左邊距從 1rem 增加到 2.5rem */
-    margin: 1.5rem 1rem 1.5rem 2.5rem !important; 
+    /* 1. 強化縮排：大幅增加左外距，拉開層次感 */
+    margin: 2.5rem 1.5rem 2.5rem 4.5rem !important; 
     
-    /* 減輕背景：透明度從 0.08 降到 0.04，更輕盈 */
-    background-color: rgba(140, 123, 117, 0.04) !important;
+    /* 2. 背景極輕量化：透明度降到 0.03，營造若有似無的質感 */
+    background-color: rgba(140, 123, 117, 0.03) !important; 
+    
+    /* 3. 解決「右側卡到」：強制寬度自動適應，並確保 box-sizing */
+    width: auto !important;
+    max-width: calc(100% - 6rem) !important; /* 確保不會超出父容器 */
+    box-sizing: border-box !important;
+    
+    /* 4. 內部空間優化：增加 Padding，讓文字在色塊內「深呼吸」 */
+    padding: 1.5rem 2.2rem !important; 
+    
+    /* 5. 邊框細節 */
     border: none !important;
-    border-left: 4px solid var(--color-accent) !important; /* 稍微加粗邊框，增加支撐感 */
-    border-radius: 0 8px 8px 0 !important;
+    border-left: 3px solid var(--color-accent) !important;
+    border-radius: 0 10px 10px 0 !important;
     
-    /* 增加內距：文字離邊框遠一點，讀起來才舒服 */
-    padding: 1.2rem 2rem !important; 
-    
-    font-size: 0.95rem !important;
+    /* 6. 字體排版：增加行高，提升長文閱讀感 */
+    font-size: 0.98rem !important;
     font-style: italic !important;
-    line-height: 1.85 !important;
-    color: #555 !important;
+    line-height: 1.95 !important;
+    color: #444 !important; /* 稍微加深文字，確保在極淡背景下依然清晰 */
+    
+    /* 移除任何可能導致溢出的陰影 */
     box-shadow: none !important;
 }
 
-/* 深色模式同步調整 */
+/* 深色模式調整 */
 .dark .notion-quote, .dark blockquote {
-    background-color: rgba(255, 255, 255, 0.03) !important;
-    color: #b0b0b0 !important;
+    background-color: rgba(255, 255, 255, 0.02) !important;
+    color: #a5a5a5 !important;
+    border-left-color: var(--color-accent) !important;
 }
 
 /* --- 通用 blockquote --- */
