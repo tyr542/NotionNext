@@ -24,6 +24,8 @@
 body, #__next, #layout-wrapper, .bg-white {
     background-color: var(--bg-paper) !important;
     font-family: var(--font-sans) !important;
+    font-size: 1.05rem !important;
+    font-weight: 450 !important;
     color: var(--text-ink);
     line-height: 1.8;
 }
@@ -62,6 +64,23 @@ a:hover, .notion-link:hover {
 .notion-page-content {
     background-color: transparent !important;
 }
+
+/* ==========================================================================
+   2.6 內文樣式（確保與標題、粗體區隔）
+   ========================================================================== */
+/* 一般段落和內文 */
+p, .notion-text, .notion-page-content p {
+    font-size: 1.05rem !important;
+    font-weight: 450 !important;
+    line-height: 1.8;
+}
+
+/* 確保粗體保持較重的字重，與內文區隔 */
+strong, b, .notion-bold {
+    font-weight: 600 !important;
+}
+
+/* 注意：標題的字重已在「標題系統」區塊設定為 700，此處不重複設定 */
 
 /* ==========================================================================
    2.5 共用 Utility Classes（組件樣式統一管理）
@@ -289,7 +308,7 @@ a:hover, .notion-link:hover {
 /* --- 分類項目 --- */
 .category-item {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     width: 100%;
     padding: 0.25rem 0.5rem; /* py-1 px-2 */
     font-size: 0.875rem; /* text-sm */
@@ -297,6 +316,9 @@ a:hover, .notion-link:hover {
     color: #6b7280; /* text-gray-500 */
     cursor: pointer;
     transition: all 0.3s ease;
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 .category-item:hover {
     background-color: var(--color-accent);
@@ -321,6 +343,17 @@ a:hover, .notion-link:hover {
 /* 分類項目內的 icon */
 .category-item i {
     margin-right: 0.5rem;
+    flex-shrink: 0; /* icon 不縮小 */
+}
+
+/* 分類項目內的文字容器，確保可以換行 */
+.category-item > div {
+    flex: 1;
+    min-width: 0; /* 允許 flex 項目縮小 */
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.5;
 }
 
 /* --- 最新文章項目 --- */
