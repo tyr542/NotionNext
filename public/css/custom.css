@@ -656,19 +656,23 @@ img.rounded-full, .user-avatar {
 /* [通用重置] 針對所有連結與文字 */
 .notion-table-of-contents a,
 .catalog-list-item,
-.toc-link {
+.toc-link,
+.catalog-item {
     font-family: var(--font-sans) !important; 
     font-size: 0.9rem !important;
     color: #666 !important; 
     
     white-space: normal !important; 
     word-break: break-word !important;
+    overflow-wrap: break-word !important;
     display: block !important; 
     text-decoration: none !important;
     transition: all 0.2s ease !important;
     
     /* 基礎內距，確保所有項目至少有一點點空間 */
-    padding-left: 12px !important; 
+    padding-left: 12px !important;
+    padding-top: 0.25rem !important;
+    padding-bottom: 0.25rem !important;
 }
 
 /* [精準縮排系統] 
@@ -703,16 +707,24 @@ img.rounded-full, .user-avatar {
     opacity: 0.8;
 }
 
-/* [修正] 針對裡面的 span，防止它的 inline-style margin 搗亂 */
-/* 我們希望由外層 a 標籤統一控制縮排，所以把 span 的 margin 歸零或微調 */
+/* [修正] 針對裡面的 span，確保可以換行且無額外 margin */
 .notion-table-of-contents a span,
-.notion-table-of-contents-item-indent-level-1 span {
-    margin-left: 0 !important; /* 把兩手二號的 margin 拿掉，由上面的 padding 接管 */
+.catalog-item span,
+.toc-link span,
+.notion-table-of-contents-item-indent-level-0 span,
+.notion-table-of-contents-item-indent-level-1 span,
+.notion-table-of-contents-item-indent-level-2 span {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
     display: inline !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
 }
 
 /* Hover 效果 */
 .notion-table-of-contents a:hover,
+.catalog-item:hover,
 .toc-link:hover {
     color: var(--color-accent) !important; 
     background-color: transparent !important; 
@@ -720,12 +732,14 @@ img.rounded-full, .user-avatar {
 
 /* Active 狀態 */
 .notion-table-of-contents .active,
+.catalog-item.active,
 .catalog-list-item-active,
 .toc-link-active {
     color: var(--color-accent) !important;
     font-weight: 600 !important; 
     background-color: rgba(140, 123, 117, 0.05) !important; 
     border-radius: 4px;
+    border-left: 2px solid var(--color-accent) !important;
 }
 /* ==========================================================================
    10. 側邊欄標題 (宋體 + 強調色 Icon)
