@@ -801,143 +801,131 @@ aside .shadow-md > div:first-child svg,
 }
 
 /* ==========================================================================
-   16. Notion 引言 (Quote) 樣式
+   16. 引言 (Quote) 樣式
    ========================================================================== */
+
+/* --- Notion Quote --- */
 .notion-quote {
-    /* 縮排：讓引言明顯「內縮」，像被引用的段落 */
-    margin-left: 1.5rem !important;
-    margin-right: 1.5rem !important;
-    margin-top: 1.25rem !important;
-    margin-bottom: 1.25rem !important;
+    /* 縮排區隔 */
+    margin: 1.5rem 1.5rem !important;
     
-    /* 背景：淡米褐色，與主背景形成柔和對比 */
-    background-color: rgba(140, 123, 117, 0.1) !important;
+    /* 透明背景 + 左邊框 */
+    background-color: transparent !important;
+    border: none !important;
+    border-left: 3px solid var(--color-accent) !important;
+    border-radius: 0 !important;
     
-    /* 左邊框：強調色作為視覺錨點 */
-    border-left: 4px solid var(--color-accent) !important;
-    border-radius: 0 8px 8px 0 !important;
+    /* 內距 */
+    padding: 0.25rem 1.25rem !important;
     
-    /* 內距：讓文字有呼吸空間 */
-    padding: 1rem 1.5rem !important;
-    
-    /* 字體：稍小、斜體、加大行距，營造「引用」的閱讀節奏 */
+    /* 字體 */
     font-size: 0.95rem !important;
     font-style: italic !important;
-    line-height: 1.9 !important;
-    color: #555 !important;
+    line-height: 1.85 !important;
+    color: #5a5a5a !important;
     
-    /* 微陰影：增加層次感 */
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.03) !important;
+    /* 移除陰影 */
+    box-shadow: none !important;
 }
 
-/* 引言內的文字段落 */
 .notion-quote .notion-text {
     margin: 0 !important;
     padding: 0 !important;
 }
 
-/* Dark mode 引言 */
 .dark .notion-quote {
-    background-color: rgba(255, 255, 255, 0.05) !important;
+    background-color: transparent !important;
     border-left-color: var(--color-accent) !important;
-    color: #ccc !important;
+    color: #a0a0a0 !important;
 }
 
-/* ==========================================================================
-   16.5 通用引言樣式（現代優雅引言）
-   ========================================================================== */
-/* 現代優雅引言 */
+/* --- 通用 blockquote --- */
 blockquote {
-  margin: 2rem 0;
-  padding: 1.5rem 2.5rem;
-  border-left: 5px solid #2d3436; /* 深色沉穩線條 */
-  background-color: transparent; /* 去掉背景，增加呼吸感 */
-  font-style: italic;
-  color: #636e72;
-  position: relative;
-  line-height: 1.8;
+    margin: 1.5rem 1.5rem;
+    padding: 0.25rem 1.25rem;
+    border: none;
+    border-left: 3px solid var(--color-accent);
+    background-color: transparent;
+    font-style: italic;
+    color: #5a5a5a;
+    line-height: 1.85;
+    position: relative;
 }
 
-/* 加上隱約的引號水印，增加設計層次 */
+/* 移除引號水印 */
 blockquote::before {
-  content: """;
-  font-size: 5rem;
-  position: absolute;
-  top: -10px;
-  left: 10px;
-  color: #dfe6e9;
-  z-index: -1;
-  font-family: serif;
+    content: none;
 }
 
-/* Dark mode 引言 */
 .dark blockquote {
-  border-left-color: #636e72;
-  color: #b2bec3;
-}
-
-.dark blockquote::before {
-  color: #2d3436;
+    border-left-color: var(--color-accent);
+    color: #a0a0a0;
 }
 
 /* ==========================================================================
-   17. Notion Callout 提示框樣式（啟發式提問區塊）
+   17. Callout 提示框樣式
    ========================================================================== */
-/* 啟發式提問區塊 */
-.notion-callout,
-.insight-box {
-  background: linear-gradient(135deg, #ffffff 0%, #f1f2f6 100%);
-  border: 1px solid #dfe6e9;
-  border-radius: 16px;
-  padding: 2rem;
-  text-align: left;
-  position: relative;
-  overflow: hidden;
-  margin: 1.5rem 0 !important;
+.notion-callout {
+    /* 淡米灰背景，融入整體色系 */
+    background: rgba(140, 123, 117, 0.06) !important;
+    
+    /* 左邊框強調 */
+    border: none !important;
+    border-left: 4px solid var(--color-accent) !important;
+    border-radius: 0 8px 8px 0 !important;
+    
+    /* 內距與間距 */
+    padding: 1.25rem 1.5rem !important;
+    margin: 1.5rem 0 !important;
+    
+    /* 移除多餘效果 */
+    box-shadow: none !important;
+    overflow: visible !important;
 }
 
-/* 讓標題與內容有更強的視覺對比 */
-.notion-callout .notion-callout-title,
-.insight-box h4 {
-  margin-top: 0;
-  color: #d63031 !important; /* 強調顏色 */
-  font-size: 1.1rem !important;
-  letter-spacing: 0.5px;
-  font-family: var(--font-serif) !important;
-  font-weight: 700 !important;
+/* Callout 標題：回歸深墨色宋體 */
+.notion-callout .notion-callout-title {
+    color: var(--text-ink) !important;
+    font-size: 1rem !important;
+    font-family: var(--font-serif) !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.02em;
+    margin-top: 0;
 }
 
 /* Callout 內文 */
 .notion-callout-text {
     font-size: 0.95rem !important;
-    line-height: 1.9 !important;
+    line-height: 1.85 !important;
     color: var(--text-ink) !important;
 }
 
 /* Callout 內的段落間距 */
 .notion-callout-text .notion-text {
-    margin-bottom: 0.6rem !important;
+    margin-bottom: 0.5rem !important;
     padding: 0 !important;
-    line-height: 1.9 !important;
+    line-height: 1.85 !important;
 }
 
-/* 最後一個段落不需要下邊距 */
 .notion-callout-text .notion-text:last-child {
     margin-bottom: 0 !important;
 }
 
 /* Callout Icon */
 .notion-callout .notion-page-icon {
-    margin-top: 0.2rem !important;
-    font-size: 1.3em !important;
+    margin-top: 0.15rem !important;
+    font-size: 1.2em !important;
     margin-right: 0.75rem !important;
 }
 
 /* Dark mode Callout */
-.dark .notion-callout,
-.dark .insight-box {
-    background: linear-gradient(135deg, #1a1a1a 0%, #2d3436 100%);
-    border-color: #636e72;
+.dark .notion-callout {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border-left-color: var(--color-accent) !important;
+}
+
+.dark .notion-callout .notion-callout-title {
+    color: #f0f0f0 !important;
 }
 
 .dark .notion-callout-text {
