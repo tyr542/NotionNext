@@ -801,70 +801,58 @@ aside .shadow-md > div:first-child svg,
 }
 
 /* ==========================================================================
-   16. 引言 (Quote) 樣式
+   16. 引言 (Quote) 樣式 - 響應式設計
    ========================================================================== */
 
-/* --- 深度優化版 Notion Quote --- */
+/* --- 基礎樣式（手機版優先）--- */
 .notion-quote, blockquote {
-    /* 1. 強化縮排：大幅增加左外距，拉開層次感 */
-    margin: 2.5rem 1.5rem 2.5rem 4.5rem !important; 
+    /* 手機版：無縮排，貼齊內容區 */
+    margin: 1.5rem 0 !important; 
     
-    /* 2. 背景極輕量化：透明度降到 0.03，營造若有似無的質感 */
+    /* 背景極輕量化 */
     background-color: rgba(140, 123, 117, 0.03) !important; 
     
-    /* 3. 解決「右側卡到」：強制寬度自動適應，並確保 box-sizing */
+    /* 確保不溢出 */
     width: auto !important;
-    max-width: calc(100% - 6rem) !important; /* 確保不會超出父容器 */
+    max-width: 100% !important;
     box-sizing: border-box !important;
     
-    /* 4. 內部空間優化：增加 Padding，讓文字在色塊內「深呼吸」 */
-    padding: 1.5rem 2.2rem !important; 
+    /* 內部空間 */
+    padding: 1rem 1.25rem !important; 
     
-    /* 5. 邊框細節 */
+    /* 邊框：左側強調線，手機版不圓角 */
     border: none !important;
     border-left: 3px solid var(--color-accent) !important;
-    border-radius: 0 10px 10px 0 !important;
+    border-radius: 0 !important;
     
-    /* 6. 字體排版：增加行高，提升長文閱讀感 */
+    /* 字體排版 */
     font-size: 0.98rem !important;
     font-style: italic !important;
     line-height: 1.95 !important;
-    color: #444 !important; /* 稍微加深文字，確保在極淡背景下依然清晰 */
+    color: #444 !important;
     
-    /* 移除任何可能導致溢出的陰影 */
     box-shadow: none !important;
 }
 
-/* 深色模式調整 */
+/* --- 網頁版（768px 以上）--- */
+@media (min-width: 768px) {
+    .notion-quote, blockquote {
+        /* 加入左側縮排，營造層次感 */
+        margin: 2rem 1.5rem 2rem 3rem !important; 
+        
+        /* 內部空間加大，右邊留足空間避免文字卡邊框 */
+        padding: 1.5rem 2rem !important; 
+        
+        /* 右側圓角 */
+        border-radius: 0 10px 10px 0 !important;
+    }
+}
+
+/* 深色模式 */
 .dark .notion-quote, .dark blockquote {
     background-color: rgba(255, 255, 255, 0.02) !important;
     color: #a5a5a5 !important;
     border-left-color: var(--color-accent) !important;
-}
-
-/* --- 通用 blockquote --- */
-blockquote {
-    margin: 1.5rem 1rem;
-    padding: 1rem 1.5rem;
-    border: none;
-    border-left: 3px solid var(--color-accent);
-    background-color: rgba(140, 123, 117, 0.08);
-    border-radius: 0 6px 6px 0;
-    font-style: italic;
-    color: #555;
-    line-height: 1.85;
-    position: relative;
-}
-
-/* 移除引號水印 */
-blockquote::before {
-    content: none;
-}
-
-.dark blockquote {
-    background-color: rgba(255, 255, 255, 0.05);
-    border-left-color: var(--color-accent);
-    color: #b0b0b0;
 }
 
 /* ==========================================================================
