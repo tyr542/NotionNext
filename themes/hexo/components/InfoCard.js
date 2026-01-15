@@ -43,7 +43,7 @@ export function InfoCard(props) {
 
         {/* 標題區塊：放在頭像右邊 */}
         <div className='font-serif ml-4 flex flex-col justify-center text-left'>
-          {/* 名字：煎餃沾醬 (text-xl) */}
+          {/* 名字：閃電煎餃 (text-xl) */}
           <div className='text-xl font-bold leading-tight'>{siteConfig('AUTHOR')}</div>
         </div>
       </div>
