@@ -83,6 +83,28 @@ strong, b, .notion-bold {
 /* 注意：標題的字重已在「標題系統」區塊設定為 700，此處不重複設定 */
 
 /* ==========================================================================
+   2.7 列表樣式（統一字體大小、收緊間距）
+   ========================================================================== */
+ul li, ol li, 
+.notion-list li,
+.notion-bulleted_list,
+.notion-numbered_list,
+.notion-bulleted_list-item,
+.notion-numbered_list-item {
+    font-size: 1.125rem !important;   /* 跟內文一樣 18px */
+    font-weight: 400 !important;
+    line-height: 1.75 !important;     /* 稍微收一點 */
+    margin-bottom: 0.35rem !important; /* 項目間距收緊 */
+    color: var(--text-ink) !important;
+}
+
+/* 列表容器的上下間距 */
+ul, ol, .notion-bulleted_list, .notion-numbered_list {
+    margin-top: 0.5rem !important;
+    margin-bottom: 1rem !important;
+}
+
+/* ==========================================================================
    2.5 共用 Utility Classes（組件樣式統一管理）
    ========================================================================== */
 
