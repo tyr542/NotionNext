@@ -24,8 +24,8 @@
 body, #__next, #layout-wrapper, .bg-white {
     background-color: var(--bg-paper) !important;
     font-family: var(--font-sans) !important;
-    font-size: 1.05rem !important;
-    font-weight: 450 !important;
+    font-size: 1.125rem !important;
+    font-weight: 400 !important;
     color: var(--text-ink);
     line-height: 1.8;
 }
@@ -70,8 +70,8 @@ a:hover, .notion-link:hover {
    ========================================================================== */
 /* 一般段落和內文 */
 p, .notion-text, .notion-page-content p {
-    font-size: 1.05rem !important;
-    font-weight: 450 !important;
+    font-size: 1.125rem !important;
+    font-weight: 400 !important;
     line-height: 1.8;
 }
 
