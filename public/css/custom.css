@@ -162,8 +162,8 @@ ul li, ol li,
 
 /* 列表容器的上下間距 */
 ul, ol, .notion-bulleted_list, .notion-numbered_list {
-    margin-top: 0.5rem !important;
-    margin-bottom: 1rem !important;
+    margin-top: 0.15rem !important;
+    margin-bottom: 0.15rem !important;
 }
 
 /* ==========================================================================
@@ -990,7 +990,7 @@ aside .shadow-md > div:first-child svg,
     border: none !important;
     border-left: 3px solid var(--color-accent) !important;
     border-radius: 0 !important;
-    font-size: 0.98rem !important;
+    font-size: 1.15rem !important;
     font-style: italic !important;
     line-height: 1.95 !important;
     color: #444 !important;
