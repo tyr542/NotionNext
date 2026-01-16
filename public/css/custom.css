@@ -155,15 +155,15 @@ ul li, ol li,
 .notion-numbered_list-item {
     font-size: 1.125rem !important;
     font-weight: 400 !important;
-    line-height: 1.2 !important;
+    line-height: 1.5 !important;
     margin-bottom: 0.20rem !important;
     color: var(--text-ink) !important;
 }
 
 /* 列表容器的上下間距 */
 ul, ol, .notion-bulleted_list, .notion-numbered_list {
-    margin-top: 0.15rem !important;
-    margin-bottom: 0.15rem !important;
+    margin-top: 0.25rem !important;
+    margin-bottom: 0.25rem !important;
 }
 
 /* ==========================================================================
