@@ -116,12 +116,14 @@ const NotionPage = ({ post, className }) => {
     return () => clearTimeout(timer)
   }, [post])
 
+  const cleanBlockMap = post?.blockMap ? cleanBlocksWithWarn(post.blockMap) : null
+
   return (
     <div
       id='notion-article'
       className={`mx-auto overflow-hidden ${className || ''}`}>
       <NotionRenderer
-        recordMap={post?.blockMap}
+        recordMap={cleanBlockMap}
         mapPageUrl={mapPageUrl}
         mapImageUrl={mapImgUrl}
         components={{
@@ -138,6 +140,44 @@ const NotionPage = ({ post, className }) => {
       <PrismMac />
     </div>
   )
+}
+
+/**
+ * 清理blockMap中无效的block，兼容Notion API格式变化
+ */
+function cleanBlocksWithWarn(blockMap) {
+  const cleanedBlocks = {}
+  const removedBlockIds = []
+
+  for (const [id, block] of Object.entries(blockMap.block || {})) {
+    if (!block?.value?.id) {
+      removedBlockIds.push(id)
+      continue
+    }
+
+    const newBlock = { ...block }
+
+    if (Array.isArray(newBlock.value.content)) {
+      newBlock.value.content = newBlock.value.content.filter(cid => {
+        if (!blockMap.block[cid]?.value?.id) {
+          removedBlockIds.push(cid)
+          return false
+        }
+        return true
+      })
+    }
+
+    cleanedBlocks[id] = newBlock
+  }
+
+  if (removedBlockIds.length) {
+    console.warn('Removed invalid blocks:', removedBlockIds)
+  }
+
+  return {
+    ...blockMap,
+    block: cleanedBlocks
+  }
 }
 
 /**
