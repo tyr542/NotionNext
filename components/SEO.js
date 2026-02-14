@@ -128,6 +128,7 @@ const SEO = props => {
           content={SEO_BAIDU_SITE_VERIFICATION}
         />
       )}
+      <meta name="msvalidate.01" content="6048EFE071CE66119E2DBF256B6D96C3" />
 
       {/* 基础SEO元数据 */}
       <meta name='keywords' content={keywords} />
