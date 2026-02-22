@@ -6,6 +6,13 @@ import { cleanCache } from '@/lib/cache/local_file_cache'
  * @param {*} res
  */
 export default async function handler(req, res) {
+  const { token } = req.query
+  const validToken = process.env.CACHE_TOKEN
+
+  if (validToken && token !== validToken) {
+    return res.status(401).json({ status: 'error', message: 'Unauthorized. Invalid cache token.' })
+  }
+
   try {
     await cleanCache()
     res.status(200).json({ status: 'success', message: 'Clean cache successful!' })
