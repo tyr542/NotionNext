@@ -53,6 +53,13 @@ const preBuild = (function () {
     fs.unlinkSync(sitemap2Path)
     console.log('Deleted existing sitemap.xml from root directory')
   }
+
+  // 删除 public/llms.txt 文件 ； 否则会和/pages/llms.txt.js 冲突。
+  const llmsTxtPath = path.resolve(__dirname, 'public', 'llms.txt')
+  if (fs.existsSync(llmsTxtPath)) {
+    fs.unlinkSync(llmsTxtPath)
+    console.log('Deleted existing llms.txt from public directory')
+  }
 })()
 
 /**
@@ -336,6 +343,7 @@ const nextConfig = {
     // export 静态导出时 忽略/pages/sitemap.xml.js ， 否则和getServerSideProps这个动态文件冲突
     const pages = { ...defaultPathMap }
     delete pages['/sitemap.xml']
+    delete pages['/llms.txt']
     delete pages['/auth']
     return pages
   },
