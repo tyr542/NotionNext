@@ -48,7 +48,7 @@ const SEO = props => {
   }
   if (meta) {
     url = `${url}/${meta.slug}`
-    image = meta.image || '/bg_image.jpg'
+    image = meta.image || `${LINK}/bg_image.jpg`
   }
   const TITLE = siteConfig('TITLE')
   const title = meta?.title || TITLE
@@ -101,6 +101,7 @@ const SEO = props => {
   return (
     <Head>
       <link rel='icon' href={favicon} />
+      <link rel='canonical' href={url} />
       <title>{title}</title>
       <meta name='theme-color' content={BACKGROUND_DARK} />
       <meta
@@ -138,8 +139,8 @@ const SEO = props => {
 
       {/* 语言和地区 */}
       <meta httpEquiv='content-language' content={siteConfig('LANG')} />
-      <meta name='geo.region' content={siteConfig('GEO_REGION', 'CN')} />
-      <meta name='geo.country' content={siteConfig('GEO_COUNTRY', 'CN')} />
+      <meta name='geo.region' content={siteConfig('GEO_REGION', 'TW')} />
+      <meta name='geo.country' content={siteConfig('GEO_COUNTRY', 'TW')} />
       {/* Open Graph 元数据 */}
       <meta property='og:locale' content={lang} />
       <meta property='og:title' content={title} />
@@ -226,16 +227,29 @@ const SEO = props => {
  * @returns
  */
 const generateStructuredData = (meta, siteInfo, url, image, author) => {
+  // 作者的社群連結（sameAs），用於 E-E-A-T 和 AI 交叉驗證
+  const authorSameAs = [
+    siteConfig('CONTACT_WEIBO', ''),
+    siteConfig('CONTACT_TWITTER', ''),
+    siteConfig('CONTACT_GITHUB', ''),
+    siteConfig('CONTACT_LINKEDIN', ''),
+    siteConfig('CONTACT_INSTAGRAM', '')
+  ].filter(link => link && link.length > 0)
+
+  const authorSchema = {
+    '@type': 'Person',
+    name: author,
+    url: siteConfig('LINK'),
+    ...(authorSameAs.length > 0 && { sameAs: authorSameAs })
+  }
+
   const baseData = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     name: siteInfo?.title,
     description: siteInfo?.description,
     url: siteConfig('LINK'),
-    author: {
-      '@type': 'Person',
-      name: author
-    },
+    author: authorSchema,
     publisher: {
       '@type': 'Organization',
       name: siteInfo?.title,
@@ -257,10 +271,7 @@ const generateStructuredData = (meta, siteInfo, url, image, author) => {
       url: url,
       datePublished: meta.publishDay,
       dateModified: meta.lastEditedDay || meta.publishDay,
-      author: {
-        '@type': 'Person',
-        name: author
-      },
+      author: authorSchema,
       publisher: {
         '@type': 'Organization',
         name: siteInfo?.title,

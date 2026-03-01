@@ -8,7 +8,20 @@ module.exports = {
   changefreq: 'daily',
   priority: 0.7,
   generateRobotsTxt: true,
-  sitemapSize: 7000
-  // ...other options
-  // https://github.com/iamvishnusankar/next-sitemap#configuration-options
+  sitemapSize: 7000,
+  robotsTxtOptions: {
+    policies: [
+      { userAgent: '*', allow: '/', disallow: ['/api/', '/_next/', '/admin/', '/private/'] },
+      { userAgent: 'Googlebot', allow: '/' },
+      { userAgent: 'Bingbot', allow: '/' },
+      { userAgent: 'GPTBot', allow: '/', disallow: ['/api/', '/_next/', '/admin/', '/private/'] },
+      { userAgent: 'ClaudeBot', allow: '/', disallow: ['/api/', '/_next/', '/admin/', '/private/'] },
+      { userAgent: 'PerplexityBot', allow: '/' },
+      { userAgent: 'Amazonbot', disallow: '/' },
+      { userAgent: 'Google-Extended', disallow: '/' }
+    ],
+    additionalSitemaps: [
+      `${BLOG.LINK}/rss/feed.xml`
+    ]
+  }
 }
