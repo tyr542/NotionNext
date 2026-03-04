@@ -24,6 +24,7 @@ const SocialButton = () => {
   const CONTACT_XIAOHONGSHU = siteConfig('CONTACT_XIAOHONGSHU')
   const CONTACT_ZHISHIXINGQIU = siteConfig('CONTACT_ZHISHIXINGQIU')
   const CONTACT_WEHCHAT_PUBLIC = siteConfig('CONTACT_WEHCHAT_PUBLIC')
+  const CONTACT_PORTALY = siteConfig('CONTACT_PORTALY')
 
   const [qrCodeShow, setQrCodeShow] = useState(false)
 
@@ -155,6 +156,15 @@ const SocialButton = () => {
               src='/svg/zhishixingqiu.svg'
               alt='知识星球'
             />{' '}
+          </a>
+        )}
+        {CONTACT_PORTALY && (
+          <a
+            target='_blank'
+            rel='noreferrer'
+            title={'贊助我 (Portaly)'}
+            href={CONTACT_PORTALY}>
+            <i className='social-icon fas fa-coffee' />
           </a>
         )}
         {CONTACT_WEHCHAT_PUBLIC && (

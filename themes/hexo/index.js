@@ -25,6 +25,7 @@ import Header from './components/Header'
 import Hero from './components/Hero'
 import PostHero from './components/PostHero'
 import RightFloatArea from './components/RightFloatArea'
+import RewardCard from './components/RewardCard'
 import SearchNav from './components/SearchNav'
 import SideRight from './components/SideRight'
 import SlotBar from './components/SlotBar'
@@ -293,7 +294,7 @@ const LayoutSlug = props => {
               itemScope
               itemType='https://schema.org/Movie'
               className='subpixel-antialiased overflow-y-hidden'>
-              
+
               {/* PostHero 在這裡 */}
               <PostHero {...props} />
 
@@ -307,6 +308,7 @@ const LayoutSlug = props => {
               {post?.type === 'Post' && (
                 <>
                   <ArticleCopyright {...props} />
+                  <RewardCard />
                   <ArticleRecommend {...props} />
                   <ArticleAdjacent {...props} />
                 </>
