@@ -94,24 +94,6 @@ const SocialButton = () => {
             <i className='social-icon fab fa-instagram' />
           </a>
         )}
-        {CONTACT_EMAIL && (
-          <a
-            onClick={e => handleEmailClick(e, emailIcon, CONTACT_EMAIL)}
-            title='email'
-            className='cursor-pointer'
-            ref={emailIcon}>
-            <i className='social-icon fas fa-envelope' />
-          </a>
-        )}
-        {ENABLE_RSS && (
-          <a
-            target='_blank'
-            rel='noreferrer'
-            title={'RSS'}
-            href={'/rss/feed.xml'}>
-            <i className='social-icon fas fa-rss' />
-          </a>
-        )}
         {CONTACT_BILIBILI && (
           <a
             target='_blank'
@@ -189,6 +171,24 @@ const SocialButton = () => {
               </div>
             </div>
           </button>
+        )}
+        {ENABLE_RSS && (
+          <a
+            target='_blank'
+            rel='noreferrer'
+            title={'RSS'}
+            href={'/rss/feed.xml'}>
+            <i className='social-icon fas fa-rss' />
+          </a>
+        )}
+        {CONTACT_EMAIL && (
+          <a
+            onClick={e => handleEmailClick(e, emailIcon, CONTACT_EMAIL)}
+            title='email'
+            className='cursor-pointer'
+            ref={emailIcon}>
+            <i className='social-icon fas fa-envelope' />
+          </a>
         )}
       </div>
     </div>
