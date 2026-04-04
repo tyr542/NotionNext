@@ -3,7 +3,7 @@
 // 規範參考：https://llmstxt.org/
 import BLOG from '@/blog.config'
 import { siteConfig } from '@/lib/config'
-import { getGlobalData } from '@/lib/db/getSiteData'
+import { fetchGlobalAllData } from '@/lib/db/SiteDataApi'
 import { extractLangId, extractLangPrefix } from '@/lib/utils/pageId'
 
 export const getServerSideProps = async ctx => {
@@ -15,7 +15,7 @@ export const getServerSideProps = async ctx => {
     const id = extractLangId(siteId)
     const locale = extractLangPrefix(siteId)
 
-    const siteData = await getGlobalData({
+    const siteData = await fetchGlobalAllData({
       pageId: id,
       from: 'llms.txt'
     })
