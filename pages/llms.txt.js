@@ -4,6 +4,7 @@
 import BLOG from '@/blog.config'
 import { siteConfig } from '@/lib/config'
 import { fetchGlobalAllData } from '@/lib/db/SiteDataApi'
+import { isPublishedPublicContent } from '@/lib/db/notion/publicContent'
 import { extractLangId, extractLangPrefix } from '@/lib/utils/pageId'
 
 export const getServerSideProps = async ctx => {
@@ -29,11 +30,7 @@ export const getServerSideProps = async ctx => {
     // 過濾出已發布的文章（排除異常條目）
     const posts =
       siteData.allPages
-        ?.filter(
-          p => p.status === BLOG.NOTION_PROPERTY_NAME.status_publish
-        )
-        ?.filter(p => p.slug && p.slug !== '#' && p.slug.trim() !== '')
-        ?.filter(p => p.type === 'Post' || p.type === 'Page')
+        ?.filter(isPublishedPublicContent)
         ?.map(post => {
           const slug = post.slug.startsWith('/')
             ? post.slug.slice(1)

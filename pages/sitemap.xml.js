@@ -2,6 +2,7 @@
 import BLOG from '@/blog.config'
 import { siteConfig } from '@/lib/config'
 import { fetchGlobalAllData } from '@/lib/db/SiteDataApi'
+import { isPublishedPublicContent } from '@/lib/db/notion/publicContent'
 import { extractLangId, extractLangPrefix } from '@/lib/utils/pageId'
 import { getServerSideSitemap } from 'next-sitemap'
 
@@ -87,8 +88,7 @@ function generateLocalesSitemap(link, allPages, locale) {
   ]
   const postFields =
     allPages
-      ?.filter(p => p.status === BLOG.NOTION_PROPERTY_NAME.status_publish)
-      ?.filter(p => p.slug && p.slug !== '#' && p.slug.trim() !== '')
+      ?.filter(isPublishedPublicContent)
       ?.map(post => {
         const slugWithoutLeadingSlash = post?.slug.startsWith('/')
           ? post?.slug?.slice(1)
