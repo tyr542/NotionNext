@@ -113,7 +113,7 @@ async function filterByMemCache(allPosts, keyword) {
     keyword = keyword.trim()
   }
   for (const post of allPosts) {
-    const cacheKey = 'page_block_' + post.id
+    const cacheKey = 'page_content_' + post.id
     const page = await getDataFromCache(cacheKey, true)
     const tagContent =
       post?.tags && Array.isArray(post?.tags) ? post?.tags.join(' ') : ''
@@ -135,7 +135,7 @@ async function filterByMemCache(allPosts, keyword) {
     // console.log('全文搜索缓存', cacheKey, page != null)
     post.results = []
     let hitCount = 0
-    for (const i of indexContent) {
+    for (let i = 0; i < indexContent.length; i++) {
       const c = indexContent[i]
       if (!c) {
         continue

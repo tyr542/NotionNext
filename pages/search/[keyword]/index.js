@@ -71,7 +71,7 @@ async function filterByMemCache(allPosts, keyword) {
     keyword = keyword.trim().toLowerCase()
   }
   for (const post of allPosts) {
-    const cacheKey = 'page_block_' + post.id
+    const cacheKey = 'page_content_' + post.id
     const page = await getDataFromCache(cacheKey, true)
     const tagContent =
       post?.tags && Array.isArray(post?.tags) ? post?.tags.join(' ') : ''
@@ -81,11 +81,12 @@ async function filterByMemCache(allPosts, keyword) {
         : ''
     const articleInfo = post.title + post.summary + tagContent + categoryContent
     let hit = articleInfo.toLowerCase().indexOf(keyword) > -1
-    const contentTextList = getPageContentText(post, page)
+    const contentText = getPageContentText(post, page)
+    const contentTextList = contentText ? [contentText] : []
     // console.log('全文搜索缓存', cacheKey, page != null)
     post.results = []
     let hitCount = 0
-    for (const i of contentTextList) {
+    for (let i = 0; i < contentTextList.length; i++) {
       const c = contentTextList[i]
       if (!c) {
         continue

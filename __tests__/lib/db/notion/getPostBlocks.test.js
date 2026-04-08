@@ -15,6 +15,7 @@ jest.mock('@/lib/db/notion/getNotionAPI', () => ({
 
 import { getPageWithRetry } from '@/lib/db/notion/getPostBlocks'
 import notionAPI from '@/lib/db/notion/getNotionAPI'
+import { getDataFromCache } from '@/lib/cache/cache_manager'
 
 describe('getPageWithRetry', () => {
   it('hydrates collection queries for wrapped collection_view_page responses', async () => {
@@ -107,5 +108,31 @@ describe('getPageWithRetry', () => {
         type: 'page'
       }
     })
+  })
+
+  it('reuses page content cache when the Notion API request fails', async () => {
+    const cachedRecordMap = {
+      block: {
+        'db-page-id': {
+          value: {
+            id: 'db-page-id',
+            type: 'page'
+          }
+        }
+      }
+    }
+
+    notionAPI.getPage.mockRejectedValue(new Error('network down'))
+    getDataFromCache.mockImplementation(async key => {
+      if (key === 'page_content_db-page-id') {
+        return cachedRecordMap
+      }
+      return null
+    })
+
+    const result = await getPageWithRetry('db-page-id', 'unit-test', 1)
+
+    expect(getDataFromCache).toHaveBeenCalledWith('page_content_db-page-id')
+    expect(result).toEqual(cachedRecordMap)
   })
 })
