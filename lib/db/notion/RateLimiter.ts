@@ -3,12 +3,16 @@ import path from 'path'
 
 interface QueueItem<T> {
   requestFunc: () => Promise<T>
-  resolve: (value: T) => void
-  reject: (err: any) => void
+  resolve: (value: T | PromiseLike<T>) => void
+  reject: (err: unknown) => void
+}
+
+function isErrorWithCode(error: unknown): error is NodeJS.ErrnoException {
+  return error instanceof Error && 'code' in error
 }
 
 export class RateLimiter {
-  private queue: QueueItem<any>[] = []
+  private queue: QueueItem<unknown>[] = []
   private inflight = new Set<string>()
   private isProcessing = false
   private lastRequestTime = 0
@@ -17,39 +21,50 @@ export class RateLimiter {
 
   constructor(
     private maxRequestsPerMinute = 200,
-    private lockFilePath?: string
-  ) { }
+    private lockFilePath: string = path.resolve(process.cwd(), '.notion-api-lock')
+  ) {}
 
   private async acquireLock() {
     if (!this.lockFilePath) return
-    // 如果锁文件存在且创建时间过久（比如 >5分钟），认为是陈旧锁，直接删除
+
     if (fs.existsSync(this.lockFilePath)) {
       const stats = fs.statSync(this.lockFilePath)
       const age = Date.now() - stats.ctimeMs
-      if (age > 30 * 1000) { // 30秒
+      if (age > 30 * 1000) {
         try {
           fs.unlinkSync(this.lockFilePath)
-          console.warn('[限流] 删除陈旧锁文件:', this.lockFilePath)
+          console.warn('[notion-rate-limit] removed stale lock', this.lockFilePath)
         } catch (err) {
-          console.error('[限流] 删除陈旧锁失败:', err)
+          console.error('[notion-rate-limit] failed to remove stale lock', err)
         }
       }
     }
+
     while (true) {
       try {
         fs.writeFileSync(this.lockFilePath, process.pid.toString(), { flag: 'wx' })
         return
-      } catch (err: any) {
-        if (err.code === 'EEXIST') await new Promise(res => setTimeout(res, 100))
-        else throw err
+      } catch (err: unknown) {
+        if (isErrorWithCode(err) && err.code === 'EEXIST') {
+          await new Promise(resolve => setTimeout(resolve, 100))
+          continue
+        }
+
+        throw err
       }
     }
   }
 
   private releaseLock() {
     if (!this.lockFilePath) return
-    try { if (fs.existsSync(this.lockFilePath)) fs.unlinkSync(this.lockFilePath) }
-    catch (err) { console.error('释放锁失败', err) }
+
+    try {
+      if (fs.existsSync(this.lockFilePath)) {
+        fs.unlinkSync(this.lockFilePath)
+      }
+    } catch (err) {
+      console.error('[notion-rate-limit] failed to release lock', err)
+    }
   }
 
   public enqueue<T>(key: string, requestFunc: () => Promise<T>): Promise<T> {
@@ -65,13 +80,24 @@ export class RateLimiter {
     }
 
     return new Promise((resolve, reject) => {
-      this.queue.push({ requestFunc, resolve, reject })
-      if (!this.isProcessing) this.processQueue()
+      this.queue.push({
+        requestFunc: requestFunc as () => Promise<unknown>,
+        resolve: resolve as (value: unknown) => void,
+        reject
+      })
+
+      if (!this.isProcessing) {
+        void this.processQueue()
+      }
     })
   }
 
   private async processQueue() {
-    if (this.queue.length === 0) { this.isProcessing = false; return }
+    if (this.queue.length === 0) {
+      this.isProcessing = false
+      return
+    }
+
     this.isProcessing = true
 
     try {
@@ -79,35 +105,48 @@ export class RateLimiter {
       const now = Date.now()
       const elapsed = now - this.windowStart
 
-      if (elapsed > 60_000) { this.requestCount = 0; this.windowStart = now }
+      if (elapsed > 60_000) {
+        this.requestCount = 0
+        this.windowStart = now
+      }
+
       if (this.requestCount >= this.maxRequestsPerMinute) {
         const waitTime = 60_000 - elapsed + 100
-        await new Promise(res => setTimeout(res, waitTime))
+        await new Promise(resolve => setTimeout(resolve, waitTime))
         this.requestCount = 0
         this.windowStart = Date.now()
       }
 
       const minInterval = 300
       const waitTime = Math.max(0, minInterval - (now - this.lastRequestTime))
-      if (waitTime > 0) await new Promise(res => setTimeout(res, waitTime))
+      if (waitTime > 0) {
+        await new Promise(resolve => setTimeout(resolve, waitTime))
+      }
 
-      const { requestFunc, resolve, reject } = this.queue.shift()!
-      const key = crypto.randomUUID()
-      this.inflight.add(key)
+      const nextItem = this.queue.shift()
+      if (!nextItem) return
+
+      const { requestFunc, resolve, reject } = nextItem
+      const inflightKey = crypto.randomUUID()
+      this.inflight.add(inflightKey)
 
       try {
         const result = await requestFunc()
         this.lastRequestTime = Date.now()
         this.requestCount++
         resolve(result)
-      } catch (err) { reject(err) }
-      finally { this.inflight.delete(key) }
-
+      } catch (err) {
+        reject(err)
+      } finally {
+        this.inflight.delete(inflightKey)
+      }
     } catch (err) {
-      console.error('限流队列异常', err)
+      console.error('[notion-rate-limit] queue processing failed', err)
     } finally {
       this.releaseLock()
-      setTimeout(() => this.processQueue(), 0)
+      setTimeout(() => {
+        void this.processQueue()
+      }, 0)
     }
   }
 }

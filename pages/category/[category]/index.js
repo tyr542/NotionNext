@@ -1,6 +1,7 @@
 import BLOG from '@/blog.config'
 import { siteConfig } from '@/lib/config'
 import { fetchGlobalAllData } from '@/lib/db/SiteDataApi'
+import { sortPostsForList } from '@/lib/utils/postSort'
 import { DynamicLayout } from '@/themes/theme'
 
 /**
@@ -18,8 +19,8 @@ export async function getStaticProps({ params: { category }, locale }) {
   let props = await fetchGlobalAllData({ from, locale })
 
   // 过滤状态
-  props.posts = props.allPages?.filter(
-    page => page.type === 'Post' && page.status === 'Published'
+  props.posts = sortPostsForList(
+    props.allPages?.filter(page => page.type === 'Post' && page.status === 'Published') || []
   )
   // 处理过滤
   props.posts = props.posts.filter(

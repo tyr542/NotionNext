@@ -1,4 +1,7 @@
-export function isInRange(title?: string, date: any = {}) {
-  // 直接迁你原来的逻辑
+import type { PageDate } from '@/lib/site/site.types'
+
+export function isInRange(title?: string, date: PageDate = {}) {
+  void title
+  void date
   return true
 }

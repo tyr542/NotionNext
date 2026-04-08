@@ -1,4 +1,5 @@
 const nextJest = require('next/jest')
+const { THEME } = require('./blog.config')
 
 const createJestConfig = nextJest({
   // Provide the path to your Next.js app to load next.config.js and .env files
@@ -23,6 +24,7 @@ const customJestConfig = {
     '^@/types/(.*)$': '<rootDir>/types/$1',
     '^@/conf/(.*)$': '<rootDir>/conf/$1',
     '^@/themes/(.*)$': '<rootDir>/themes/$1',
+    '^@theme-components$': `<rootDir>/themes/${THEME}`,
   },
   
   // Test environment

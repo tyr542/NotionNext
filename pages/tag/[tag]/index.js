@@ -1,6 +1,7 @@
 import BLOG from '@/blog.config'
 import { siteConfig } from '@/lib/config'
 import { fetchGlobalAllData } from '@/lib/db/SiteDataApi'
+import { sortPostsForList } from '@/lib/utils/postSort'
 import { DynamicLayout } from '@/themes/theme'
 
 /**
@@ -18,9 +19,11 @@ export async function getStaticProps({ params: { tag }, locale }) {
   const props = await fetchGlobalAllData({ from, locale })
 
   // 过滤状态
-  props.posts = props.allPages
-    ?.filter(page => page.type === 'Post' && page.status === 'Published')
-    .filter(post => post && post?.tags && post?.tags.includes(tag))
+  props.posts = sortPostsForList(
+    props.allPages
+      ?.filter(page => page.type === 'Post' && page.status === 'Published')
+      .filter(post => post && post?.tags && post?.tags.includes(tag)) || []
+  )
 
   // 处理文章页数
   props.postCount = props.posts.length
