@@ -1,4 +1,5 @@
 import {
+  isInvisiblePublicContent,
   isPublishedPost,
   isPublishedPublicContent,
   isPublishedPage
@@ -33,6 +34,27 @@ describe('public content filters', () => {
     expect(isPublishedPage(page)).toBe(true)
     expect(isPublishedPost(page)).toBe(false)
     expect(isPublishedPublicContent(page)).toBe(true)
+  })
+
+  it('keeps invisible posts and pages out of public listings while allowing direct access', () => {
+    const post = {
+      type: 'Post',
+      status: 'Invisible',
+      slug: 'hidden-post'
+    }
+
+    const page = {
+      type: 'Page',
+      status: 'Invisible',
+      slug: 'hidden-page'
+    }
+
+    expect(isPublishedPost(post)).toBe(false)
+    expect(isPublishedPage(page)).toBe(false)
+    expect(isPublishedPublicContent(post)).toBe(false)
+    expect(isPublishedPublicContent(page)).toBe(false)
+    expect(isInvisiblePublicContent(post)).toBe(true)
+    expect(isInvisiblePublicContent(page)).toBe(true)
   })
 
   it('rejects invisible, backend-only, and slugless records from public exposure', () => {
@@ -95,5 +117,31 @@ describe('public content filters', () => {
     expect(isPublishedPage(page)).toBe(true)
     expect(isPublishedPublicContent(post)).toBe(true)
     expect(isPublishedPublicContent(page)).toBe(true)
+  })
+
+  it('matches customized invisible labels for direct-access content', () => {
+    BLOG.NOTION_PROPERTY_NAME = {
+      ...BLOG.NOTION_PROPERTY_NAME,
+      status_invisible: '隱藏',
+      type_post: '文章',
+      type_page: '頁面'
+    }
+
+    const post = {
+      type: '文章',
+      status: '隱藏',
+      slug: 'hidden-post'
+    }
+
+    const page = {
+      type: '頁面',
+      status: '隱藏',
+      slug: 'hidden-page'
+    }
+
+    expect(isInvisiblePublicContent(post)).toBe(true)
+    expect(isInvisiblePublicContent(page)).toBe(true)
+    expect(isPublishedPublicContent(post)).toBe(false)
+    expect(isPublishedPublicContent(page)).toBe(false)
   })
 })
