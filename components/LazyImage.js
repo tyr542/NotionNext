@@ -66,7 +66,7 @@ export default function LazyImage({
 
   useEffect(() => {
     const adjustedImageSrc =
-      adjustImgSize(src, maxWidth) || defaultPlaceholderSrc
+      resizeImageForViewport(src, maxWidth) || defaultPlaceholderSrc
 
     // 如果是优先级图片，直接加载
     if (priority) {
@@ -166,11 +166,54 @@ export default function LazyImage({
       {/* 预加载 */}
       {priority && (
         <Head>
-          <link rel='preload' as='image' href={adjustImgSize(src, maxWidth)} />
+          <link
+            rel='preload'
+            as='image'
+            href={resizeImageForViewport(src, maxWidth)}
+          />
         </Head>
       )}
     </>
   )
+}
+
+const resizeImageForViewport = (src, maxWidth) => {
+  if (!src) {
+    return null
+  }
+
+  const screenWidth = Math.min(
+    (typeof window !== 'undefined' && window?.screen?.width) || maxWidth,
+    maxWidth
+  )
+
+  if (screenWidth >= maxWidth) {
+    return src
+  }
+
+  try {
+    const url = new URL(src)
+
+    if (url.searchParams.has('width')) {
+      url.searchParams.set('width', screenWidth)
+      return url.toString()
+    }
+
+    if (url.searchParams.has('w')) {
+      url.searchParams.set('w', screenWidth)
+      return url.toString()
+    }
+
+    if (url.pathname.startsWith('/image/')) {
+      url.searchParams.set('width', screenWidth)
+      url.searchParams.set('cache', 'v2')
+      return url.toString()
+    }
+  } catch (error) {
+    return src
+  }
+
+  return src
 }
 
 /**
@@ -183,11 +226,13 @@ const adjustImgSize = (src, maxWidth) => {
   if (!src) {
     return null
   }
-  const screenWidth =
-    (typeof window !== 'undefined' && window?.screen?.width) || maxWidth
+  const screenWidth = Math.min(
+    (typeof window !== 'undefined' && window?.screen?.width) || maxWidth,
+    maxWidth
+  )
 
   // 屏幕尺寸大于默认图片尺寸，没必要再压缩
-  if (screenWidth > maxWidth) {
+  if (screenWidth >= maxWidth) {
     return src
   }
 
