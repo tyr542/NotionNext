@@ -124,19 +124,10 @@ const PostHero = ({ post, siteInfo }) => {
         </div>
       )}
 
-      {/* 5. 字數與閱讀時間 + Busuanzi 計數器 */}
+      {/* 5. 字數與閱讀時間（Busuanzi 已移除，站點 PV/UV 改由 GA 於側邊欄顯示） */}
       <div className='flex items-center gap-3 text-xs text-gray-400 mb-8'>
          {/* 傳入純數字的 readingTime */}
          <WordCount wordCount={wordCountStr} readTime={readingTime} />
-         
-         {/* Busuanzi 頁面訪問量 - 初始隱藏，由 busuanzi.js 控制顯示 */}
-         {siteConfig('ANALYTICS_BUSUANZI_ENABLE') && (
-           <span className='busuanzi_container_page_pv' style={{ display: 'none' }}>
-             <span className='text-gray-300'>•</span>
-             <i className='fas fa-eye ml-2' />
-             <span className='ml-1 busuanzi_value_page_pv'></span>
-           </span>
-         )}
       </div>
 
       {/* 6. 封面大圖 */}

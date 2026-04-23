@@ -51,6 +51,7 @@
   "dependencies": {
     "@clerk/localizations": "^3.17.1",
     "@clerk/nextjs": "^5.7.5",
+    "@google-analytics/data": "^5.2.1",
     "@headlessui/react": "^1.7.19",
     "@next/bundle-analyzer": "^12.3.7",
     "@vercel/analytics": "^1.5.0",
