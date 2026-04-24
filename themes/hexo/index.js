@@ -155,7 +155,7 @@ const LayoutBase = props => {
         <AlgoliaSearchModal cRef={searchModal} {...props} />
 
         {/* 页脚 */}
-        <Footer title={siteConfig('TITLE')} />
+        <Footer title={siteConfig('TITLE')} sitePv={props?.sitePv} siteUv={props?.siteUv} />
       </div>
     </ThemeGlobalHexo.Provider>
   )
