@@ -42,7 +42,10 @@ export default function LazyImage({
   const maxWidth = imageMaxWidth || siteConfig('IMAGE_COMPRESS_WIDTH')
   const defaultPlaceholderSrc = siteConfig('IMG_LAZY_LOAD_PLACEHOLDER')
   const sizedSrc = resizeImageForViewport(src, maxWidth)
-  const finalSrc = priority ? toImageProxyUrl(sizedSrc) : sizedSrc
+  // 所有 Notion 圖都走 /api/image proxy；非 Notion URL toImageProxyUrl 會原樣返回。
+  // 原本只有 priority=true 走 proxy，導致非 priority（LOGO、第 3 篇之後封面）直接打
+  // notion.so/image/... 被 Notion 的 hotlink 防護擋掉。
+  const finalSrc = toImageProxyUrl(sizedSrc)
   const imageRef = useRef(null)
 
   const handleImageLoaded = () => {
