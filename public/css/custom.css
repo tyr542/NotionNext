@@ -1,7 +1,7 @@
 /* ==========================================================================
-   1. 核心基礎：引入「鏡頭」 (Google Fonts)
+   1. 核心基礎：「鏡頭」(Google Fonts) 已移至 pages/_document.js 用 preload 載入
    ========================================================================== */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;700&display=swap');
+/* Noto Serif TC 改在 _document.js 用 preconnect + preload 注入，避免 @import 阻塞渲染 */
 
 :root {
     /* 定義你的「底片風格」 */

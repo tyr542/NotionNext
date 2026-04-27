@@ -8,6 +8,7 @@ import { GlobalStyle } from './GlobalStyle'
 import { initGoogleAdsense } from './GoogleAdsense'
 
 import Head from 'next/head'
+import Script from 'next/script'
 import ExternalScript from './ExternalScript'
 import WebWhiz from './Webwhiz'
 import { useGlobal } from '@/lib/global'
@@ -257,8 +258,9 @@ const ExternalPlugin = props => {
 
       {CLARITY_ID && (
         <>
-          <script
-            async
+          <Script
+            id='ms-clarity'
+            strategy='lazyOnload'
             dangerouslySetInnerHTML={{
               __html: `
                 (function(c, l, a, r, i, t, y) {
@@ -406,15 +408,17 @@ const ExternalPlugin = props => {
         <script async defer src={UMAMI_HOST} data-website-id={UMAMI_ID}></script>
       )}
 
-      {/* 谷歌统计 */}
+      {/* 谷歌统计 — lazyOnload 把 gtag 延到主執行緒空閒才跑，降 TBT */}
       {ANALYTICS_GOOGLE_ID && (
         <>
-          <script
-            async
+          <Script
+            id='gtag-loader'
+            strategy='lazyOnload'
             src={`https://www.googletagmanager.com/gtag/js?id=${ANALYTICS_GOOGLE_ID}`}
           />
-          <script
-            async
+          <Script
+            id='gtag-init'
+            strategy='lazyOnload'
             dangerouslySetInnerHTML={{
               __html: `
                 window.dataLayer = window.dataLayer || [];

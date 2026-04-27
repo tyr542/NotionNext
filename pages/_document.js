@@ -43,6 +43,23 @@ class MyDocument extends Document {
     return (
       <Html lang={BLOG.LANG}>
         <Head>
+          {/* Google Fonts: Noto Serif TC — preconnect + preload 取代 custom.css 的 @import，避免阻塞渲染 */}
+          <link rel='preconnect' href='https://fonts.googleapis.com' />
+          <link
+            rel='preconnect'
+            href='https://fonts.gstatic.com'
+            crossOrigin='anonymous'
+          />
+          <link
+            rel='preload'
+            as='style'
+            href='https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;700&display=swap'
+          />
+          <link
+            rel='stylesheet'
+            href='https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;700&display=swap'
+          />
+
           {/* 预加载字体 */}
           {BLOG.FONT_AWESOME && (
             <>
