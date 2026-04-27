@@ -11,6 +11,8 @@ function isErrorWithCode(error: unknown): error is NodeJS.ErrnoException {
   return error instanceof Error && 'code' in error
 }
 
+const LOCK_RETRYABLE_ERRORS = new Set(['EEXIST', 'EPERM'])
+
 export class RateLimiter {
   private queue: QueueItem<unknown>[] = []
   private inflight = new Set<string>()
@@ -45,7 +47,7 @@ export class RateLimiter {
         fs.writeFileSync(this.lockFilePath, process.pid.toString(), { flag: 'wx' })
         return
       } catch (err: unknown) {
-        if (isErrorWithCode(err) && err.code === 'EEXIST') {
+        if (isErrorWithCode(err) && err.code && LOCK_RETRYABLE_ERRORS.has(err.code)) {
           await new Promise(resolve => setTimeout(resolve, 100))
           continue
         }
