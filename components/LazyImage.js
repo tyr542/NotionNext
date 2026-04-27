@@ -8,6 +8,21 @@ import { useRef } from 'react'
  * priority=true → eager + preload + 走 image proxy
  * priority=false → 瀏覽器原生 loading="lazy"，不再用自製 IntersectionObserver
  *   （舊版 IO 在 viewport 跳躍式滾動時會漏觸發，導致圖片永遠停在 placeholder）
+ *
+ * @param {Object} [props]
+ * @param {boolean} [props.priority]
+ * @param {string} [props.id]
+ * @param {string} [props.src]
+ * @param {string} [props.alt]
+ * @param {string} [props.placeholderSrc]
+ * @param {string} [props.className]
+ * @param {number|string} [props.width]
+ * @param {number|string} [props.height]
+ * @param {number} [props.imageMaxWidth]
+ * @param {string} [props.title]
+ * @param {Function} [props.onLoad]
+ * @param {Function} [props.onClick]
+ * @param {Object} [props.style]
  */
 export default function LazyImage({
   priority,
@@ -23,7 +38,7 @@ export default function LazyImage({
   onLoad,
   onClick,
   style
-}) {
+} = {}) {
   const maxWidth = imageMaxWidth || siteConfig('IMAGE_COMPRESS_WIDTH')
   const defaultPlaceholderSrc = siteConfig('IMG_LAZY_LOAD_PLACEHOLDER')
   const sizedSrc = resizeImageForViewport(src, maxWidth)
