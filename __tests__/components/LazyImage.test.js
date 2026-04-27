@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 
 jest.mock('@/lib/config', () => ({
   siteConfig: jest.fn((key, fallback = null) => {
@@ -95,6 +95,17 @@ afterAll(() => {
     expect(image).toHaveAttribute('loading', 'eager')
   })
 
+  it('proxies priority Notion images', () => {
+    const src =
+      'https://www.notion.so/image/example.png?table=block&id=test&width=1080'
+
+    render(<LazyImage src={src} alt='Notion image' priority imageMaxWidth={800} />)
+
+    const image = screen.getByAltText('Notion image')
+    expect(image.getAttribute('src')).toContain('/api/image?url=')
+    expect(decodeURIComponent(image.getAttribute('src'))).toContain('width=800')
+  })
+
   it('uses lazy loading by default', () => {
     render(<LazyImage {...defaultProps} />)
 
@@ -124,13 +135,13 @@ afterAll(() => {
     expect(mockIntersectionObserver).not.toHaveBeenCalled()
   })
 
-  it('handles load event', async () => {
+  it('handles load event', () => {
     const handleLoad = jest.fn()
     render(<LazyImage {...defaultProps} onLoad={handleLoad} priority />)
 
-    await waitFor(() => {
-      expect(handleLoad).toHaveBeenCalled()
-    })
+    fireEvent.load(screen.getByAltText('Test image'))
+
+    expect(handleLoad).toHaveBeenCalled()
   })
 
   it('handles error gracefully', () => {

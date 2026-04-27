@@ -47,7 +47,11 @@ export async function getStaticProps(req) {
   }
 
   // 预览文章内容
-  if (siteConfig('POST_LIST_PREVIEW', false, props?.NOTION_CONFIG)) {
+  const enableHomePostPreview =
+    siteConfig('POST_LIST_PREVIEW', false, props?.NOTION_CONFIG) &&
+    siteConfig('HOME_POST_LIST_PREVIEW', false, props?.NOTION_CONFIG)
+
+  if (enableHomePostPreview) {
     for (const i in props.posts) {
       const post = props.posts[i]
       if (post.password && post.password !== '') {
@@ -58,6 +62,11 @@ export async function getStaticProps(req) {
   }
 
   // 生成robotTxt
+  if (props.notice?.blockMap) {
+    props.notice = { ...props.notice }
+    delete props.notice.blockMap
+  }
+
   generateRobotsTxt(props)
   // 生成Feed订阅
   generateRss(props)

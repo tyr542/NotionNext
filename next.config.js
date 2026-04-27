@@ -296,7 +296,7 @@ const nextConfig = {
     )
 
     // 性能优化配置
-    if (!dev) {
+    if (!dev && process.env.NEXT_LEGACY_VENDOR_CHUNK === 'true') {
       // 生产环境优化
       config.optimization = {
         ...config.optimization,

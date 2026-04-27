@@ -1,7 +1,4 @@
-import Comment from '@/components/Comment'
 import replaceSearchResult from '@/components/Mark'
-import NotionPage from '@/components/NotionPage'
-import ShareBar from '@/components/ShareBar'
 import { siteConfig } from '@/lib/config'
 import { useGlobal } from '@/lib/global'
 import { isBrowser } from '@/lib/utils'
@@ -10,10 +7,6 @@ import dynamic from 'next/dynamic'
 import SmartLink from '@/components/SmartLink'
 import { useRouter } from 'next/router'
 import { createContext, useContext, useEffect, useRef } from 'react'
-import ArticleAdjacent from './components/ArticleAdjacent'
-import ArticleCopyright from './components/ArticleCopyright'
-import { ArticleLock } from './components/ArticleLock'
-import ArticleRecommend from './components/ArticleRecommend'
 import BlogPostArchive from './components/BlogPostArchive'
 import BlogPostListPage from './components/BlogPostListPage'
 import BlogPostListScroll from './components/BlogPostListScroll'
@@ -25,20 +18,29 @@ import Header from './components/Header'
 import Hero from './components/Hero'
 import PostHero from './components/PostHero'
 import RightFloatArea from './components/RightFloatArea'
-import RewardCard from './components/RewardCard'
 import SearchNav from './components/SearchNav'
 import SideRight from './components/SideRight'
 import SlotBar from './components/SlotBar'
 import TagItemMini from './components/TagItemMini'
-import TocDrawer from './components/TocDrawer'
-import TocDrawerButton from './components/TocDrawerButton'
 import CONFIG from './config'
 import { Style } from './style'
 
+const ArticleAdjacent = dynamic(() => import('./components/ArticleAdjacent'))
+const ArticleCopyright = dynamic(() => import('./components/ArticleCopyright'))
+const ArticleLock = dynamic(() =>
+  import('./components/ArticleLock').then(m => m.ArticleLock)
+)
+const ArticleRecommend = dynamic(() => import('./components/ArticleRecommend'))
 const AlgoliaSearchModal = dynamic(
   () => import('@/components/AlgoliaSearchModal'),
   { ssr: false }
 )
+const Comment = dynamic(() => import('@/components/Comment'), { ssr: false })
+const NotionPage = dynamic(() => import('@/components/NotionPage'))
+const RewardCard = dynamic(() => import('./components/RewardCard'))
+const ShareBar = dynamic(() => import('@/components/ShareBar'), { ssr: false })
+const TocDrawer = dynamic(() => import('./components/TocDrawer'), { ssr: false })
+const TocDrawerButton = dynamic(() => import('./components/TocDrawerButton'))
 
 // 主题全局状态
 const ThemeGlobalHexo = createContext()
@@ -125,8 +127,8 @@ const LayoutBase = props => {
               <Transition
                 show={!onLoading}
                 appear={true}
-                enter='transition ease-in-out duration-700 transform order-first'
-                enterFrom='opacity-0 translate-y-16'
+                enter='transition ease-out duration-150 transform order-first'
+                enterFrom='opacity-0 translate-y-4'
                 enterTo='opacity-100'
                 leave='transition ease-in-out duration-300 transform'
                 leaveFrom='opacity-100 translate-y-0'

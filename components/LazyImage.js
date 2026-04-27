@@ -1,4 +1,5 @@
 import { siteConfig } from '@/lib/config'
+import { toImageProxyUrl } from '@/lib/utils/imageProxy'
 import Head from 'next/head'
 import { useEffect, useRef, useState } from 'react'
 
@@ -16,17 +17,23 @@ export default function LazyImage({
   className,
   width,
   height,
+  imageMaxWidth,
   title,
   onLoad,
   onClick,
   style
 }) {
-  const maxWidth = siteConfig('IMAGE_COMPRESS_WIDTH')
+  const maxWidth = imageMaxWidth || siteConfig('IMAGE_COMPRESS_WIDTH')
   const defaultPlaceholderSrc = siteConfig('IMG_LAZY_LOAD_PLACEHOLDER')
+  const prioritySrc = resizeImageForViewport(src, maxWidth)
+  const displayPrioritySrc = priority
+    ? toImageProxyUrl(prioritySrc)
+    : prioritySrc
+  const initialSrc = priority
+    ? displayPrioritySrc || placeholderSrc || defaultPlaceholderSrc
+    : placeholderSrc || defaultPlaceholderSrc
   const imageRef = useRef(null)
-  const [currentSrc, setCurrentSrc] = useState(
-    placeholderSrc || defaultPlaceholderSrc
-  )
+  const [currentSrc, setCurrentSrc] = useState(initialSrc)
 
   /**
    * 占位图加载成功
@@ -66,17 +73,13 @@ export default function LazyImage({
 
   useEffect(() => {
     const adjustedImageSrc =
-      resizeImageForViewport(src, maxWidth) || defaultPlaceholderSrc
+      (priority
+        ? toImageProxyUrl(resizeImageForViewport(src, maxWidth))
+        : resizeImageForViewport(src, maxWidth)) || defaultPlaceholderSrc
 
     // 如果是优先级图片，直接加载
     if (priority) {
-      const img = new Image()
-      img.src = adjustedImageSrc
-      img.onload = () => {
-        setCurrentSrc(adjustedImageSrc)
-        handleImageLoaded(adjustedImageSrc)
-      }
-      img.onerror = handleImageError
+      setCurrentSrc(adjustedImageSrc)
       return
     }
 
@@ -137,7 +140,7 @@ export default function LazyImage({
     src: currentSrc,
     'data-src': src, // 存储原始图片地址
     alt: alt || 'Lazy loaded image',
-    onLoad: handleThumbnailLoaded,
+    onLoad: handleImageLoaded,
     onError: handleImageError,
     className: `${className || ''} lazy-image-placeholder`,
     style,
@@ -147,6 +150,7 @@ export default function LazyImage({
     // 性能优化属性
     loading: priority ? 'eager' : 'lazy',
     decoding: 'async',
+    fetchpriority: priority ? 'high' : 'auto',
     // 现代图片格式支持
     ...(siteConfig('WEBP_SUPPORT') && { 'data-webp': true }),
     ...(siteConfig('AVIF_SUPPORT') && { 'data-avif': true })
@@ -169,7 +173,8 @@ export default function LazyImage({
           <link
             rel='preload'
             as='image'
-            href={resizeImageForViewport(src, maxWidth)}
+            href={displayPrioritySrc}
+            fetchpriority='high'
           />
         </Head>
       )}
@@ -186,10 +191,6 @@ const resizeImageForViewport = (src, maxWidth) => {
     (typeof window !== 'undefined' && window?.screen?.width) || maxWidth,
     maxWidth
   )
-
-  if (screenWidth >= maxWidth) {
-    return src
-  }
 
   try {
     const url = new URL(src)

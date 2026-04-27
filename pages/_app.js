@@ -17,12 +17,18 @@ import { getQueryParam } from '../lib/utils'
 import BLOG from '@/blog.config'
 import ExternalPlugins from '@/components/ExternalPlugins'
 import SEO from '@/components/SEO'
-import { zhCN } from '@clerk/localizations'
 import dynamic from 'next/dynamic'
 // import { ClerkProvider } from '@clerk/nextjs'
-const ClerkProvider = dynamic(() =>
-  import('@clerk/nextjs').then(m => m.ClerkProvider)
-)
+const ClerkProvider = dynamic(async () => {
+  const [{ ClerkProvider }, { zhCN }] = await Promise.all([
+    import('@clerk/nextjs'),
+    import('@clerk/localizations')
+  ])
+
+  return function LocalizedClerkProvider(props) {
+    return <ClerkProvider localization={zhCN} {...props} />
+  }
+})
 
 /**
  * App挂载DOM 入口文件
@@ -64,7 +70,7 @@ const MyApp = ({ Component, pageProps }) => {
   return (
     <>
       {enableClerk ? (
-        <ClerkProvider localization={zhCN}>{content}</ClerkProvider>
+        <ClerkProvider>{content}</ClerkProvider>
       ) : (
         content
       )}

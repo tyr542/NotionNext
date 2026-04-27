@@ -208,6 +208,8 @@ const SEO = props => {
       <link rel='dns-prefetch' href='//www.google-analytics.com' />
       <link rel='dns-prefetch' href='//www.googletagmanager.com' />
       <link rel='preconnect' href='https://fonts.gstatic.com' crossOrigin='anonymous' />
+      <link rel='preconnect' href='https://www.notion.so' />
+      <link rel='preconnect' href='https://img.notionusercontent.com' />
 
       {/* 预加载关键资源 */}
       <link rel='preload' href='/fonts/inter-var.woff2' as='font' type='font/woff2' crossOrigin='anonymous' />

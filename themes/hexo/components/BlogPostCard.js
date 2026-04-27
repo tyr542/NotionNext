@@ -82,9 +82,10 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
              {/* 圖片容器改為 h-auto 配合 items-stretch 自動跟隨文字區高度 */}
             <SmartLink href={post?.href} className='block h-full w-full'>
                 <LazyImage
-                  priority={index === 1}
+                  priority={index < 2}
                   alt={post?.title}
                   src={post?.pageCoverThumbnail}
+                  imageMaxWidth={800}
                   className='h-full w-full object-cover object-center group-hover:scale-105 duration-500 transition-transform'
                 />
             </SmartLink>

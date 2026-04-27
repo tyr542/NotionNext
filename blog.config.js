@@ -19,7 +19,7 @@ const BLOG = {
   BIO: process.env.NEXT_PUBLIC_BIO || '一個非本科文組生的 AI 自學筆記。用 n8n、Claude 與 Notion 打造自動化工作流，分享提早下班的數位食譜。', // 作者简介
   LINK: process.env.NEXT_PUBLIC_LINK || 'https://gyozalab.com', // 网站地址
   KEYWORDS: process.env.NEXT_PUBLIC_KEYWORD || 'n8n 自動化工作流, Vibe Coding, AI Agent, AI 自學筆記, Notion, No-code, Claude, 煎餃的調味實驗室', // 网站关键词 英文逗号隔开
-  BLOG_FAVICON: process.env.NEXT_PUBLIC_FAVICON || '/favicon.ico', // blog favicon 配置, 默认使用 /public/favicon.ico，支持在线图片，如 https://img.imesong.com/favicon.png
+  BLOG_FAVICON: process.env.NEXT_PUBLIC_FAVICON || '/favicon.svg', // blog favicon 配置, 默认使用 /public/favicon.ico，支持在线图片，如 https://img.imesong.com/favicon.png
   BEI_AN: process.env.NEXT_PUBLIC_BEI_AN || '', // 备案号 闽ICP备XXXXXX
   BEI_AN_LINK: process.env.NEXT_PUBLIC_BEI_AN_LINK || '', // 备案查询链接，如果用了萌备等备案请在这里填写
   BEI_AN_GONGAN: process.env.NEXT_PUBLIC_BEI_AN_GONGAN || '', // 公安备案号，例如 '浙公网安备3xxxxxxxx8号'
