@@ -123,13 +123,8 @@ afterAll(() => {
     expect(handleClick).toHaveBeenCalledTimes(1)
   })
 
-  it('sets up IntersectionObserver when not priority', () => {
+  it('does not use IntersectionObserver any more (replaced by native loading=lazy)', () => {
     render(<LazyImage {...defaultProps} />)
-
-    expect(mockIntersectionObserver).toHaveBeenCalled()
-  })
-
-  it('does not set up IntersectionObserver for priority images', () => {
     render(<LazyImage {...defaultProps} priority />)
 
     expect(mockIntersectionObserver).not.toHaveBeenCalled()
