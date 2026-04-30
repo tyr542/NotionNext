@@ -146,4 +146,34 @@ describe('home page index', () => {
       summary: 'Short notice'
     })
   })
+
+  it('keeps homepage latest posts lightweight even when RSS generation mutates its input', async () => {
+    const latestPost = {
+      id: 'latest-post',
+      type: 'Post',
+      status: 'Published',
+      title: 'Latest post',
+      slug: 'latest-post',
+      summary: 'Summary',
+      publishDate: new Date('2026-04-30T00:00:00Z').getTime()
+    }
+    const { generateRss } = require('@/lib/utils/rss')
+    generateRss.mockImplementation(inputProps => {
+      inputProps.latestPosts[0].blockMap = { block: { heavy: {} } }
+      inputProps.latestPosts[0].content = ['heavy']
+      inputProps.latestPosts[0].toc = [{ id: 'heavy' }]
+    })
+    fetchGlobalAllData.mockResolvedValue({
+      allPages: [latestPost],
+      latestPosts: [latestPost],
+      NOTION_CONFIG: {}
+    })
+
+    const result = await getStaticProps({ locale: 'zh-TW' })
+
+    expect(generateRss).toHaveBeenCalledTimes(1)
+    expect(result.props.latestPosts[0]).not.toHaveProperty('blockMap')
+    expect(result.props.latestPosts[0]).not.toHaveProperty('content')
+    expect(result.props.latestPosts[0]).not.toHaveProperty('toc')
+  })
 })
