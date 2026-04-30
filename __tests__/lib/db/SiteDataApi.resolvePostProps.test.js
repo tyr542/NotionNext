@@ -135,4 +135,24 @@ describe('resolvePostProps', () => {
     expect(props.allPages).toBeUndefined()
     expect(props.invisiblePages).toBeUndefined()
   })
+
+  it('keeps latest post list items lightweight in global site data', async () => {
+    mockPagePropsById['published-1'].blockMap = {
+      block: {
+        heavy: { value: { type: 'text' } }
+      }
+    }
+    mockPagePropsById['published-1'].content = ['heavy']
+    mockPagePropsById['published-1'].toc = [{ id: 'heavy' }]
+
+    const { fetchGlobalAllData } = await import('@/lib/db/SiteDataApi')
+
+    const props = await fetchGlobalAllData({
+      from: 'test-lightweight-latest-posts'
+    })
+
+    expect(props.latestPosts[0]).not.toHaveProperty('blockMap')
+    expect(props.latestPosts[0]).not.toHaveProperty('content')
+    expect(props.latestPosts[0]).not.toHaveProperty('toc')
+  })
 })

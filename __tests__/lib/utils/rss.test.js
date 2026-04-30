@@ -26,7 +26,7 @@ import fs from 'fs'
 import { getPostBlocks } from '@/lib/db/SiteDataApi'
 import { generateRss } from '@/lib/utils/rss'
 
-const props = {
+const createProps = () => ({
   NOTION_CONFIG: {
     AUTHOR: 'Gyoza',
     LANG: 'zh-TW',
@@ -47,7 +47,7 @@ const props = {
       publishDay: '2026-04-30'
     }
   ]
-}
+})
 
 describe('generateRss', () => {
   beforeEach(() => {
@@ -55,6 +55,7 @@ describe('generateRss', () => {
   })
 
   it('coalesces concurrent runtime feed generation into one Notion render pass', async () => {
+    const props = createProps()
     let resolveBlocks
     getPostBlocks.mockImplementation(
       () =>
@@ -73,5 +74,18 @@ describe('generateRss', () => {
 
     expect(getPostBlocks).toHaveBeenCalledTimes(1)
     expect(fs.writeFileSync).toHaveBeenCalledTimes(3)
+  })
+
+  it('does not attach feed block maps back to latest post props', async () => {
+    const props = createProps()
+    getPostBlocks.mockResolvedValue({ block: { feedBlock: {} } })
+
+    await generateRss(props)
+
+    expect(getPostBlocks).toHaveBeenCalledTimes(1)
+    expect(fs.writeFileSync).toHaveBeenCalledTimes(3)
+    expect(props.latestPosts[0]).not.toHaveProperty('blockMap')
+    expect(props.latestPosts[0]).not.toHaveProperty('content')
+    expect(props.latestPosts[0]).not.toHaveProperty('toc')
   })
 })

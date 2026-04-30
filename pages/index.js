@@ -19,6 +19,23 @@ const Index = props => {
   return <DynamicLayout theme={theme} layoutName='LayoutIndex' {...props} />
 }
 
+const stripRichPostFields = post => {
+  if (!post || typeof post !== 'object') {
+    return post
+  }
+
+  const lightweightPost = { ...post }
+  delete lightweightPost.blockMap
+  delete lightweightPost.content
+  delete lightweightPost.toc
+  return lightweightPost
+}
+
+const createRssProps = props => ({
+  ...props,
+  latestPosts: props.latestPosts?.map(stripRichPostFields) || []
+})
+
 /**
  * SSG 获取数据
  * @returns
@@ -69,7 +86,7 @@ export async function getStaticProps(req) {
 
   generateRobotsTxt(props)
   // 生成Feed订阅
-  generateRss(props)
+  generateRss(createRssProps(props))
   // 生成
   generateSitemapXml(props)
   // 检查数据是否需要从algolia删除
