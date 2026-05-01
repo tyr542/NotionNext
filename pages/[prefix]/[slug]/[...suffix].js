@@ -1,7 +1,7 @@
 import BLOG from '@/blog.config'
 import { siteConfig } from '@/lib/config'
 import { fetchGlobalAllData, resolvePostProps } from '@/lib/db/SiteDataApi'
-import { checkSlugHasMorThanTwoSlash, processPostData } from '@/lib/utils/post'
+import { checkSlugHasMorThanTwoSlash } from '@/lib/utils/post'
 import { idToUuid } from 'notion-utils'
 import Slug from '..'
 

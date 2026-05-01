@@ -13,7 +13,10 @@ jest.mock('@/lib/db/notion/getNotionAPI', () => ({
   }
 }))
 
-import { getPageWithRetry } from '@/lib/db/notion/getPostBlocks'
+import {
+  formatNotionBlock,
+  getPageWithRetry
+} from '@/lib/db/notion/getPostBlocks'
 import notionAPI from '@/lib/db/notion/getNotionAPI'
 import { getDataFromCache } from '@/lib/cache/cache_manager'
 
@@ -134,5 +137,55 @@ describe('getPageWithRetry', () => {
 
     expect(getDataFromCache).toHaveBeenCalledWith('page_content_db-page-id')
     expect(result).toEqual(cachedRecordMap)
+  })
+})
+
+describe('formatNotionBlock URL sanitization', () => {
+  it('replaces scriptable Notion block URLs before rendering', () => {
+    const result = formatNotionBlock({
+      imageBlock: {
+        value: {
+          id: 'imageBlock',
+          type: 'image',
+          properties: {
+            source: [['javascript:alert(1)']]
+          },
+          file: {
+            url: 'data:text/html,<script>alert(1)</script>'
+          },
+          format: {
+            page_cover: 'vbscript:msgbox(1)'
+          }
+        }
+      }
+    })
+
+    expect(result.imageBlock.value.properties.source[0][0]).toBe(
+      'https://via.placeholder.com/1x1?text=Invalid+Image'
+    )
+    expect(result.imageBlock.value.file.url).toBe(
+      'https://via.placeholder.com/1x1?text=Invalid+Image'
+    )
+    expect(result.imageBlock.value.format.page_cover).toBe(
+      'https://via.placeholder.com/1x1?text=Invalid+Image'
+    )
+  })
+
+  it('preserves Notion attachment URLs so they can be signed later', () => {
+    const result = formatNotionBlock({
+      fileBlock: {
+        value: {
+          id: 'fileBlock',
+          type: 'file',
+          properties: {
+            source: [['attachment:test-id:image.png']]
+          }
+        }
+      }
+    })
+
+    expect(result.fileBlock.value.properties.source[0][0]).toBe(
+      'https://notion.so/signed/attachment%3Atest-id%3Aimage.png?table=block&id=fileBlock'
+    )
   })
 })

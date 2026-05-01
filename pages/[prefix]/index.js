@@ -5,10 +5,10 @@ import { siteConfig } from '@/lib/config'
 import { fetchGlobalAllData, resolvePostProps } from '@/lib/db/SiteDataApi'
 import { useGlobal } from '@/lib/global'
 import { getPageTableOfContents } from '@/lib/db/notion/getPageTableOfContents'
+import { verifyArticlePassword } from '@/lib/utils/articlePassword'
 import { getPasswordQuery } from '@/lib/utils/password'
-import { checkSlugHasMorThanTwoSlash, checkSlugHasNoSlash, processPostData } from '@/lib/utils/post'
+import { checkSlugHasNoSlash } from '@/lib/utils/post'
 import { DynamicLayout } from '@/themes/theme'
-import md5 from 'js-md5'
 import { useRouter } from 'next/router'
 import { idToUuid } from 'notion-utils'
 import { useEffect, useState } from 'react'
@@ -32,12 +32,16 @@ const Slug = props => {
    * 验证文章密码
    * @param {*} passInput
    */
-  const validPassword = passInput => {
+  const validPassword = async passInput => {
     if (!post) {
       return false
     }
-    const encrypt = md5(post?.slug + passInput)
-    if (passInput && encrypt === post?.password) {
+    const isValid = await verifyArticlePassword({
+      slug: post?.slug,
+      storedPassword: post?.password,
+      passInput
+    })
+    if (isValid) {
       setLock(false)
       // 输入密码存入localStorage，下次自动提交
       localStorage.setItem('password_' + router.asPath, passInput)
@@ -49,6 +53,7 @@ const Slug = props => {
 
   // 文章加载
   useEffect(() => {
+    let cancelled = false
     // 文章加密
     if (post?.password && post?.password !== '') {
       setLock(true)
@@ -57,15 +62,26 @@ const Slug = props => {
     }
 
     // 读取上次记录 自动提交密码
-    const passInputs = getPasswordQuery(router.asPath)
-    if (passInputs.length > 0) {
+    const unlockFromStoredPasswords = async () => {
+      const passInputs = getPasswordQuery(router.asPath)
       for (const passInput of passInputs) {
-        if (validPassword(passInput)) {
+        if (cancelled) {
+          return
+        }
+        if (await validPassword(passInput)) {
           break // 密码验证成功，停止尝试
         }
       }
     }
-  }, [post])
+
+    if (post?.password && post?.password !== '') {
+      unlockFromStoredPasswords()
+    }
+
+    return () => {
+      cancelled = true
+    }
+  }, [post, router.asPath])
 
   // 文章加载
   useEffect(() => {
