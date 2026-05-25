@@ -96,7 +96,7 @@ const nextConfig = {
     : process.env.NEXT_BUILD_STANDALONE === 'true'
       ? 'standalone'
       : undefined,
-  staticPageGenerationTimeout: 120,
+  staticPageGenerationTimeout: 300,
 
   // 性能优化配置
   compress: true,
@@ -127,17 +127,9 @@ const nextConfig = {
     // 图片尺寸优化
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    // 允许next/image加载的图片 域名
-    domains: [
-      'gravatar.com',
-      'www.notion.so',
-      'img.notionusercontent.com',
-      'avatars.githubusercontent.com',
-      'images.unsplash.com',
-      'source.unsplash.com',
-      'p1.qhimg.com',
-      'webmention.io',
-      'ko-fi.com'
+    remotePatterns: [
+      { protocol: 'https', hostname: '**' },
+      { protocol: 'http', hostname: '**' }
     ],
     // 图片加载器优化
     loader: 'default',
@@ -285,9 +277,21 @@ const nextConfig = {
   webpack: (config, { dev, isServer }) => {
     // 动态主题：添加 resolve.alias 配置，将动态路径映射到实际路径
     config.resolve.alias['@'] = path.resolve(__dirname)
+    config.resolve.alias['lodash.throttle'] = path.resolve(
+      __dirname,
+      'lib/utils/throttle.js'
+    )
 
     if (!isServer) {
       console.log('[默认主题]', path.resolve(__dirname, 'themes', THEME))
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        net: false,
+        tls: false,
+        dns: false,
+        path: false
+      }
     }
     config.resolve.alias['@theme-components'] = path.resolve(
       __dirname,
