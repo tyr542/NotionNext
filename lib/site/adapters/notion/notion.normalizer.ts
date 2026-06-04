@@ -28,6 +28,7 @@ export function normalizeNotionSite(
     allPages: [],
     allNavPages: [],
     latestPosts: [],
+    latestUpdatedPosts: [],
     categoryOptions: [],
     tagOptions: [],
     customNav: [],

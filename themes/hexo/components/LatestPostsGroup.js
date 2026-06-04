@@ -14,6 +14,10 @@ const LatestPostsGroup = ({ latestPosts, siteInfo }) => {
   // 获取当前路径
   const currentPath = useRouter().asPath
   const { locale } = useGlobal()
+  const latestUpdatesLabel =
+    locale?.COMMON?.LATEST_UPDATES ||
+    locale?.COMMON?.LAST_EDITED_TIME ||
+    'Latest updates'
 
   if (!latestPosts) {
     return <></>
@@ -24,7 +28,7 @@ const LatestPostsGroup = ({ latestPosts, siteInfo }) => {
       <div className=' mb-2 px-1 flex flex-nowrap justify-between'>
         <div>
           <i className='mr-2 fas fas fa-history' />
-          {locale.COMMON.LATEST_POSTS}
+          {latestUpdatesLabel}
         </div>
       </div>
       {latestPosts.map(post => {

@@ -11,6 +11,7 @@ export function handleDataBeforeReturn(db: SiteData): SiteData {
   db.allNavPages = cleanPages(db.allNavPages, db.tagOptions)
   db.allPages = cleanPages(db.allPages, db.tagOptions)
   db.latestPosts = cleanPages(db.latestPosts, db.tagOptions)
+  db.latestUpdatedPosts = cleanPages(db.latestUpdatedPosts, db.tagOptions)
 
   delete db.block
   delete db.schema

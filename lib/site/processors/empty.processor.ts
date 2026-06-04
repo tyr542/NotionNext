@@ -15,6 +15,7 @@ export function EmptyData(pageId?: string): SiteData {
     allPages: [],
     allNavPages: [],
     latestPosts: [],
+    latestUpdatedPosts: [],
     categoryOptions: [],
     tagOptions: [],
     customNav: [],

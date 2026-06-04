@@ -82,6 +82,7 @@ export interface SiteData {
   allPages: BasePage[]
   allNavPages: NavPage[]
   latestPosts: BasePage[]
+  latestUpdatedPosts: BasePage[]
 
   categoryOptions: UnknownRecord[]
   tagOptions: UnknownRecord[]

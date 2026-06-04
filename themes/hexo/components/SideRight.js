@@ -36,6 +36,7 @@ export default function SideRight(props) {
     currentCategory,
     categories,
     latestPosts,
+    latestUpdatedPosts,
     tags,
     currentTag,
     showCategory,
@@ -85,10 +86,13 @@ export default function SideRight(props) {
           </Card>
         )}
         {siteConfig('HEXO_WIDGET_LATEST_POSTS', null, CONFIG) &&
-          latestPosts &&
-          latestPosts.length > 0 && (
+          (latestUpdatedPosts || latestPosts) &&
+          (latestUpdatedPosts || latestPosts).length > 0 && (
             <Card>
-              <LatestPostsGroup {...props} />
+              <LatestPostsGroup
+                {...props}
+                latestPosts={latestUpdatedPosts || latestPosts}
+              />
             </Card>
           )}
 
