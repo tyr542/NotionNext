@@ -49,7 +49,7 @@ export function InfoCard(props) {
       </div>
 
       {/* 2. BIO 簡介（核心文案） */}
-      <div className='text-sm text-left px-6 py-4 leading-relaxed text-gray-700 dark:text-gray-300'>
+      <div className='text-base text-left px-6 py-4 leading-relaxed text-gray-700 dark:text-gray-300'>
         <p className=''>{siteConfig('BIO')}</p>
       </div>
       
