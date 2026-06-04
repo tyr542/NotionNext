@@ -25,11 +25,12 @@ const LatestPostsGroup = ({ latestPosts, siteInfo }) => {
 
   return (
     <>
-      <div className=' mb-2 px-1 flex flex-nowrap justify-between'>
-        <div>
-          <i className='mr-2 fas fas fa-history' />
+      <div className='latest-updates-heading mb-2 px-1 flex flex-nowrap justify-between'>
+        <div className='latest-updates-heading-label'>
+          <i className='latest-updates-heading-icon mr-2 fas fas fa-history' />
           {latestUpdatesLabel}
         </div>
+        <div className='latest-updates-heading-divider' />
       </div>
       {latestPosts.map(post => {
         const headerImage = post?.pageCoverThumbnail
@@ -43,8 +44,8 @@ const LatestPostsGroup = ({ latestPosts, siteInfo }) => {
             title={post.title}
             href={post?.href}
             passHref
-            className={'my-3 flex'}>
-            <div className='w-20 h-14 overflow-hidden relative'>
+            className={'latest-updates-item my-3 flex items-start'}>
+            <div className='latest-updates-thumb w-20 h-14 overflow-hidden relative'>
               <LazyImage
                 alt={post?.title}
                 src={`${headerImage}`}
@@ -54,12 +55,16 @@ const LatestPostsGroup = ({ latestPosts, siteInfo }) => {
             <div
               className={
                 (selected ? ' text-indigo-400 ' : 'dark:text-gray-400 ') +
-                ' text-sm overflow-x-hidden hover:text-indigo-600 px-2 duration-200 w-full rounded ' +
-                ' hover:text-indigo-400 cursor-pointer items-center flex'
+                ' latest-updates-body text-sm min-w-0 flex-1 overflow-hidden hover:text-indigo-600 duration-200 rounded ' +
+                ' hover:text-indigo-400 cursor-pointer'
               }>
-              <div>
-                <div className='line-clamp-2 menu-link'>{post.title}</div>
-                <div className='text-gray-500'>{post.lastEditedDay}</div>
+              <div className='latest-updates-copy'>
+                {post.lastEditedDay && (
+                  <div className='latest-updates-meta'>{post.lastEditedDay}</div>
+                )}
+                <div className='latest-updates-title break-words whitespace-normal leading-snug'>
+                  {post.title}
+                </div>
               </div>
             </div>
           </SmartLink>

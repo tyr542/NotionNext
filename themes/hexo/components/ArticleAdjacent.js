@@ -12,22 +12,34 @@ export default function ArticleAdjacent ({ prev, next }) {
     return <></>
   }
   return (
-    <section className='pt-8 text-gray-800 items-center text-xs md:text-sm flex justify-between m-1 '>
+    <section className='grid gap-4 pt-8 text-gray-800 md:grid-cols-2'>
       <SmartLink
         href={`/${prev.slug}`}
         passHref
-        className='py-1  cursor-pointer hover:underline justify-start items-center dark:text-white flex w-full h-full duration-200'>
-
-        <i className='mr-1 fas fa-angle-left' />{prev.title}
-
+        className='group flex min-h-[88px] w-full items-start gap-3 rounded-lg border border-gray-200 bg-white px-4 py-3 transition-colors duration-200 hover:border-gray-300 dark:border-gray-700 dark:bg-transparent dark:text-white dark:hover:border-gray-500'>
+        <i className='fas fa-angle-left mt-1 text-gray-400 transition-colors duration-200 group-hover:text-gray-600 dark:text-gray-500 dark:group-hover:text-gray-300' />
+        <div className='min-w-0 flex-1'>
+          <div className='mb-1 text-xs tracking-wide text-gray-400 dark:text-gray-500'>
+            上一篇
+          </div>
+          <div className='line-clamp-2 text-sm leading-6 text-gray-700 transition-colors duration-200 group-hover:text-gray-900 dark:text-gray-200 dark:group-hover:text-white'>
+            {prev.title}
+          </div>
+        </div>
       </SmartLink>
       <SmartLink
         href={`/${next.slug}`}
         passHref
-        className='py-1 cursor-pointer hover:underline justify-end items-center dark:text-white flex w-full h-full duration-200'>
-        {next.title}
-        <i className='ml-1 my-1 fas fa-angle-right' />
-
+        className='group flex min-h-[88px] w-full items-start gap-3 rounded-lg border border-gray-200 bg-white px-4 py-3 text-right transition-colors duration-200 hover:border-gray-300 dark:border-gray-700 dark:bg-transparent dark:text-white dark:hover:border-gray-500'>
+        <div className='min-w-0 flex-1'>
+          <div className='mb-1 text-xs tracking-wide text-gray-400 dark:text-gray-500'>
+            下一篇
+          </div>
+          <div className='line-clamp-2 text-sm leading-6 text-gray-700 transition-colors duration-200 group-hover:text-gray-900 dark:text-gray-200 dark:group-hover:text-white'>
+            {next.title}
+          </div>
+        </div>
+        <i className='fas fa-angle-right mt-1 text-gray-400 transition-colors duration-200 group-hover:text-gray-600 dark:text-gray-500 dark:group-hover:text-gray-300' />
       </SmartLink>
     </section>
   )

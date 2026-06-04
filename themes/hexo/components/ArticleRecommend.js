@@ -5,17 +5,16 @@ import SmartLink from '@/components/SmartLink'
 import CONFIG from '../config'
 
 /**
- * 关联推荐文章
- * @param {prev,next} param0
+ * 關聯推薦文章
  * @returns
  */
 export default function ArticleRecommend({ recommendPosts, siteInfo }) {
   const { locale } = useGlobal()
+  const visiblePosts = recommendPosts?.slice(0, 6) || []
 
   if (
     !siteConfig('HEXO_ARTICLE_RECOMMEND', null, CONFIG) ||
-    !recommendPosts ||
-    recommendPosts.length === 0
+    visiblePosts.length === 0
   ) {
     return <></>
   }
@@ -26,11 +25,9 @@ export default function ArticleRecommend({ recommendPosts, siteInfo }) {
         <i className='fas fa-thumbs-up' />
         {locale.COMMON.RELATE_POSTS}
       </div>
-      <div className='grid grid-cols-2 md:grid-cols-3 gap-4'>
-        {recommendPosts.map(post => {
-          const headerImage = post?.pageCoverThumbnail
-            ? post.pageCoverThumbnail
-            : siteInfo?.pageCover
+      <div className='grid grid-cols-2 gap-4 md:grid-cols-3'>
+        {visiblePosts.map(post => {
+          const headerImage = post?.pageCoverThumbnail || siteInfo?.pageCover
 
           return (
             <SmartLink
@@ -38,21 +35,19 @@ export default function ArticleRecommend({ recommendPosts, siteInfo }) {
               title={post.title}
               href={post?.href}
               passHref
-              className='flex h-40 cursor-pointer overflow-hidden'>
-              <div className='h-full w-full relative group'>
-                <div className='flex items-center justify-center w-full h-full duration-300'>
-                  <div className='z-10 text-lg px-4 font-bold text-white text-center shadow-text select-none'>
+              className='flex h-40 cursor-pointer overflow-hidden rounded-xl'>
+              <div className='relative h-full w-full group'>
+                <div className='flex h-full w-full items-center justify-center duration-300'>
+                  <div className='z-10 line-clamp-3 select-none px-4 text-center text-lg font-bold text-white shadow-text'>
                     {post.title}
                   </div>
                 </div>
                 <LazyImage
                   src={headerImage}
-                  className='absolute top-0 w-full h-full object-cover object-center group-hover:scale-110 group-hover:brightness-50 transform duration-200'
+                  className='absolute top-0 h-full w-full object-cover object-center transform duration-200 group-hover:scale-110 group-hover:brightness-50'
                 />
-
-                {/* 卡片的阴影遮罩，为了凸显图片上的文字 */}
-                <div className='h-3/4 w-full absolute left-0 bottom-0'>
-                  <div className='h-full w-full absolute opacity-80 group-hover:opacity-100 transition-all duration-1000 bg-gradient-to-b from-transparent to-black'></div>
+                <div className='absolute bottom-0 left-0 h-3/4 w-full'>
+                  <div className='absolute h-full w-full bg-gradient-to-b from-transparent to-black opacity-80 transition-all duration-700 group-hover:opacity-100' />
                 </div>
               </div>
             </SmartLink>
