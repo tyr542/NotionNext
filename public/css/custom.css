@@ -1426,6 +1426,51 @@ html.dark .notion-inline-code {
 
 
 /* ==========================================================================
+   15.6 TL;DR / 核心結論區塊
+   觸發：文章 H1 下、第一個 H2 前的 💡 callout（由 useAdjustStyle 標記 .tldr-callout）
+   ========================================================================== */
+#article-wrapper .notion-callout.tldr-callout {
+    display: block !important;
+    margin: 0.4rem 0 1.7rem 0 !important;
+    padding: 0.85rem 1.1rem 0.95rem !important;
+    border: 1px solid rgba(140, 123, 117, 0.25) !important;
+    border-left: 4px solid var(--color-accent) !important;
+    border-radius: 8px !important;
+    background: rgba(140, 123, 117, 0.07) !important;
+    box-shadow: none !important;
+}
+
+#article-wrapper .notion-callout.tldr-callout::before {
+    content: "核心結論";
+    display: block;
+    margin-bottom: 0.4rem;
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--color-accent);
+}
+
+/* TL;DR 用文字小標識別，隱藏原本的 💡 icon */
+#article-wrapper .notion-callout.tldr-callout .notion-page-icon {
+    display: none !important;
+}
+
+#article-wrapper .notion-callout.tldr-callout .notion-callout-text {
+    margin: 0 !important;
+    font-size: 0.99rem !important;
+    line-height: 1.75 !important;
+    color: var(--text-ink) !important;
+}
+
+@media (max-width: 640px) {
+    #article-wrapper .notion-callout.tldr-callout {
+        padding: 0.75rem 0.95rem 0.85rem !important;
+    }
+}
+
+
+/* ==========================================================================
    15.5 文章尾部間距（餵食煎餃 + 相關文章，原本空白太多砍半）
    ========================================================================== */
 .reward-card {
