@@ -1,9 +1,10 @@
 import { siteConfig } from '@/lib/config'
+import { extractFAQSchema } from '@/lib/db/notion/extractFAQSchema'
 import { useGlobal } from '@/lib/global'
 import { loadExternalResource } from '@/lib/utils'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 
 /**
  * 页面的Head头，有用于SEO
@@ -98,6 +99,13 @@ const SEO = props => {
   const FACEBOOK_PAGE = siteConfig('FACEBOOK_PAGE', null, NOTION_CONFIG)
 
   const AUTHOR = siteConfig('AUTHOR')
+
+  // FAQ Schema 自動化：文章頁若偵測到「常見問題」區塊，產生 FAQPage 結構化資料
+  const faqSchema = useMemo(
+    () => (post?.blockMap ? extractFAQSchema(post) : null),
+    [post?.id]
+  )
+
   return (
     <Head>
       <link rel='icon' href={favicon} />
@@ -202,6 +210,14 @@ const SEO = props => {
           __html: JSON.stringify(generateStructuredData(meta, siteInfo, url, image, AUTHOR))
         }}
       />
+
+      {/* FAQ 结构化数据（FAQPage），由文章内「常见问题」区块自动生成 */}
+      {faqSchema && (
+        <script
+          type='application/ld+json'
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
 
       {/* DNS预取和预连接 */}
       <link rel='dns-prefetch' href='//fonts.googleapis.com' />
