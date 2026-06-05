@@ -1288,8 +1288,7 @@ html.dark .notion-inline-code {
    14. 引言 (Quote) 樣式
    ========================================================================== */
 #article-wrapper .notion-quote,
-#article-wrapper blockquote,
-#article-wrapper .notion-callout {
+#article-wrapper blockquote {
     width: auto !important;
     max-width: 100% !important;
     box-sizing: border-box !important;
@@ -1349,17 +1348,28 @@ html.dark .notion-inline-code {
 /* ==========================================================================
    15. Callout 提示框樣式
    ========================================================================== */
-#article-wrapper .notion-callout {
+/* 15.1 一般 callout 的框 / grid / icon 並排版式。
+   .changelog-callout 是「一般 callout + 標題宋體」的強化版，沿用此框、只覆蓋差異，故不排除；
+   .tldr-callout 是完全不同的版式（無框、雙線、隱藏 icon），故排除，避免互相汙染。 */
+#article-wrapper .notion-callout:not(.tldr-callout) {
     display: grid !important;
     grid-template-columns: 1.5rem minmax(0, 1fr) !important;
     column-gap: 0.7rem !important;
     align-items: start !important;
+    width: auto !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
     margin: 1rem 0 !important;
     padding: 0.8rem 0.95rem !important;
     border: 1px solid rgba(140, 123, 117, 0.22) !important;
     border-radius: 12px !important;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
     overflow: visible !important;
+}
+
+/* 15.2 無 icon 防呆：callout 沒設 emoji 時，文字撐滿整列、不崩成直條 */
+#article-wrapper .notion-callout:not(.tldr-callout) > .notion-callout-text:only-child {
+    grid-column: 1 / -1 !important;
 }
 
 #article-wrapper .notion-callout .notion-callout-title {
@@ -1473,6 +1483,21 @@ html.dark .notion-inline-code {
     #article-wrapper .notion-callout.tldr-callout::before {
         letter-spacing: 0.15em !important;
     }
+}
+
+
+/* ==========================================================================
+   15.7 更新日誌 (.changelog-callout)
+   觸發：icon 為 📝 的 callout（由 useAdjustStyle 標記 .changelog-callout）
+   保留 callout 外框與 📝 icon；首行標題改宋體小標，排版收乾淨
+   ========================================================================== */
+#article-wrapper .notion-callout.changelog-callout .notion-callout-text > .notion-text:first-child {
+    margin-bottom: 0.55rem !important;
+    font-family: var(--font-serif) !important;
+    font-size: 1.05rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.03em !important;
+    color: var(--text-ink) !important;
 }
 
 
