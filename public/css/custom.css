@@ -164,7 +164,7 @@ strong, b, .notion-bold {
 #article-wrapper .notion-numbered_list-item {
     font-size: 1.125rem !important;
     font-weight: 400 !important;
-    line-height: 1.5 !important;
+    line-height: 1.7 !important;
     margin-bottom: 0 !important;
     color: var(--text-ink) !important;
 }
@@ -1232,7 +1232,7 @@ aside .shadow-md > div:first-child svg,
 .collapse-wrapper .flex.justify-between {       /* header：語言標題列 */
     color: #57606a !important;
 }
-.collapse-wrapper h3 {                          /* 語言名（清掉預設 margin 修對齊）*/
+#article-wrapper .collapse-wrapper h3 {          /* 語言名（清掉預設 margin 修對齊）*/
     color: #57606a !important;
     font-size: 0.8rem !important;
     font-weight: 500 !important;
@@ -1304,7 +1304,7 @@ html.dark .notion-inline-code {
     border-left: 3px solid rgba(140, 123, 117, 0.55) !important;
     border-radius: 0 14px 14px 0 !important;
     background:
-        linear-gradient(90deg, rgba(140, 123, 117, 0.08) 0%, rgba(140, 123, 117, 0.03) 38%, rgba(140, 123, 117, 0.00) 100%) !important;
+        linear-gradient(90deg, rgba(140, 123, 117, 0.08) 0%, rgba(140, 123, 117, 0.04) 60%, rgba(140, 123, 117, 0.00) 100%) !important;
     font-family: var(--font-serif) !important;
     font-size: 1.08rem !important;
     font-style: italic !important;
@@ -1359,8 +1359,8 @@ html.dark .notion-inline-code {
     width: auto !important;
     max-width: 100% !important;
     box-sizing: border-box !important;
-    margin: 1rem 0 !important;
-    padding: 0.8rem 0.95rem !important;
+    margin: 0.6rem 0 !important;
+    padding: 1rem 1.6rem 1rem 1.2rem !important;
     border: 1px solid rgba(140, 123, 117, 0.22) !important;
     border-radius: 12px !important;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
@@ -1370,6 +1370,13 @@ html.dark .notion-inline-code {
 /* 15.2 無 icon 防呆：callout 沒設 emoji 時，文字撐滿整列、不崩成直條 */
 #article-wrapper .notion-callout:not(.tldr-callout) > .notion-callout-text:only-child {
     grid-column: 1 / -1 !important;
+}
+
+/* 15.3 Callout 內嵌表格修復：table 在 grid cell 內寬度計算會崩，強制撐滿 */
+#article-wrapper .notion-callout .notion-callout-text .notion-simple-table {
+    display: table !important;
+    width: 100% !important;
+    max-width: 100% !important;
 }
 
 #article-wrapper .notion-callout .notion-callout-title {
@@ -1459,7 +1466,7 @@ html.dark .notion-inline-code {
 #article-wrapper .notion-callout.tldr-callout::before {
     content: "核心結論";
     display: block;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.05rem;
     font-family: var(--font-serif);
     font-size: 0.82rem;
     font-weight: 700;
@@ -1488,16 +1495,83 @@ html.dark .notion-inline-code {
 
 /* ==========================================================================
    15.7 更新日誌 (.changelog-callout)
-   觸發：icon 為 📝 的 callout（由 useAdjustStyle 標記 .changelog-callout）
-   保留 callout 外框與 📝 icon；首行標題改宋體小標，排版收乾淨
+   觸發：icon 為 📝 的 callout（由 useAdjustStyle 標記 + 包 <details> 摺疊）
+   方案 E：摺疊標籤 — 預設收合只顯示標題行，展開後小字緊湊排列
    ========================================================================== */
-#article-wrapper .notion-callout.changelog-callout .notion-callout-text > .notion-text:first-child {
-    margin-bottom: 0.55rem !important;
+#article-wrapper .notion-callout.changelog-callout {
+    background-color: rgba(140, 123, 117, 0.03) !important;
+    padding: 0.5rem 1.2rem 0.5rem 1rem !important;
+    align-items: center !important;
+}
+
+#article-wrapper .notion-callout.changelog-callout .notion-page-icon {
+    font-size: 0.8rem !important;
+    width: 1.2rem;
+    height: 1.2rem;
+    opacity: 0.6;
+    align-self: center !important;
+    transform: translateY(-5px) !important;
+}
+
+/* summary 標題行：殺掉所有瀏覽器預設三角形 */
+#article-wrapper .notion-callout.changelog-callout summary {
+    cursor: pointer;
+    list-style: none !important;
+    list-style-type: none !important;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+#article-wrapper .notion-callout.changelog-callout summary::-webkit-details-marker,
+#article-wrapper .notion-callout.changelog-callout summary::marker {
+    display: none !important;
+    content: "" !important;
+    font-size: 0 !important;
+}
+#article-wrapper .notion-callout.changelog-callout summary::after {
+    content: "▸";
+    font-size: 0.65rem;
+    color: rgba(140, 123, 117, 0.45);
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+}
+#article-wrapper .notion-callout.changelog-callout details[open] > summary::after {
+    transform: rotate(90deg);
+}
+#article-wrapper .notion-callout.changelog-callout summary .notion-text {
+    margin: 0 !important;
     font-family: var(--font-serif) !important;
-    font-size: 1.05rem !important;
-    font-weight: 700 !important;
+    font-size: 0.82rem !important;
+    font-weight: 600 !important;
     letter-spacing: 0.03em !important;
-    color: var(--text-ink) !important;
+    color: rgba(44, 44, 44, 0.72) !important;
+    line-height: 1.4 !important;
+}
+
+/* 展開後的內容 */
+#article-wrapper .notion-callout.changelog-callout details[open] {
+    padding-top: 0.3rem;
+}
+#article-wrapper .notion-callout.changelog-callout .notion-callout-text {
+    font-size: 0.78rem !important;
+    line-height: 1.45 !important;
+    color: rgba(44, 44, 44, 0.65) !important;
+}
+#article-wrapper .notion-callout.changelog-callout .notion-callout-text .notion-text,
+#article-wrapper .notion-callout.changelog-callout .notion-callout-text .notion-list,
+#article-wrapper .notion-callout.changelog-callout .notion-callout-text li {
+    font-size: 0.78rem !important;
+    line-height: 1.4 !important;
+}
+#article-wrapper .notion-callout.changelog-callout details > .notion-text {
+    margin-top: 0.15rem !important;
+    font-weight: 600;
+    color: rgba(44, 44, 44, 0.6) !important;
+}
+#article-wrapper .notion-callout.changelog-callout details > .notion-list {
+    margin-top: 0 !important;
+    margin-bottom: 0.1rem !important;
+    padding-left: 1.2rem !important;
 }
 
 
