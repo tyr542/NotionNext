@@ -18,18 +18,20 @@ export default function RewardCard() {
             width: '100%',
             marginTop: '3rem',
             marginBottom: '2rem',
-            padding: '1.75rem 2rem',
+            padding: '1.25rem 2rem 1.75rem',
             borderRadius: '12px',
-            backgroundColor: 'var(--card-bg, #ffffff)',
+            backgroundColor: 'rgba(255, 255, 255, 0.6)',
             border: '1px solid rgba(0,0,0,0.03)',
             boxShadow: '0 4px 12px rgba(0,0,0,0.03)',
             transition: 'all 0.3s ease',
             display: 'flex',
+            flexDirection: 'column',
             alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '2rem',
+            justifyContent: 'center',
+            textAlign: 'center',
+            gap: '1.25rem',
         }}>
-            <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ minWidth: 0 }}>
                 <h3 style={{
                     fontFamily: 'var(--font-serif)',
                     fontWeight: 700,
@@ -38,7 +40,6 @@ export default function RewardCard() {
                     letterSpacing: '0.02em',
                     marginBottom: '0.4rem',
                     lineHeight: 1.4,
-                    whiteSpace: 'nowrap',
                 }}>
                     這篇有幫到你嗎？歡迎餵食煎餃 🥟
                 </h3>
