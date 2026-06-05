@@ -71,8 +71,12 @@ export default function SideRight(props) {
 
         {showCategory && (
           <Card>
-            <div className='ml-2 mb-1 '>
-              <i className='fas fa-th' /> {locale.COMMON.CATEGORY}
+            <div className='section-heading mb-2 flex flex-nowrap justify-between'>
+              <div className='section-heading-label'>
+                <i className='section-heading-icon mr-2 fas fa-folder' />
+                {locale.COMMON.CATEGORY}
+              </div>
+              <div className='section-heading-divider' />
             </div>
             <CategoryGroup
               currentCategory={currentCategory}
@@ -82,6 +86,13 @@ export default function SideRight(props) {
         )}
         {showTag && (
           <Card>
+            <div className='section-heading mb-2 flex flex-nowrap justify-between'>
+              <div className='section-heading-label'>
+                <i className='section-heading-icon mr-2 fas fa-tag' />
+                {locale.COMMON.TAGS}
+              </div>
+              <div className='section-heading-divider' />
+            </div>
             <TagGroups tags={tags} currentTag={currentTag} />
           </Card>
         )}

@@ -65,9 +65,12 @@ const Catalog = ({ toc }) => {
 
   return (
     <div className='px-3 py-1'>
-      <div className='w-full'>
-        <i className='mr-1 fas fa-stream' />
-        {locale.COMMON.TABLE_OF_CONTENTS}
+      <div className='section-heading mb-2 flex flex-nowrap justify-between'>
+        <div className='section-heading-label'>
+          <i className='section-heading-icon mr-2 fas fa-stream' />
+          {locale.COMMON.TABLE_OF_CONTENTS}
+        </div>
+        <div className='section-heading-divider' />
       </div>
       <div className='w-full py-3'>
         <Progress />

@@ -17,9 +17,12 @@ const Announcement = ({ post, className }) => {
           id='announcement-wrapper'
           className='sidebar-card'
         >
-          <div className='sidebar-title'>
-            <i className='fas fa-bullhorn' />
-            {locale.COMMON.ANNOUNCEMENT}
+          <div className='section-heading mb-2 flex flex-nowrap justify-between'>
+            <div className='section-heading-label'>
+              <i className='section-heading-icon mr-2 fas fa-bullhorn' />
+              {locale.COMMON.ANNOUNCEMENT}
+            </div>
+            <div className='section-heading-divider' />
           </div>
 
           {post && (

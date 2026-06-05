@@ -1,9 +1,6 @@
-import { useGlobal } from '@/lib/global'
 import SmartLink from '@/components/SmartLink'
 
 const CategoryGroup = ({ currentCategory, categories }) => {
-  const { locale } = useGlobal()
-
   if (!categories) {
     return <></>
   }
@@ -11,12 +8,6 @@ const CategoryGroup = ({ currentCategory, categories }) => {
   return (
     <div id='category-group-wrapper'>
       <section className='sidebar-card'>
-        
-        <div className='sidebar-title'>
-          <i className='fas fa-folder' />
-          {locale.COMMON.CATEGORY}
-        </div>
-
         <div id='category-list' className='category-list'>
           {categories.map(category => {
             const selected = currentCategory === category.name

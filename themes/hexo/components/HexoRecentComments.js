@@ -26,9 +26,12 @@ const HexoRecentComments = (props) => {
 
   return (
         <Card >
-            <div className=" mb-2 px-1 justify-between">
-                <i className="mr-2 fas fas fa-comment" />
-                {locale.COMMON.RECENT_COMMENTS}
+            <div className='section-heading mb-2 flex flex-nowrap justify-between'>
+                <div className='section-heading-label'>
+                    <i className='section-heading-icon mr-2 fas fa-comment' />
+                    {locale.COMMON.RECENT_COMMENTS}
+                </div>
+                <div className='section-heading-divider' />
             </div>
 
             {onLoading && <div>Loading...<i className='ml-2 fas fa-spinner animate-spin' /></div>}

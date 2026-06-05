@@ -21,9 +21,12 @@ export default function ArticleRecommend({ recommendPosts, siteInfo }) {
 
   return (
     <div className='pt-8'>
-      <div className='section-title mb-2 dark:text-gray-300'>
-        <i className='fas fa-thumbs-up' />
-        {locale.COMMON.RELATE_POSTS}
+      <div className='section-heading mb-2 flex flex-nowrap justify-between'>
+        <div className='section-heading-label'>
+          <i className='section-heading-icon mr-2 fas fa-thumbs-up' />
+          {locale.COMMON.RELATE_POSTS}
+        </div>
+        <div className='section-heading-divider' />
       </div>
       <div className='grid grid-cols-2 gap-4 md:grid-cols-3'>
         {visiblePosts.map(post => {
