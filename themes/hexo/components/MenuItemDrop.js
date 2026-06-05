@@ -47,7 +47,7 @@ export const MenuItemDrop = ({ link }) => {
                   <SmartLink
                     href={sLink.href}
                     target={link?.target}
-                    className='flex w-full items-center gap-2 px-4 py-2.5 text-sm font-light tracking-wide text-gray-700 dark:text-gray-200 hover:bg-[#574b47] hover:text-white transition-colors duration-150 whitespace-nowrap'>
+                    className='flex w-full items-center gap-2 px-4 py-2.5 text-sm font-light tracking-wide text-gray-700 dark:text-gray-200 hover:bg-[#6b5d57] hover:text-white transition-colors duration-150 whitespace-nowrap'>
                     {sLink?.icon && <i className={`${sLink.icon} w-4 text-center opacity-70`} />}
                     {sLink.title}
                   </SmartLink>
