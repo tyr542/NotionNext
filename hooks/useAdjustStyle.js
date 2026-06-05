@@ -23,24 +23,16 @@ const useAdjustStyle = () => {
   };
 
   /**
-   * TL;DR 核心結論：標記文章 H1 下、第一個 H2 前的 💡 callout
-   * 由 public/css/custom.css 的 .tldr-callout 套用「核心結論」色塊樣式
+   * TL;DR 核心結論：標記文章內第一個「🎯」callout（🎯 為 TL;DR 專屬 emoji，內文不使用）
+   * 由 public/css/custom.css 的 .tldr-callout 套用「核心結論」樣式
    */
   const markTldrCallout = () => {
     const wrapper = document.getElementById('article-wrapper');
     if (!wrapper) return;
-    const firstH2 = wrapper.querySelector('.notion-h2');
     const callouts = wrapper.querySelectorAll('.notion-callout');
     for (const callout of callouts) {
-      // 只認第一個 H2 之前（H1 下、前言區）的 callout，避免誤抓內文中段的 callout
-      if (
-        firstH2 &&
-        !(firstH2.compareDocumentPosition(callout) & Node.DOCUMENT_POSITION_PRECEDING)
-      ) {
-        continue;
-      }
       const icon = callout.querySelector('.notion-page-icon');
-      if (icon && icon.textContent.trim().includes('💡')) {
+      if (icon && icon.textContent.trim().includes('🎯')) {
         callout.classList.add('tldr-callout');
         break;
       }
