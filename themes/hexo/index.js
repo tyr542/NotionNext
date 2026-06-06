@@ -6,7 +6,7 @@ import { Transition } from '@headlessui/react'
 import dynamic from 'next/dynamic'
 import SmartLink from '@/components/SmartLink'
 import { useRouter } from 'next/router'
-import { createContext, useContext, useEffect, useRef } from 'react'
+import { createContext, useContext, useEffect, useRef, useState } from 'react'
 import BlogPostArchive from './components/BlogPostArchive'
 import BlogPostListPage from './components/BlogPostListPage'
 import BlogPostListScroll from './components/BlogPostListScroll'
@@ -21,7 +21,6 @@ import RightFloatArea from './components/RightFloatArea'
 import SearchNav from './components/SearchNav'
 import SideRight from './components/SideRight'
 import SlotBar from './components/SlotBar'
-import TagItemMini from './components/TagItemMini'
 import CONFIG from './config'
 import { Style } from './style'
 
@@ -216,16 +215,14 @@ const LayoutSearch = props => {
 
   return (
     <div className='pt-8'>
-      {!currentSearch ? (
-        <SearchNav {...props} />
-      ) : (
-        <div id='posts-wrapper'>
-          {' '}
+      <SearchNav {...props} />
+      {currentSearch && (
+        <div id='posts-wrapper' className='mt-2'>
           {siteConfig('POST_LIST_STYLE') === 'page' ? (
             <BlogPostListPage {...props} />
           ) : (
             <BlogPostListScroll {...props} />
-          )}{' '}
+          )}
         </div>
       )}
     </div>
@@ -239,10 +236,18 @@ const LayoutSearch = props => {
  */
 const LayoutArchive = props => {
   const { archivePosts } = props
+  const { locale } = useGlobal()
   return (
     <div className='pt-8'>
       <Card className='w-full'>
-        <div className='mb-10 pb-20 bg-white md:p-12 p-3 min-h-full dark:bg-hexo-black-gray'>
+        <div className='section-heading mb-2'>
+          <div className='section-heading-label'>
+            <i className='section-heading-icon mr-2 fas fa-archive' />
+            {locale.NAV.ARCHIVE || '文章封存'}
+          </div>
+          <div className='section-heading-divider' />
+        </div>
+        <div className='md:px-8 px-1 pb-12'>
           {Object.keys(archivePosts).map(archiveTitle => (
             <BlogPostArchive
               key={archiveTitle}
@@ -373,30 +378,66 @@ const Layout404 = props => {
  * @returns
  */
 const LayoutCategoryIndex = props => {
-  const { categoryOptions } = props
+  const { categoryOptions, allNavPages } = props
   const { locale } = useGlobal()
+  const [expandedCategory, setExpandedCategory] = useState(null)
+
+  const toggleCategory = name => {
+    setExpandedCategory(prev => (prev === name ? null : name))
+  }
+
   return (
     <div className='mt-8'>
-      <Card className='w-full min-h-screen'>
-        <div className='dark:text-gray-200 mb-5 mx-3'>
-          <i className='mr-4 fas fa-th' /> {locale.COMMON.CATEGORY}:
+      <Card className='w-full'>
+        <div className='section-heading mb-4'>
+          <div className='section-heading-label'>
+            <i className='section-heading-icon mr-2 fas fa-th' />
+            {locale.COMMON.CATEGORY}
+          </div>
+          <div className='section-heading-divider' />
         </div>
-        <div id='category-list' className='duration-200 flex flex-wrap mx-8'>
+        <div className='space-y-3 px-1'>
           {categoryOptions?.map(category => {
+            const isExpanded = expandedCategory === category.name
+            const posts = isExpanded
+              ? (allNavPages || [])
+                  .filter(p => p.category === category.name)
+                  .sort((a, b) =>
+                    new Date(b.lastEditedDate || 0) - new Date(a.lastEditedDate || 0)
+                  )
+                  .slice(0, 5)
+              : []
+
             return (
-              <SmartLink
-                key={category.name}
-                href={`/category/${category.name}`}
-                passHref
-                legacyBehavior>
+              <div key={category.name}>
                 <div
-                  className={
-                    ' duration-300 dark:hover:text-white px-5 cursor-pointer py-2 hover:text-indigo-400'
-                  }>
-                  <i className='mr-4 fas fa-folder' /> {category.name}(
-                  {category.count})
+                  onClick={() => toggleCategory(category.name)}
+                  className={`category-card${isExpanded ? ' category-card-expanded' : ''}`}>
+                  <div className='category-card-icon'>
+                    <i className={`fas ${isExpanded ? 'fa-folder-open' : 'fa-folder'}`} />
+                  </div>
+                  <span className='category-card-name'>{category.name}</span>
+                  <span className='category-card-count'>{category.count} 篇</span>
+                  <i className={`fas fa-chevron-right category-card-arrow${isExpanded ? ' category-card-arrow-open' : ''}`} />
                 </div>
-              </SmartLink>
+                {isExpanded && posts.length > 0 && (
+                  <div className='category-card-posts'>
+                    {posts.map(post => (
+                      <SmartLink key={post.id} href={post.href} className='category-card-post'>
+                        <span className='category-card-post-date'>
+                          {(post.lastEditedDate || '').slice(0, 10).replace(/-/g, '.')}
+                        </span>
+                        <span className='category-card-post-title'>{post.title}</span>
+                      </SmartLink>
+                    ))}
+                    <SmartLink
+                      href={`/category/${category.name}`}
+                      className='category-card-viewall'>
+                      查看全部 →
+                    </SmartLink>
+                  </div>
+                )}
+              </div>
             )
           })}
         </div>
@@ -413,18 +454,35 @@ const LayoutCategoryIndex = props => {
 const LayoutTagIndex = props => {
   const { tagOptions } = props
   const { locale } = useGlobal()
+  const sorted = [...tagOptions].sort((a, b) => b.count - a.count)
+  const len = sorted.length
+  const t1 = Math.max(1, Math.ceil(len * 0.08))
+  const t2 = Math.max(t1, Math.ceil(len * 0.2))
+  const t3 = Math.max(t2, Math.ceil(len * 0.4))
+  const t4 = Math.max(t3, Math.ceil(len * 0.65))
+
   return (
     <div className='mt-8'>
       <Card className='w-full'>
-        <div className='dark:text-gray-200 mb-5 ml-4'>
-          <i className='mr-4 fas fa-tag' /> {locale.COMMON.TAGS}:
+        <div className='section-heading mb-4'>
+          <div className='section-heading-label'>
+            <i className='section-heading-icon mr-2 fas fa-tag' />
+            {locale.COMMON.TAGS}
+          </div>
+          <div className='section-heading-divider' />
         </div>
-        <div id='tags-list' className='duration-200 flex flex-wrap ml-8'>
-          {tagOptions.map(tag => (
-            <div key={tag.name} className='p-2'>
-              <TagItemMini key={tag.name} tag={tag} />
-            </div>
-          ))}
+        <div className='tag-pill-grid'>
+          {sorted.map((tag, i) => {
+            const tier = i < t1 ? 'tag-pill-t1' : i < t2 ? 'tag-pill-t2' : i < t3 ? 'tag-pill-t3' : i < t4 ? 'tag-pill-t4' : ''
+            return (
+              <SmartLink
+                key={tag.name}
+                href={`/tag/${encodeURIComponent(tag.name)}`}
+                className={`tag-pill ${tier}`}>
+                {tag.name} ({tag.count})
+              </SmartLink>
+            )
+          })}
         </div>
       </Card>
     </div>

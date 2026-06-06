@@ -1,24 +1,36 @@
 import SmartLink from '@/components/SmartLink'
 
-/**
- * 博客列表上方嵌入条
- * @param {*} props
- * @returns
- */
 export default function SlotBar(props) {
   const { tag, category } = props
 
   if (tag) {
-    return <div className="cursor-pointer px-3 py-2 mb-2 font-light hover:text-indigo-700 dark:hover:text-indigo-400 transform dark:text-white">
-              <SmartLink key={tag} href={`/tag/${encodeURIComponent(tag)}`} passHref
-                  className={'cursor-pointer inline-block rounded duration-200 mr-2 py-0.5 px-1 text-xl whitespace-nowrap '}>
-                  <div className='font-light dark:text-gray-400 dark:hover:text-white'> #{tag} </div>
-              </SmartLink>
+    return (
+      <div className='px-2 mb-4'>
+        <SmartLink href={`/tag/${encodeURIComponent(tag)}`} className='slot-bar-link'>
+          <div className='section-heading'>
+            <div className='section-heading-label'>
+              <i className='section-heading-icon mr-2 fas fa-tag' />
+              {tag}
+            </div>
+            <div className='section-heading-divider' />
           </div>
+        </SmartLink>
+      </div>
+    )
   } else if (category) {
-    return <div className="cursor-pointer text-lg px-5 py-1 mb-2 font-light hover:text-indigo-700 dark:hover:text-indigo-400 transform dark:text-white">
-              <i className="mr-1 far fa-folder-open" />  {category}
+    return (
+      <div className='px-2 mb-4'>
+        <SmartLink href={`/category/${category}`} className='slot-bar-link'>
+          <div className='section-heading'>
+            <div className='section-heading-label'>
+              <i className='section-heading-icon mr-2 fas fa-folder-open' />
+              {category}
+            </div>
+            <div className='section-heading-divider' />
           </div>
+        </SmartLink>
+      </div>
+    )
   }
   return <></>
 }

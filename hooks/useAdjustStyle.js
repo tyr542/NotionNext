@@ -50,19 +50,15 @@ const useAdjustStyle = () => {
     const textContainer = callout.querySelector('.notion-callout-text');
     if (!textContainer) return;
 
-    const children = Array.from(textContainer.children);
-    const titleEl = children[0];
-    const restEls = children.slice(1);
-    if (!titleEl || restEls.length === 0) return;
+    const nodes = Array.from(textContainer.childNodes);
+    if (nodes.length < 2) return;
 
     const details = document.createElement('details');
     const summary = document.createElement('summary');
 
-    summary.appendChild(titleEl);
+    summary.appendChild(nodes[0]);
     details.appendChild(summary);
-    for (const el of restEls) {
-      details.appendChild(el);
-    }
+    for (let i = 1; i < nodes.length; i++) details.appendChild(nodes[i]);
     textContainer.appendChild(details);
   };
 
@@ -76,16 +72,10 @@ const useAdjustStyle = () => {
     let observer = null;
     let observerTimeout = null;
 
-    if (!markSpecialCallouts()) {
-      observer = new MutationObserver(() => {
-        if (markSpecialCallouts()) {
-          observer.disconnect();
-          clearTimeout(observerTimeout);
-        }
-      });
-      observer.observe(document.body, { childList: true, subtree: true });
-      observerTimeout = setTimeout(() => observer.disconnect(), 10000);
-    }
+    markSpecialCallouts();
+    observer = new MutationObserver(() => markSpecialCallouts());
+    observer.observe(document.body, { childList: true, subtree: true });
+    observerTimeout = setTimeout(() => observer.disconnect(), 10000);
 
     window.addEventListener('resize', adjustCalloutImg);
     return () => {
