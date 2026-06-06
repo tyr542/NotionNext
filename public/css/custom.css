@@ -1041,11 +1041,21 @@ aside .shadow-md > div:first-child svg,
 .notion-callout-text .notion-text {
     margin-bottom: 0.5rem !important;
     padding: 0 !important;
-    line-height: 1.85 !important;
+    font-size: 0.95rem !important;
+    line-height: 1.55 !important;
 }
 
 .notion-callout-text .notion-text:last-child {
     margin-bottom: 0 !important;
+}
+
+.notion-callout-text .notion-text > .notion-link {
+    color: var(--text-ink) !important;
+    display: inline-block;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.12em;
 }
 
 .notion-callout .notion-page-icon {
@@ -1064,6 +1074,92 @@ aside .shadow-md > div:first-child svg,
 
 .dark .notion-callout-text {
     color: #d1d5db !important;
+}
+
+/* ==========================================================================
+   15.1 Callout 內連結 mention：維持輕量列式並補破圖 fallback
+   ========================================================================== */
+.notion-callout-text .notion-link-mention {
+    display: inline-flex;
+    align-items: center;
+    max-width: 100%;
+    line-height: 1.55;
+    vertical-align: middle;
+}
+
+.notion-callout-text .notion-link-mention-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 0;
+    max-width: 100%;
+    line-height: 1.55;
+    text-decoration: none !important;
+}
+
+.notion-callout-text .notion-link-mention-icon,
+.notion-callout-text .notion-link-mention-fallback {
+    width: 1.125rem;
+    height: 1.125rem;
+    min-width: 1.125rem;
+    flex: 0 0 1.125rem;
+    border-radius: 0.25rem;
+}
+
+.notion-callout-text .notion-link-mention-icon {
+    display: block;
+    object-fit: cover;
+}
+
+.notion-callout-text .notion-link-mention-fallback {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(140, 123, 117, 0.14);
+    color: var(--color-accent);
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    line-height: 1;
+}
+
+.notion-callout-text .notion-link-mention-provider {
+    color: #6f625e;
+    font-size: 0.92rem;
+    line-height: 1.55;
+    flex: 0 1 auto;
+}
+
+.notion-callout-text .notion-link-mention-title {
+    color: var(--text-ink);
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.55;
+    min-width: 0;
+}
+
+.notion-callout-text .notion-link-mention-preview,
+.notion-callout-text .notion-link-mention:hover .notion-link-mention-preview {
+    display: none !important;
+}
+
+.dark .notion-callout-text .notion-link-mention-provider {
+    color: #bcaea8;
+}
+
+.dark .notion-callout-text .notion-link-mention-fallback {
+    background: rgba(140, 123, 117, 0.22);
+    color: #f1e3dd;
+}
+
+@media (max-width: 640px) {
+    .notion-callout-text .notion-link-mention-link {
+        gap: 0.42rem;
+    }
+
+    .notion-callout-text .notion-link-mention-provider {
+        display: none;
+    }
 }
 
 /* ==========================================================================
