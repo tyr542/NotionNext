@@ -149,6 +149,28 @@ const nextConfig = {
           source: '/feed',
           destination: '/rss/feed.xml',
           permanent: true
+        },
+        // 2026-06-06 部落格類別重構：舊類別 301 重導向至新類別
+        {
+          source: '/category/%E8%AD%89%E7%85%A7%E8%80%83%E8%A9%A6',
+          destination: '/category/AI%20%E6%8A%80%E8%A1%93%E7%99%BD%E8%A9%B1%E6%96%87',
+          permanent: true
+        },
+        {
+          source: '/category/AI%20%E5%8D%94%E4%BD%9C%E5%BF%83%E6%B3%95',
+          destination: '/category/AI%20%E6%8A%80%E8%A1%93%E7%99%BD%E8%A9%B1%E6%96%87',
+          permanent: true
+        },
+        {
+          source: '/category/AI%20%E6%8A%80%E8%A1%93%E8%A7%A3%E6%9E%90',
+          destination: '/category/AI%20%E6%8A%80%E8%A1%93%E7%99%BD%E8%A9%B1%E6%96%87',
+          permanent: true
+        },
+        // 舊標籤 301 重導向
+        {
+          source: '/tag/Prompt%20Engineering',
+          destination: '/tag/%E6%8F%90%E7%A4%BA%E8%A9%9E%E5%B7%A5%E7%A8%8B',
+          permanent: true
         }
       ]
     },
