@@ -20,9 +20,9 @@ export default function ArticleRecommend({ recommendPosts, siteInfo }) {
   }
 
   return (
-    <div className='pt-8'>
+    <div className='px-5 pt-8'>
       <div className='section-heading mb-2 flex flex-nowrap justify-between'>
-        <div className='section-heading-label'>
+        <div className='section-heading-label ml-1'>
           <i className='section-heading-icon mr-2 fas fa-thumbs-up' />
           {locale.COMMON.RELATE_POSTS}
         </div>

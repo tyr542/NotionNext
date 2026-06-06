@@ -238,7 +238,7 @@ const LayoutArchive = props => {
   const { archivePosts } = props
   const { locale } = useGlobal()
   return (
-    <div className='pt-8'>
+    <div className='pt-8 mb-8'>
       <Card className='w-full'>
         <div className='section-heading mb-2'>
           <div className='section-heading-label'>

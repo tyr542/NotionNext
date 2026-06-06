@@ -8,16 +8,16 @@ const BlogPostArchive = ({ posts = [], archiveTitle }) => {
   return (
     <div className='archive-year-group'>
       <div className='section-heading mt-10 mb-4' id={archiveTitle}>
-        <div className='section-heading-label' style={{ fontSize: '1.4rem' }}>
+        <div className='section-heading-label'>
           <i className='section-heading-icon mr-2 fas fa-calendar-alt' />
-          {archiveTitle}
+          {archiveTitle.replace('-', '/')}
         </div>
         <div className='section-heading-divider' />
       </div>
       <ul className='archive-list'>
         {posts?.map(post => (
           <li key={post.id} className='archive-item'>
-            <span className='archive-item-date'>{post.date?.start_date}</span>
+            <span className='archive-item-date'>{post.date?.start_date?.slice(5).replace('-', '/')}</span>
             <SmartLink href={post?.href} className='archive-item-title'>
               {post.title}
             </SmartLink>

@@ -55,7 +55,7 @@ const PostHero = ({ post, siteInfo }) => {
   }
 
   return (
-    <div id='post-hero' className='w-full mb-8 animate-fade-in px-5 md:px-0'>
+    <div id='post-hero' className='w-full mb-4 animate-fade-in px-5 md:px-0'>
       
       {/* 1. 回到列表按鈕 */}
       <div className='w-full flex justify-start mb-6'>
@@ -144,7 +144,7 @@ const PostHero = ({ post, siteInfo }) => {
         </div>
       )}
 
-      <hr className='mt-8 border-gray-100 dark:border-gray-800' />
+      <hr className='mt-4 border-gray-100 dark:border-gray-800' />
     </div>
   )
 }

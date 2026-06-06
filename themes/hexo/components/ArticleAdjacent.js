@@ -16,8 +16,8 @@ export default function ArticleAdjacent ({ prev, next }) {
       <SmartLink
         href={`/${prev.slug}`}
         passHref
-        className='group flex min-h-[88px] w-full items-start gap-3 rounded-lg border border-gray-200 bg-white px-4 py-3 transition-colors duration-200 hover:border-gray-300 dark:border-gray-700 dark:bg-transparent dark:text-white dark:hover:border-gray-500'>
-        <i className='fas fa-angle-left text-xs text-gray-400 transition-colors duration-200 group-hover:text-gray-600 dark:text-gray-500 dark:group-hover:text-gray-300' />
+        className='group flex min-h-[88px] w-full items-center gap-3 rounded-lg border border-gray-200 bg-white px-4 py-3 transition-colors duration-200 hover:border-gray-300 dark:border-gray-700 dark:bg-transparent dark:text-white dark:hover:border-gray-500'>
+        <i className='fas fa-angle-left text-gray-400 transition-colors duration-200 group-hover:text-gray-600 dark:text-gray-500 dark:group-hover:text-gray-300' />
         <div className='min-w-0 flex-1'>
           <div className='mb-1 text-xs tracking-wide text-gray-400 dark:text-gray-500'>
             上一篇
@@ -30,7 +30,7 @@ export default function ArticleAdjacent ({ prev, next }) {
       <SmartLink
         href={`/${next.slug}`}
         passHref
-        className='group flex min-h-[88px] w-full items-start gap-3 rounded-lg border border-gray-200 bg-white px-4 py-3 text-right transition-colors duration-200 hover:border-gray-300 dark:border-gray-700 dark:bg-transparent dark:text-white dark:hover:border-gray-500'>
+        className='group flex min-h-[88px] w-full items-center gap-3 rounded-lg border border-gray-200 bg-white px-4 py-3 text-right transition-colors duration-200 hover:border-gray-300 dark:border-gray-700 dark:bg-transparent dark:text-white dark:hover:border-gray-500'>
         <div className='min-w-0 flex-1'>
           <div className='mb-1 text-xs tracking-wide text-gray-400 dark:text-gray-500'>
             下一篇
@@ -39,7 +39,7 @@ export default function ArticleAdjacent ({ prev, next }) {
             {next.title}
           </div>
         </div>
-        <i className='fas fa-angle-right text-xs text-gray-400 transition-colors duration-200 group-hover:text-gray-600 dark:text-gray-500 dark:group-hover:text-gray-300' />
+        <i className='fas fa-angle-right text-gray-400 transition-colors duration-200 group-hover:text-gray-600 dark:text-gray-500 dark:group-hover:text-gray-300' />
       </SmartLink>
     </section>
   )
