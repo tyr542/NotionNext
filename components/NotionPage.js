@@ -28,6 +28,7 @@ const NotionPage = ({ post, className }) => {
     })
 
   const zoomRef = useRef(zoom ? zoom.clone() : null)
+  const articleRef = useRef(null)
   const IMAGE_ZOOM_IN_WIDTH = siteConfig('IMAGE_ZOOM_IN_WIDTH', 1200)
   // 页面首次打开时执行的勾子
   useEffect(() => {
@@ -38,6 +39,8 @@ const NotionPage = ({ post, className }) => {
   // 页面文章发生变化时会执行的勾子
   useEffect(() => {
     // 相册视图点击禁止跳转，只能放大查看图片
+    wrapTablesForMobile(articleRef.current)
+
     if (POST_DISABLE_GALLERY_CLICK) {
       // 针对页面中的gallery视图，点击后是放大图片还是跳转到gallery的内部页面
       processGalleryImg(zoomRef?.current)
@@ -122,6 +125,7 @@ const NotionPage = ({ post, className }) => {
   return (
     <div
       id='notion-article'
+      ref={articleRef}
       className={`mx-auto overflow-hidden ${className || ''}`}>
       <NotionRenderer
         recordMap={post?.blockMap}
@@ -180,6 +184,24 @@ function cleanBlocksWithWarn(blockMap) {
     ...blockMap,
     block: cleanedBlocks
   }
+}
+
+export const wrapTablesForMobile = root => {
+  const scope = root?.querySelectorAll ? root : document
+  const doc =
+    scope?.nodeType === 9 ? scope : scope?.ownerDocument || document
+  const tables = scope.querySelectorAll('.notion-simple-table')
+
+  tables.forEach(table => {
+    if (table.parentElement?.classList?.contains('notion-table-scroll')) {
+      return
+    }
+
+    const wrapper = doc.createElement('div')
+    wrapper.className = 'notion-table-scroll'
+    table.parentNode?.insertBefore(wrapper, table)
+    wrapper.appendChild(table)
+  })
 }
 
 /**

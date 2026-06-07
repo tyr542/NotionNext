@@ -1396,6 +1396,21 @@ aside .shadow-md > div:first-child svg,
     overflow: hidden !important;
 }
 
+.notion-table-scroll {
+    width: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch;
+    margin: 2rem 0 !important;
+}
+
+.notion-table-scroll .notion-simple-table {
+    margin: 0 !important;
+    width: auto !important;
+    min-width: 100% !important;
+    max-width: none !important;
+}
+
 .notion-simple-table td {
     padding: 10px 16px !important;
     border-bottom: 1px solid rgba(140, 123, 117, 0.12) !important;
@@ -1705,6 +1720,10 @@ html.dark .notion-inline-code {
 #article-wrapper .notion-callout .notion-callout-text .notion-simple-table {
     display: table !important;
     width: 100% !important;
+    max-width: 100% !important;
+}
+
+#article-wrapper .notion-callout .notion-callout-text .notion-table-scroll {
     max-width: 100% !important;
 }
 
