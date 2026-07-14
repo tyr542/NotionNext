@@ -323,3 +323,11 @@ npm run quality        # Validates env var configuration
 - **Notion API:** https://developers.notion.com/
 - **Tailwind CSS:** https://tailwindcss.com/docs
 - **react-notion-x:** https://github.com/NotionX/react-notion-x
+
+## 工作區遷移指標
+
+本 repo 已遷至 `D:\workspaces\notionnext`，是 `tyr542/NotionNext` 的個人 fork。工作區搬遷後的規則以本檔為準；Codex 另讀同目錄 `AGENTS.md`，Gemini 另讀 `GEMINI.md`。
+
+正式 hand-off：`D:\BenchMark\Notebook\99_System 系統\Project Handoffs\NotionNext\NotionNext Agent 深掃報告 2026-04-29.md`。
+
+對外發布或交付前，沿用主控臺真理之鏡協議：`D:\coding\.agent\agents\mirror-of-truth\AGENT.md`。
