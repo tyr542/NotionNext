@@ -1,6 +1,7 @@
 import BLOG from '@/blog.config'
 import { siteConfig } from '@/lib/config'
 import { fetchGlobalAllData } from '@/lib/db/SiteDataApi'
+import { sanitizeNonArticlePageProps } from '@/lib/utils/listPageProps'
 import { DynamicLayout } from '@/themes/theme'
 import { useRouter } from 'next/router'
 
@@ -21,6 +22,7 @@ export async function getStaticProps(req) {
   const from = 'tag-index-props'
   const props = await fetchGlobalAllData({ from, locale })
   delete props.allPages
+  sanitizeNonArticlePageProps(props)
   return {
     props,
     revalidate: process.env.EXPORT

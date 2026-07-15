@@ -24,6 +24,77 @@ import { getDataFromCache } from '@/lib/cache/cache_manager'
 import { fetchGlobalAllData } from '@/lib/db/SiteDataApi'
 
 describe('search keyword index page', () => {
+  it('matches title, summary, tags, and category without returning rich fields', async () => {
+    const richFields = {
+      blockMap: { block: { heavy: { value: { type: 'text' } } } },
+      content: ['heavy'],
+      toc: [{ id: 'heavy' }]
+    }
+    fetchGlobalAllData.mockResolvedValue({
+      allPages: [
+        {
+          id: 'title-hit',
+          type: 'Post',
+          status: 'Published',
+          title: 'Needle in title',
+          summary: '',
+          tags: [],
+          category: [],
+          slug: 'title-hit',
+          ...richFields
+        },
+        {
+          id: 'summary-hit',
+          type: 'Post',
+          status: 'Published',
+          title: 'Summary post',
+          summary: 'Needle in summary',
+          tags: [],
+          category: [],
+          slug: 'summary-hit',
+          ...richFields
+        },
+        {
+          id: 'tag-hit',
+          type: 'Post',
+          status: 'Published',
+          title: 'Tag post',
+          summary: '',
+          tags: ['needle'],
+          category: [],
+          slug: 'tag-hit',
+          ...richFields
+        },
+        {
+          id: 'category-hit',
+          type: 'Post',
+          status: 'Published',
+          title: 'Category post',
+          summary: '',
+          tags: [],
+          category: ['needle'],
+          slug: 'category-hit',
+          ...richFields
+        }
+      ],
+      NOTION_CONFIG: {}
+    })
+    getDataFromCache.mockResolvedValue(null)
+
+    const result = await getStaticProps({
+      params: { keyword: 'needle' },
+      locale: 'zh-TW'
+    })
+
+    expect(result.props.postCount).toBe(4)
+    expect(result.props.allPages).toBeUndefined()
+    result.props.posts.forEach(post => {
+      expect(post).not.toHaveProperty('blockMap')
+      expect(post).not.toHaveProperty('content')
+      expect(post).not.toHaveProperty('toc')
+    })
+  })
+
   it('matches keywords from cached page body content', async () => {
     fetchGlobalAllData.mockResolvedValue({
       allPages: [

@@ -4,6 +4,10 @@ import { siteConfig } from '@/lib/config'
 import { fetchGlobalAllData } from '@/lib/db/SiteDataApi'
 import { DynamicLayout } from '@/themes/theme'
 import { getPageContentText } from '@/lib/db/notion/getPageContentText'
+import {
+  sanitizeListItemForProps,
+  sanitizeNonArticlePageProps
+} from '@/lib/utils/listPageProps'
 
 const Index = props => {
   const theme = siteConfig('THEME', BLOG.THEME, props.NOTION_CONFIG)
@@ -40,6 +44,8 @@ export async function getStaticProps({ params: { keyword }, locale }) {
     props.posts = props.posts?.slice(0, POSTS_PER_PAGE)
   }
   props.keyword = keyword
+  delete props.allPages
+  sanitizeNonArticlePageProps(props)
   return {
     props,
     revalidate: process.env.EXPORT
@@ -103,7 +109,7 @@ async function filterByMemCache(allPosts, keyword) {
       }
     }
     if (hit) {
-      filterPosts.push(post)
+      filterPosts.push(sanitizeListItemForProps(post))
     }
   }
   return filterPosts

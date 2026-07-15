@@ -2,6 +2,10 @@ import BLOG from '@/blog.config'
 import { getDataFromCache } from '@/lib/cache/cache_manager'
 import { siteConfig } from '@/lib/config'
 import { fetchGlobalAllData } from '@/lib/db/SiteDataApi'
+import {
+  sanitizeListItemForProps,
+  sanitizeNonArticlePageProps
+} from '@/lib/utils/listPageProps'
 import { DynamicLayout } from '@/themes/theme'
 
 const Index = props => {
@@ -38,6 +42,7 @@ export async function getStaticProps({ params: { keyword, page }, locale }) {
   props.keyword = keyword
   props.page = page
   delete props.allPages
+  sanitizeNonArticlePageProps(props)
   return {
     props,
     revalidate: process.env.EXPORT
@@ -152,7 +157,7 @@ async function filterByMemCache(allPosts, keyword) {
       }
     }
     if (hit) {
-      filterPosts.push(post)
+      filterPosts.push(sanitizeListItemForProps(post))
     }
   }
   return filterPosts

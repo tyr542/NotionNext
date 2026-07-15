@@ -44,6 +44,7 @@
     "test:coverage": "jest --coverage",
     "test:ci": "jest --ci --coverage --watchAll=false",
     "health-check": "node scripts/health-check.js",
+    "page-data-budget": "node scripts/page-data-budget.js",
     "validate": "npm run health-check",
     "final-validation": "node scripts/final-validation.js",
     "postinstall": "patch-package"

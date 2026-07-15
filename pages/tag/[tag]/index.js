@@ -1,6 +1,10 @@
 import BLOG from '@/blog.config'
 import { siteConfig } from '@/lib/config'
 import { fetchGlobalAllData } from '@/lib/db/SiteDataApi'
+import {
+  sanitizeListItemsForProps,
+  sanitizeNonArticlePageProps
+} from '@/lib/utils/listPageProps'
 import { sortPostsForList } from '@/lib/utils/postSort'
 import { DynamicLayout } from '@/themes/theme'
 
@@ -20,9 +24,11 @@ export async function getStaticProps({ params: { tag }, locale }) {
 
   // 过滤状态
   props.posts = sortPostsForList(
-    props.allPages
-      ?.filter(page => page.type === 'Post' && page.status === 'Published')
-      .filter(post => post && post?.tags && post?.tags.includes(tag)) || []
+    sanitizeListItemsForProps(
+      props.allPages
+        ?.filter(page => page.type === 'Post' && page.status === 'Published')
+        .filter(post => post && post?.tags && post?.tags.includes(tag))
+    )
   )
 
   // 处理文章页数
@@ -40,6 +46,7 @@ export async function getStaticProps({ params: { tag }, locale }) {
 
   props.tag = tag
   delete props.allPages
+  sanitizeNonArticlePageProps(props)
   return {
     props,
     revalidate: process.env.EXPORT

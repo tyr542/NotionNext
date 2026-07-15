@@ -1,4 +1,5 @@
 const mockPagePropsById = {}
+let mockPageIds = ['published-1', 'invisible-1']
 
 jest.mock('notion-utils', () => ({
   idToUuid: jest.fn(value => value)
@@ -19,7 +20,7 @@ jest.mock('@/lib/db/notion/getAllCategories', () => ({
 
 jest.mock('@/lib/db/notion/getAllPageIds', () => ({
   __esModule: true,
-  default: jest.fn(() => ['published-1', 'invisible-1'])
+  default: jest.fn(() => mockPageIds)
 }))
 
 jest.mock('@/lib/db/notion/getAllTags', () => ({
@@ -92,6 +93,8 @@ jest.mock('@/lib/utils/notion.util', () => ({
 
 describe('resolvePostProps', () => {
   beforeEach(() => {
+    mockPageIds = ['published-1', 'invisible-1']
+
     mockPagePropsById['published-1'] = {
       id: 'published-1',
       type: 'Post',
@@ -154,5 +157,88 @@ describe('resolvePostProps', () => {
     expect(props.latestPosts[0]).not.toHaveProperty('blockMap')
     expect(props.latestPosts[0]).not.toHaveProperty('content')
     expect(props.latestPosts[0]).not.toHaveProperty('toc')
+  })
+
+  it('omits hidden notice from global public page props', async () => {
+    mockPageIds = ['published-1', 'hidden-notice']
+    mockPagePropsById['hidden-notice'] = {
+      id: 'hidden-notice',
+      type: 'Notice',
+      status: 'Invisible',
+      title: 'Hidden notice',
+      slug: 'hidden-notice',
+      tags: [],
+      date: {},
+      blockMap: { block: { heavy: { value: { type: 'text' } } } },
+      content: ['heavy'],
+      toc: [{ id: 'heavy' }]
+    }
+
+    const { fetchGlobalAllData } = await import('@/lib/db/SiteDataApi')
+
+    const props = await fetchGlobalAllData({
+      from: 'test-hidden-notice'
+    })
+
+    expect(props.notice).toBeNull()
+  })
+
+  it('keeps explicitly published notice render data in global site data', async () => {
+    mockPageIds = ['published-1', 'published-notice']
+    mockPagePropsById['published-notice'] = {
+      id: 'published-notice',
+      type: 'Notice',
+      status: 'Published',
+      title: 'Published notice',
+      slug: 'published-notice',
+      tags: [],
+      date: {}
+    }
+
+    const { fetchGlobalAllData } = await import('@/lib/db/SiteDataApi')
+
+    const props = await fetchGlobalAllData({
+      from: 'test-published-notice'
+    })
+
+    expect(props.notice?.title).toBe('Published notice')
+    expect(props.notice?.blockMap).toEqual({
+      block: {
+        'published-notice': {
+          value: {
+            id: 'published-notice',
+            type: 'page'
+          }
+        }
+      }
+    })
+  })
+
+  it('returns notice preview without rich fields in article page props', async () => {
+    mockPageIds = ['published-1', 'published-notice']
+    mockPagePropsById['published-notice'] = {
+      id: 'published-notice',
+      type: 'Notice',
+      status: 'Published',
+      title: 'Published notice',
+      slug: 'published-notice',
+      tags: [],
+      date: {},
+      content: ['heavy'],
+      toc: [{ id: 'heavy' }]
+    }
+
+    const { resolvePostProps } = await import('@/lib/db/SiteDataApi')
+
+    const props = await resolvePostProps({
+      prefix: 'guides',
+      slug: 'published-post',
+      from: 'test-article-notice-preview'
+    })
+
+    expect(props.notice?.title).toBe('Published notice')
+    expect(props.notice).not.toHaveProperty('blockMap')
+    expect(props.notice).not.toHaveProperty('content')
+    expect(props.notice).not.toHaveProperty('toc')
   })
 })

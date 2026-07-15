@@ -1,6 +1,10 @@
 import BLOG from '@/blog.config'
 import { siteConfig } from '@/lib/config'
 import { fetchGlobalAllData } from '@/lib/db/SiteDataApi'
+import {
+  sanitizeListItemsForProps,
+  sanitizeNonArticlePageProps
+} from '@/lib/utils/listPageProps'
 import { DynamicLayout } from '@/themes/theme'
 import { useRouter } from 'next/router'
 
@@ -44,9 +48,11 @@ export async function getStaticProps({ locale }) {
     locale
   })
   const { allPages } = props
-  props.posts = allPages?.filter(
+  props.posts = sanitizeListItemsForProps(allPages?.filter(
     page => page.type === 'Post' && page.status === 'Published'
-  )
+  ))
+  delete props.allPages
+  sanitizeNonArticlePageProps(props)
   return {
     props,
     revalidate: process.env.EXPORT

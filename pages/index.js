@@ -8,6 +8,7 @@ import { DynamicLayout } from '@/themes/theme'
 import { generateRedirectJson } from '@/lib/utils/redirect'
 import { checkDataFromAlgolia } from '@/lib/plugins/algolia'
 import { sortPostsForList } from '@/lib/utils/postSort'
+import { sanitizeListItemsForProps } from '@/lib/utils/listPageProps'
 
 /**
  * 首页布局
@@ -50,7 +51,9 @@ export async function getStaticProps(req) {
     props?.NOTION_CONFIG
   )
   props.posts = sortPostsForList(
-    props.allPages?.filter(page => page.type === 'Post' && page.status === 'Published') || []
+    sanitizeListItemsForProps(
+      props.allPages?.filter(page => page.type === 'Post' && page.status === 'Published')
+    )
   )
 
   // 处理分页

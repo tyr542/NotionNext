@@ -1,6 +1,7 @@
 import BLOG from '@/blog.config'
 import { siteConfig } from '@/lib/config'
 import { fetchGlobalAllData } from '@/lib/db/SiteDataApi'
+import { isClerkEnabled } from '@/lib/utils/clerk'
 import { DynamicLayout } from '@/themes/theme'
 
 /**
@@ -14,6 +15,12 @@ const SignUp = props => {
 }
 
 export async function getStaticProps(req) {
+  if (!isClerkEnabled()) {
+    return {
+      notFound: true
+    }
+  }
+
   const { locale } = req
 
   const from = 'SignIn'

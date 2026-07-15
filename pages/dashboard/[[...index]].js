@@ -1,6 +1,7 @@
 import BLOG from '@/blog.config'
 import { siteConfig } from '@/lib/config'
 import { resolvePostProps } from '@/lib/db/SiteDataApi'
+import { isClerkEnabled } from '@/lib/utils/clerk'
 import { DynamicLayout } from '@/themes/theme'
 
 /**
@@ -15,6 +16,12 @@ const Dashboard = props => {
 }
 
 export async function getStaticProps({ locale }) {
+  if (!isClerkEnabled()) {
+    return {
+      notFound: true
+    }
+  }
+
   const prefix = 'dashboard'
   const props = await resolvePostProps({
     prefix,

@@ -1,5 +1,6 @@
 // pages/sitemap.xml.js
 import { fetchGlobalAllData } from '@/lib/db/SiteDataApi'
+import { sanitizeNonArticlePageProps } from '@/lib/utils/listPageProps'
 import { useRouter } from 'next/router'
 import Slug from '../[prefix]'
 
@@ -12,6 +13,7 @@ export const getStaticProps = async () => {
   const props = await fetchGlobalAllData({ from })
 
   delete props.allPages
+  sanitizeNonArticlePageProps(props)
   return {
     props
   }
