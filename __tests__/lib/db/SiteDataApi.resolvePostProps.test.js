@@ -81,7 +81,7 @@ jest.mock('@/lib/db/notion/getNotionPost', () => ({
   fetchPageFromNotion: jest.fn()
 }))
 
-jest.mock('@/lib/utils/post-server', () => ({
+jest.mock('@/lib/utils/post', () => ({
   processPostData: jest.fn(async props => {
     props.processed = true
   })
