@@ -1943,6 +1943,87 @@ html.dark .notion-inline-code {
 }
 
 /* ==========================================================================
+   15.8 Callout 內連結 mention：輕量列式與破圖 fallback
+   ========================================================================== */
+#article-wrapper .notion-callout-text .notion-link-mention {
+    display: inline-flex;
+    align-items: center;
+    max-width: 100%;
+    line-height: 1.55;
+    vertical-align: middle;
+}
+
+#article-wrapper .notion-callout-text .notion-link-mention-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 0;
+    max-width: 100%;
+    line-height: 1.55;
+    text-decoration: none !important;
+}
+
+#article-wrapper .notion-callout-text .notion-link-mention-icon,
+#article-wrapper .notion-callout-text .notion-link-mention-fallback {
+    width: 1.125rem;
+    height: 1.125rem;
+    min-width: 1.125rem;
+    flex: 0 0 1.125rem;
+    border-radius: 0.25rem;
+}
+
+#article-wrapper .notion-callout-text .notion-link-mention-icon {
+    display: block;
+    object-fit: cover;
+}
+
+#article-wrapper .notion-callout-text .notion-link-mention-fallback {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(140, 123, 117, 0.14);
+    color: var(--color-accent);
+    font-size: 0.62rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+#article-wrapper .notion-callout-text .notion-link-mention-provider {
+    color: #6f625e;
+    font-size: 0.92rem;
+    line-height: 1.55;
+    flex: 0 1 auto;
+}
+
+#article-wrapper .notion-callout-text .notion-link-mention-title {
+    color: var(--text-ink);
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.55;
+    min-width: 0;
+}
+
+#article-wrapper .notion-callout-text .notion-link-mention-preview,
+#article-wrapper .notion-callout-text .notion-link-mention:hover .notion-link-mention-preview {
+    display: none !important;
+}
+
+.dark #article-wrapper .notion-callout-text .notion-link-mention-provider {
+    color: #bcaea8;
+}
+
+.dark #article-wrapper .notion-callout-text .notion-link-mention-fallback {
+    background: rgba(140, 123, 117, 0.22);
+    color: #f1e3dd;
+}
+
+@media (max-width: 640px) {
+    #article-wrapper .notion-callout-text .notion-link-mention-provider {
+        display: none;
+    }
+}
+
+/* ==========================================================================
    16. ArticleCopyright 版權聲明樣式（取代 border-indigo-500）
    ========================================================================== */
 .copyright-box {
