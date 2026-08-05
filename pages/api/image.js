@@ -14,7 +14,10 @@ export default async function imageProxy(req, res) {
     const upstream = await fetch(sourceUrl, {
       redirect: 'follow',
       headers: {
-        accept: 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8'
+        accept: 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8',
+        // Notion 的 Cloudflare 封鎖 Node 預設 UA（回 403），與 getNotionAPI.js 同一根因
+        'user-agent':
+          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36'
       }
     })
 
