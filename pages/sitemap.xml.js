@@ -19,6 +19,10 @@ export const getServerSideProps = async ctx => {
       pageId: id,
       from: 'sitemap.xml'
     })
+    // 取不到 Notion 时回 500，不把兜底的假文章 /oops 写进 sitemap
+    if (siteData?.notionDataUnavailable) {
+      throw new Error('[sitemap] Notion data unavailable')
+    }
     const link = siteConfig(
       'LINK',
       siteData?.siteInfo?.link,

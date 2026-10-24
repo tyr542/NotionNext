@@ -1,4 +1,5 @@
 import BLOG from '@/blog.config'
+import { assertNotionDataAvailable } from '@/lib/utils/postStaticProps'
 import { siteConfig } from '@/lib/config'
 import { fetchGlobalAllData } from '@/lib/db/SiteDataApi'
 import { sanitizeNonArticlePageProps } from '@/lib/utils/listPageProps'
@@ -16,8 +17,9 @@ export default function Category(props) {
   )
 }
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale, revalidateReason }) {
   const props = await fetchGlobalAllData({ from: 'category-index-props', locale })
+  assertNotionDataAvailable(props, revalidateReason)
   delete props.allPages
   sanitizeNonArticlePageProps(props)
   return {

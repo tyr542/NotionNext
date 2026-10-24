@@ -70,3 +70,21 @@ describe('findAccessiblePage', () => {
     expect(page?.id).toBe('notion-page-id')
   })
 })
+
+describe('findAccessiblePage id matching', () => {
+  const publicPages = [
+    { id: '2ba70f01-9634-816d-8502-e374aa1d2ec1', type: 'Post', slug: 'hello' }
+  ]
+
+  it('matches a dashless notion id against a dashed page id', () => {
+    const page = findAccessiblePage({
+      fullSlug: '2BA70F019634816D8502E374AA1D2EC1',
+      publicPages
+    })
+    expect(page?.slug).toBe('hello')
+  })
+
+  it('does not treat short slugs as ids', () => {
+    expect(findAccessiblePage({ fullSlug: 'abc', publicPages })).toBeNull()
+  })
+})

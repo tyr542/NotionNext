@@ -58,7 +58,7 @@ export default async function handler(
 
     if (params?.status === 200) {
       const redirectQuery = {
-        msg: '成功了' + JSON.stringify(params.data)
+        msg: '授权成功'
       }
 
       // 这里将用户数据写入到Notion数据库
@@ -105,14 +105,14 @@ const fetchToken = async (code: string): Promise<NotionTokenResponse> => {
         }
       }
     )
-    console.log('OAuth身份信息', response.data)
+    // 不记录 token 响应，避免 access_token 写进日志
     return {
       status: response.status,
       statusText: response.statusText,
       data: response.data
     }
   } catch (error) {
-    console.error('Error fetching token', error)
+    console.error('Error fetching token', (error as Error)?.message)
     return {
       status: 400,
       statusText: 'failed',

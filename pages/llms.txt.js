@@ -20,6 +20,10 @@ export const getServerSideProps = async ctx => {
       pageId: id,
       from: 'llms.txt'
     })
+    // 取不到 Notion 时回 500，不输出兜底的假文章
+    if (siteData?.notionDataUnavailable) {
+      throw new Error('[llms.txt] Notion data unavailable')
+    }
 
     const link = siteConfig(
       'LINK',

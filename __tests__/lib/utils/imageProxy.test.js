@@ -20,4 +20,9 @@ describe('image proxy helpers', () => {
     expect(shouldProxyImageUrl('https://example.com/image.png')).toBe(false)
     expect(toImageProxyUrl('/favicon.svg')).toBe('/favicon.svg')
   })
+
+  it('only proxies Notion hosts over https', () => {
+    expect(shouldProxyImageUrl('http://www.notion.so/image/x.png')).toBe(false)
+    expect(shouldProxyImageUrl('https://img.notionusercontent.com/s3/x.png')).toBe(true)
+  })
 })

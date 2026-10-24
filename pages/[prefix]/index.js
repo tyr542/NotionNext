@@ -1,4 +1,5 @@
 import BLOG from '@/blog.config'
+import { toPostStaticResult } from '@/lib/utils/postStaticProps'
 import useNotification from '@/components/Notification'
 import OpenWrite from '@/components/OpenWrite'
 import { siteConfig } from '@/lib/config'
@@ -130,21 +131,12 @@ export async function getStaticPaths() {
   }
 }
 
-export async function getStaticProps({ params: { prefix }, locale }) {
+export async function getStaticProps({ params: { prefix }, locale, revalidateReason }) {
   const props = await resolvePostProps({
     prefix,
     locale,
   })
-  return {
-    props,
-    revalidate: process.env.EXPORT
-      ? undefined
-      : siteConfig(
-        'NEXT_REVALIDATE_SECOND',
-        BLOG.NEXT_REVALIDATE_SECOND,
-        props.NOTION_CONFIG
-      )
-  }
+  return toPostStaticResult(props, revalidateReason)
 }
 
 export default Slug

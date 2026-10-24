@@ -1,4 +1,5 @@
 import BLOG from '@/blog.config'
+import { assertNotionDataAvailable } from '@/lib/utils/postStaticProps'
 import { getDataFromCache } from '@/lib/cache/cache_manager'
 import { siteConfig } from '@/lib/config'
 import { fetchGlobalAllData } from '@/lib/db/SiteDataApi'
@@ -19,11 +20,12 @@ const Index = props => {
  * @param {*} param0
  * @returns
  */
-export async function getStaticProps({ params: { keyword }, locale }) {
+export async function getStaticProps({ params: { keyword }, locale, revalidateReason }) {
   const props = await fetchGlobalAllData({
     from: 'search-props',
     locale
   })
+  assertNotionDataAvailable(props, revalidateReason)
   const { allPages } = props
   const allPosts = allPages?.filter(
     page => page.type === 'Post' && page.status === 'Published'

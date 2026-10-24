@@ -104,7 +104,6 @@ const nextConfig = {
   generateEtags: true,
 
   // 构建优化
-  swcMinify: true,
   modularizeImports: {
     '@heroicons/react/24/outline': {
       transform: '@heroicons/react/24/outline/{{member}}'
@@ -127,16 +126,21 @@ const nextConfig = {
     // 图片尺寸优化
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    // 2026-10 資安：關閉 /_next/image 最佳化端點（Next.js 圖片最佳化有 SVG/AVIF 遠端執行漏洞），
+    // Hexo 主題沒用到 next/image，圖片代理改走 /api/image（有網域白名單）
+    unoptimized: true,
     remotePatterns: [
-      { protocol: 'https', hostname: '**' },
-      { protocol: 'http', hostname: '**' }
+      { protocol: 'https', hostname: 'www.notion.so' },
+      { protocol: 'https', hostname: 'notion.so' },
+      { protocol: 'https', hostname: 'img.notionusercontent.com' },
+      { protocol: 'https', hostname: 'file.notion.so' },
+      { protocol: 'https', hostname: 'images.unsplash.com' }
     ],
     // 图片加载器优化
     loader: 'default',
     // 图片缓存优化
     minimumCacheTTL: 60 * 60 * 24 * 7, // 7天
-    // 危险的允许SVG
-    dangerouslyAllowSVG: true,
+    dangerouslyAllowSVG: false,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;"
   },
 
@@ -215,6 +219,10 @@ const nextConfig = {
 
       return [
         ...langsRewrites,
+        // RSS 后援：public/rss 下的静态文件优先，不存在时（部署环境没保留构建期写入的文件）改由 API 即时生成
+        { source: '/rss/feed.xml', destination: '/api/rss?format=rss' },
+        { source: '/rss/atom.xml', destination: '/api/rss?format=atom' },
+        { source: '/rss/feed.json', destination: '/api/rss?format=json' },
         // 伪静态重写
         {
           source: '/:path*.html',
@@ -229,21 +237,24 @@ const nextConfig = {
         {
           source: '/:path*{/}?',
           headers: [
-            // 为了博客兼容性，不做过多安全限制
-            { key: 'Access-Control-Allow-Credentials', value: 'true' },
             {
               key: 'Access-Control-Allow-Origin',
               value: process.env.NODE_ENV === 'production' ? (BLOG.LINK || '*') : '*'
             },
             {
               key: 'Access-Control-Allow-Methods',
-              value: 'GET,OPTIONS,PATCH,DELETE,POST,PUT'
+              value: 'GET,POST,OPTIONS'
             },
             {
               key: 'Access-Control-Allow-Headers',
               value:
                 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-            }
+            },
+            // 2026-10 資安：基本安全標頭（CSP 因 Notion 內嵌與第三方腳本暫不開）
+            { key: 'X-Content-Type-Options', value: 'nosniff' },
+            { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+            { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+            { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' }
             // 安全头部 相关配置，谨慎开启
             //   { key: 'X-Frame-Options', value: 'DENY' },
             //   { key: 'X-Content-Type-Options', value: 'nosniff' },
