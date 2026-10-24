@@ -19,7 +19,9 @@
 2. **RSS 網址回 HTML**：`/rss/feed.xml` 實測回 200 但內容是網站的「loading」空殼頁（canonical 為 `https://gyozalab.com/undefined`），而 `sitemap.xml` 還把它列進去。上游 `2e3ef885` 加 `/api/rss` 後援。難度小。
 3. **任何不存在的網址都回 HTTP 200**（軟 404）：實測 `/this-does-not-exist-xyz`、`/a/b/c` 都是 200、約 640 KB。上游路由用 `notFound: !props.post`，再配合「Notion 暫時抓不到時保留舊頁面，不要把空站寫進 ISR 快取」。難度中。
 
-之後再說：站內連結轉換修正（小）、`getAllPageIds` 預防（小）、Error Boundary（小）。
+之後再說：站內連結轉換修正（小）、`getAllPageIds` 預防（小）、Error Boundary（小）、Notion 失敗保護延伸到 `/category/*`、`/tag/*`、`/archive`、`/page/*`、`/search/*`（小，2026-10-24 第一批只做了首頁與文章頁）。
+
+> 2026-10-24 已完成：P1 三件（SEO 結構化資料、RSS 後援、真正的 404 ＋ Notion 失敗保護），commit `7774b5fd`。
 
 **不用做**：文章密碼伺服器端驗證（線上目前沒有任何加密文章，且是 47 檔的大改）、`/api/revalidate`（綁整個新快取子系統，且你已有 60 秒 ISR）、首頁瘦身（fork 已有等效實作，首頁 `__NEXT_DATA__` 只有 50 KB）、`file.notion.com`（目前行得通，見下）。
 

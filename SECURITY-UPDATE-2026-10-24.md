@@ -108,7 +108,7 @@
 | SEO 結構化資料 | 文章被標成 `schema.org/Movie`、`og:type=Post`、`article:section=A`、沒有發布日期、`twitter:site=@NotionNext` | `og:type=article`；`article:published_time`、`modified_time` 與 JSON-LD 的 `datePublished`／`dateModified` 都有 ISO 時間；分類是完整名稱「AI 技術白話文」；沒設 Twitter 帳號就不輸出 |
 | RSS | `/rss/feed.xml` 回 200 的 HTML 空殼、0 篇文章 | 靜態檔在就用靜態檔；不在就由 `/api/rss` 即時產生（記憶體快取 10 分鐘），`feed.xml`／`atom.xml`／`feed.json` 都是 6 篇含全文 |
 | 真正的 404 | 不存在的網址回 200 | 回 404，畫面是 Hexo 的「未找到該頁面」 |
-| Notion 失敗保護 | Notion 一時連不上，ISR 會把空站寫進快取 | 執行期抓不到 Notion 時改為保留上一版頁面（首頁與文章頁），建置期不受影響 |
+| Notion 失敗保護 | Notion 一時連不上，ISR 會把空站寫進快取 | 執行期抓不到 Notion 時保留上一版頁面（首頁與文章頁），建置期不受影響。實測：用假的 Notion ID 啟動，log 出現攔截訊息，首頁和文章頁連續兩輪都回 200 且是原本的真實內容；從未建置過的網址回 500、`/api/rss` 回 503。分類、標籤、歸檔、分頁、搜尋頁還沒套用 |
 
 順手修到：每一頁都預先載入 `/fonts/inter-var.woff2`，這個檔從 2025-06 起就不存在，線上每次都回一份 640 KB 的 HTML。已移除這行。
 
@@ -116,7 +116,7 @@
 
 ## 驗證紀錄
 
-- `jest`：123 個測試全過（`.claude/worktrees/` 底下兩個舊工作樹副本的測試失敗，那是舊程式碼）。
+- `jest`：127 個測試全過。`.claude/worktrees/` 底下的舊工作樹副本已加進 `jest.config.js` 的忽略清單，直接跑 `npm test` 就是全綠。
 - `next build`（Next 15.5.28）：成功，`processPostData` 錯誤從 29 次歸零。
 - 本機 `next start` 實測：
   - 首頁、文章頁正常顯示，主控台沒有錯誤。

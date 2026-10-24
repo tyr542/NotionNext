@@ -41,7 +41,9 @@ const customJestConfig = {
     '<rootDir>/.next/',
     '<rootDir>/node_modules/',
     '<rootDir>/out/',
-    '<rootDir>/.vercel/'
+    '<rootDir>/.vercel/',
+    // 代理工作树里的旧副本不属于本 repo 的测试
+    '<rootDir>/.claude/'
   ],
   
   // Transform files
