@@ -54,7 +54,10 @@ const SEO = props => {
   const TITLE = siteConfig('TITLE')
   const title = meta?.title || TITLE
   const description = meta?.description || `${siteInfo?.description}`
-  const type = meta?.type || 'website'
+  // Open Graph 只认 article / website，Notion 的 Post 类型要转成 article
+  const type = meta?.type === 'Post' ? 'article' : 'website'
+  const TWITTER_SITE = siteConfig('TWITTER_SITE', null)
+  const TWITTER_CREATOR = siteConfig('TWITTER_CREATOR', null)
   const lang = siteConfig('LANG').replace('-', '_') // Facebook OpenGraph 要 zh_CN 這樣的格式才抓得到語言
   const category = meta?.category || KEYWORDS // section 主要是像是 category 這樣的分類，Facebook 用這個來抓連結的分類
   const favicon = siteConfig('BLOG_FAVICON')
@@ -163,8 +166,10 @@ const SEO = props => {
 
       {/* Twitter Card 元数据 */}
       <meta name='twitter:card' content='summary_large_image' />
-      <meta name='twitter:site' content={siteConfig('TWITTER_SITE', '@NotionNext')} />
-      <meta name='twitter:creator' content={siteConfig('TWITTER_CREATOR', '@NotionNext')} />
+      {TWITTER_SITE && <meta name='twitter:site' content={TWITTER_SITE} />}
+      {TWITTER_CREATOR && (
+        <meta name='twitter:creator' content={TWITTER_CREATOR} />
+      )}
       <meta name='twitter:title' content={title} />
       <meta name='twitter:description' content={description} />
       <meta name='twitter:image' content={image} />
@@ -226,9 +231,6 @@ const SEO = props => {
       <link rel='preconnect' href='https://fonts.gstatic.com' crossOrigin='anonymous' />
       <link rel='preconnect' href='https://www.notion.so' />
       <link rel='preconnect' href='https://img.notionusercontent.com' />
-
-      {/* 预加载关键资源 */}
-      <link rel='preload' href='/fonts/inter-var.woff2' as='font' type='font/woff2' crossOrigin='anonymous' />
 
       {children}
     </Head>
@@ -308,6 +310,17 @@ const generateStructuredData = (meta, siteInfo, url, image, author) => {
   }
 
   return baseData
+}
+
+/**
+ * 转成 ISO 8601 时间，结构化数据与 article:*_time 需要这个格式
+ * @param {number|string|Date} value
+ * @returns {string|undefined}
+ */
+const toIsoTime = value => {
+  if (!value) return undefined
+  const date = new Date(value)
+  return Number.isNaN(date.getTime()) ? undefined : date.toISOString()
 }
 
 /**
@@ -417,8 +430,13 @@ const getSEOMeta = (props, router, locale) => {
         type: post?.type,
         slug: post?.slug,
         image: post?.pageCoverThumbnail || `${siteInfo?.pageCover}`,
-        category: post?.category?.[0],
-        tags: post?.tags
+        // category 是字串，舊寫法 [0] 只取到第一個字
+        category: Array.isArray(post?.category)
+          ? post.category[0]
+          : post?.category,
+        tags: post?.tags,
+        publishDay: toIsoTime(post?.publishDate),
+        lastEditedDay: toIsoTime(post?.lastEditedDate) || toIsoTime(post?.publishDate)
       }
   }
 }

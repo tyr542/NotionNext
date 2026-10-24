@@ -219,6 +219,10 @@ const nextConfig = {
 
       return [
         ...langsRewrites,
+        // RSS 后援：public/rss 下的静态文件优先，不存在时（部署环境没保留构建期写入的文件）改由 API 即时生成
+        { source: '/rss/feed.xml', destination: '/api/rss?format=rss' },
+        { source: '/rss/atom.xml', destination: '/api/rss?format=atom' },
+        { source: '/rss/feed.json', destination: '/api/rss?format=json' },
         // 伪静态重写
         {
           source: '/:path*.html',

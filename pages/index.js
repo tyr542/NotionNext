@@ -45,6 +45,14 @@ export async function getStaticProps(req) {
   const { locale } = req
   const from = 'index'
   const props = await fetchGlobalAllData({ from, locale })
+  // 执行期取不到 Notion 时抛错，让 ISR 继续提供上一版首页，而不是缓存空站
+  if (
+    props?.notionDataUnavailable &&
+    req?.revalidateReason &&
+    req.revalidateReason !== 'build'
+  ) {
+    throw new Error('[ISR] Notion data unavailable, keep the previous homepage')
+  }
   const POST_PREVIEW_LINES = siteConfig(
     'POST_PREVIEW_LINES',
     12,

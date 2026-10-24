@@ -1,4 +1,5 @@
 import BLOG from '@/blog.config'
+import { toPostStaticResult } from '@/lib/utils/postStaticProps'
 import { siteConfig } from '@/lib/config'
 import { fetchGlobalAllData, resolvePostProps } from '@/lib/db/SiteDataApi'
 import Slug from '..'
@@ -43,23 +44,14 @@ export async function getStaticPaths() {
   }
 }
 
-export async function getStaticProps({ params: { prefix, slug }, locale }) {
+export async function getStaticProps({ params: { prefix, slug }, locale, revalidateReason }) {
   const props = await resolvePostProps({
     prefix,
     slug,
     locale,
   })
 
-  return {
-    props,
-    revalidate: process.env.EXPORT
-      ? undefined
-      : siteConfig(
-        'NEXT_REVALIDATE_SECOND',
-        BLOG.NEXT_REVALIDATE_SECOND,
-        props.NOTION_CONFIG
-      ),
-  }
+  return toPostStaticResult(props, revalidateReason)
 }
 
 export default PrefixSlug
