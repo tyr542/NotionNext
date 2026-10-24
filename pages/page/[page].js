@@ -1,4 +1,5 @@
 import BLOG from '@/blog.config'
+import { assertNotionDataAvailable } from '@/lib/utils/postStaticProps'
 import { siteConfig } from '@/lib/config'
 import { fetchGlobalAllData, getPostBlocks } from '@/lib/db/SiteDataApi'
 import {
@@ -33,9 +34,10 @@ export async function getStaticPaths({ locale }) {
   }
 }
 
-export async function getStaticProps({ params: { page }, locale }) {
+export async function getStaticProps({ params: { page }, locale, revalidateReason }) {
   const from = `page-${page}`
   const props = await fetchGlobalAllData({ from, locale })
+  assertNotionDataAvailable(props, revalidateReason)
   const { allPages } = props
   const POST_PREVIEW_LINES = siteConfig(
     'POST_PREVIEW_LINES',

@@ -212,7 +212,7 @@ const SEO = props => {
       <script
         type='application/ld+json'
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(generateStructuredData(meta, siteInfo, url, image, AUTHOR))
+          __html: toJsonLd(generateStructuredData(meta, siteInfo, url, image, AUTHOR))
         }}
       />
 
@@ -220,7 +220,7 @@ const SEO = props => {
       {faqSchema && (
         <script
           type='application/ld+json'
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+          dangerouslySetInnerHTML={{ __html: toJsonLd(faqSchema) }}
         />
       )}
 
@@ -311,6 +311,13 @@ const generateStructuredData = (meta, siteInfo, url, image, author) => {
 
   return baseData
 }
+
+/**
+ * 输出到 <script type="application/ld+json"> 的 JSON，跳脱 < 避免内容里的 </script> 提前结束标签
+ * @param {*} data
+ * @returns {string}
+ */
+const toJsonLd = data => JSON.stringify(data).replace(/</g, '\\u003c')
 
 /**
  * 转成 ISO 8601 时间，结构化数据与 article:*_time 需要这个格式

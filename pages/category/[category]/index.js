@@ -1,4 +1,5 @@
 import BLOG from '@/blog.config'
+import { assertNotionDataAvailable } from '@/lib/utils/postStaticProps'
 import { siteConfig } from '@/lib/config'
 import { fetchGlobalAllData } from '@/lib/db/SiteDataApi'
 import {
@@ -18,9 +19,10 @@ export default function Category(props) {
   return <DynamicLayout theme={theme} layoutName='LayoutPostList' {...props} />
 }
 
-export async function getStaticProps({ params: { category }, locale }) {
+export async function getStaticProps({ params: { category }, locale, revalidateReason }) {
   const from = 'category-props'
   let props = await fetchGlobalAllData({ from, locale })
+  assertNotionDataAvailable(props, revalidateReason)
 
   // 过滤状态
   props.posts = sortPostsForList(

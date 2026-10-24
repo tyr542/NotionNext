@@ -1,4 +1,5 @@
 import BLOG from '@/blog.config'
+import { assertNotionDataAvailable } from '@/lib/utils/postStaticProps'
 import { siteConfig } from '@/lib/config'
 import { fetchGlobalAllData } from '@/lib/db/SiteDataApi'
 import { isBrowser } from '@/lib/utils'
@@ -34,8 +35,9 @@ const ArchiveIndex = props => {
   return <DynamicLayout theme={theme} layoutName='LayoutArchive' {...props} />
 }
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale, revalidateReason }) {
   const props = await fetchGlobalAllData({ from: 'archive-index', locale })
+  assertNotionDataAvailable(props, revalidateReason)
   // 处理分页
   props.posts = sanitizeListItemsForProps(props.allPages?.filter(
     page => page.type === 'Post' && page.status === 'Published'

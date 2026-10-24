@@ -1,4 +1,5 @@
 import BLOG from '@/blog.config'
+import { assertNotionDataAvailable } from '@/lib/utils/postStaticProps'
 import { siteConfig } from '@/lib/config'
 import { fetchGlobalAllData } from '@/lib/db/SiteDataApi'
 import {
@@ -42,11 +43,12 @@ const Search = props => {
 /**
  * 浏览器前端搜索
  */
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale, revalidateReason }) {
   const props = await fetchGlobalAllData({
     from: 'search-props',
     locale
   })
+  assertNotionDataAvailable(props, revalidateReason)
   const { allPages } = props
   props.posts = sanitizeListItemsForProps(allPages?.filter(
     page => page.type === 'Post' && page.status === 'Published'

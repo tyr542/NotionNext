@@ -114,6 +114,33 @@
 
 ---
 
+## 五、獨立審查（2026-10-24）
+
+兩個沒看過開發過程的子代理分別審查正確性與資安，每條發現都先在程式或線上查證，屬實才修。
+
+### 已修（附實測）
+
+| 嚴重度 | 問題 | 修法與證據 |
+|---|---|---|
+| 高 | `/api/image` 轉手 Notion 圖片時丟掉 Notion 原本的安全限制，攻擊者可讓夾帶程式的 SVG 從 gyozalab.com 網域送出（反射型 XSS） | 補上 `Content-Security-Policy: ... sandbox` 與 `nosniff`；轉址改成逐跳檢查白名單、只收 https；加 10 秒逾時與 15 MB 上限。本機實測攻擊網址回應已帶 `sandbox`，文章內真實圖片照常 200 |
+| 中 | `pages/auth/index.js` 把 OAuth 密鑰和存取權杖印進 log、塞進頁面資料 | 拿掉所有 log，頁面只回成功或失敗訊息 |
+| 中 | 知道草稿的 Notion ID 就能用網址讀到草稿 | 兜底只放行嵌在文章裡的子頁面，資料庫列一律走已過濾的文章清單；清單比對改成不分破折號。實測用 32 碼 ID 開已發布文章仍是 200 |
+| 中 | Notion 斷線時分類、標籤、歸檔、分頁、搜尋頁會把假文章「oops」和 Notion ID 存進快取，sitemap 也會收進 `/oops` | 這些頁面套用同一個保護；sitemap、llms.txt 斷線時回 500。實測斷線兩輪，四種列表頁都觸發保護、維持舊內容 |
+| 中 | 工作區檢查本身失敗時，正常子頁面會被存成 404 | 改當作「Notion 暫時不可用」，保留舊頁 |
+| 中 | `glob`、`picomatch` 被強制跨大版號，`test:ci`（覆蓋率模式）直接壞掉 | 移除這兩條強制版本（漏洞只在開發工具）。`test:ci` 已恢復，133 個測試全過 |
+| 低 | 結構化資料（JSON-LD）沒跳脫 `<`，標題裡有 `</script>` 會破版 | 輸出前把 `<` 轉成 `<` |
+| 低 | RSS 快取過期時 Notion 剛好失敗會回 503 | 改成先退回上一份 feed |
+
+### 確認後不改
+
+- 從沒產生過的網址在 Notion 斷線期間回 500：沒有舊頁可保留，500 不會被快取，Notion 恢復就正常。
+- `/api/cache` 沒設權杖一律 503：刻意的設計。
+- Mailchimp 訂閱沒有速率限制、`getNotionConfig` 用 `eval`、middleware 自抓 `redirect.json`：分別要啟用 Mailchimp、要有人改你的 Notion 設定表、要開 `UUID_REDIRECT` 才會觸發，目前都沒開。
+- `processPostData` 修好後，若 Zeabur 有設 `AI_SUMMARY_API` 或 Algolia，文章頁會開始呼叫這兩個服務（AI 摘要有快取）。Zeabur 登入恢復後要確認這兩個變數。
+- 圖片代理仍可被拿來轉任意外部圖片（經 Notion 的轉址），已加大小和逾時上限，靠 Cloudflare 快取擋流量。
+
+---
+
 ## 驗證紀錄
 
 - `jest`：127 個測試全過。`.claude/worktrees/` 底下的舊工作樹副本已加進 `jest.config.js` 的忽略清單，直接跑 `npm test` 就是全綠。
