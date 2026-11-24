@@ -3,7 +3,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "gyozalab-blog",
-  "main": ".open-next/worker.js",
+  "main": "custom-worker.js",
   "compatibility_date": "2026-10-01",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "assets": { "directory": ".open-next/assets", "binding": "ASSETS" },
@@ -11,7 +11,9 @@
   "r2_buckets": [{ "binding": "NEXT_INC_CACHE_R2_BUCKET", "bucket_name": "gyozalab-blog-cache" }],
   "durable_objects": { "bindings": [{ "name": "NEXT_CACHE_DO_QUEUE", "class_name": "DOQueueHandler" }] },
   "migrations": [{ "tag": "v1", "new_sqlite_classes": ["DOQueueHandler"] }],
-  "workers_dev": true,
+  // 不公開 *.workers.dev 測試網址與預覽網址，避免整站副本被搜尋引擎收錄
+  "workers_dev": false,
+  "preview_urls": false,
   // 付費版才准調運算時間上限；部落格組一頁實測 170 到 998 毫秒
   "limits": { "cpu_ms": 30000 },
   // 正式網域：兩筆 DNS 都是 Cloudflare 代理，DNS 不動；改回 Zeabur＝拿掉 routes 再部署
