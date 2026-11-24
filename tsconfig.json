@@ -73,6 +73,7 @@
     "node_modules",
     "public",
     "open-next.config.ts",
+    "custom-worker.js",
     ".open-next"
   ]
 }
