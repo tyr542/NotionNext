@@ -48,7 +48,6 @@ yarn-error.log*
 /sitemap.xml
 
 # yarn
-package-lock.json
 # yarn.lock
 
 .notion-api-lock
