@@ -1,0 +1,22 @@
+// 部落格部署到 Cloudflare Workers（2026-11-24 從 Zeabur 搬來，用 @opennextjs/cloudflare 轉接）
+// 部署：npm run cf:deploy；只建置不上傳：npm run cf:build
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "gyozalab-blog",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": { "directory": ".open-next/assets", "binding": "ASSETS" },
+  "services": [{ "binding": "WORKER_SELF_REFERENCE", "service": "gyozalab-blog" }],
+  "r2_buckets": [{ "binding": "NEXT_INC_CACHE_R2_BUCKET", "bucket_name": "gyozalab-blog-cache" }],
+  "durable_objects": { "bindings": [{ "name": "NEXT_CACHE_DO_QUEUE", "class_name": "DOQueueHandler" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["DOQueueHandler"] }],
+  "workers_dev": true,
+  // 付費版才准調運算時間上限；部落格組一頁實測 170 到 998 毫秒
+  "limits": { "cpu_ms": 30000 },
+  // 正式網域：兩筆 DNS 都是 Cloudflare 代理，DNS 不動；改回 Zeabur＝拿掉 routes 再部署
+  "routes": [
+    { "pattern": "gyozalab.com/*", "zone_name": "gyozalab.com" },
+    { "pattern": "www.gyozalab.com/*", "zone_name": "gyozalab.com" }
+  ]
+}

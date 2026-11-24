@@ -47,14 +47,18 @@
     "page-data-budget": "node scripts/page-data-budget.js",
     "validate": "npm run health-check",
     "final-validation": "node scripts/final-validation.js",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "cf:build": "opennextjs-cloudflare build",
+    "cf:preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "cf:deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy"
   },
   "dependencies": {
     "@clerk/localizations": "^3.37.9",
     "@clerk/nextjs": "^5.7.6",
     "@google-analytics/data": "^7.3.0",
     "@headlessui/react": "^1.7.19",
-    "@next/bundle-analyzer": "^15.5.28",
+    "@next/bundle-analyzer": "^15.5.29",
+    "@opennextjs/cloudflare": "^1.20.18",
     "@vercel/analytics": "^1.6.1",
     "algoliasearch": "^4.25.2",
     "axios": "^1.20.0",
@@ -64,7 +68,7 @@
     "js-md5": "^0.8.3",
     "lodash": "^4.18.1",
     "memory-cache": "^0.2.0",
-    "next": "^15.5.28",
+    "next": "^15.5.29",
     "notion-client": "7.10.0",
     "notion-utils": "7.10.0",
     "react": "^18.3.1",
@@ -88,7 +92,7 @@
     "autoprefixer": "^10.6.1",
     "cross-env": "^7.0.3",
     "eslint": "^8.57.1",
-    "eslint-config-next": "^15.5.28",
+    "eslint-config-next": "^15.5.29",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-node": "^11.1.0",
@@ -104,7 +108,8 @@
     "prettier": "^3.9.10",
     "tailwindcss": "^3.4.19",
     "typescript": "5.9.3",
-    "webpack-bundle-analyzer": "^4.5.0"
+    "webpack-bundle-analyzer": "^4.5.0",
+    "wrangler": "^4.167.0"
   },
   "resolutions": {
     "axios": ">=1.20.0",

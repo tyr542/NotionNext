@@ -63,3 +63,9 @@ package-lock.json
 /.lh-tmp
 /.asset-build.log
 /.asset-start.log
+
+# Cloudflare Workers (OpenNext)
+.open-next/
+.wrangler/
+.dev.vars
+.cf-*
