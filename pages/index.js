@@ -6,6 +6,7 @@ import { generateRss } from '@/lib/utils/rss'
 import { generateSitemapXml } from '@/lib/utils/sitemap.xml'
 import { DynamicLayout } from '@/themes/theme'
 import { generateRedirectJson } from '@/lib/utils/redirect'
+import { isCloudflareWorkers } from '@/lib/utils/runtime'
 import { checkDataFromAlgolia } from '@/lib/plugins/algolia'
 import { sortPostsForList } from '@/lib/utils/postSort'
 import { sanitizeListItemsForProps } from '@/lib/utils/listPageProps'
@@ -95,17 +96,22 @@ export async function getStaticProps(req) {
     delete props.notice.blockMap
   }
 
-  generateRobotsTxt(props)
-  // 生成Feed订阅
-  generateRss(createRssProps(props))
-  // 生成
-  generateSitemapXml(props)
+  // 這幾個檔案寫進 public/，只在建置時寫得進去。
+  // Cloudflare Workers 執行期檔案系統唯讀，寫了只會報 EPERM、白耗運算時間；
+  // 正式站的 sitemap、RSS、robots 靠每天自動重建一次更新（.github/workflows/daily-rebuild.yml）
+  if (!isCloudflareWorkers()) {
+    generateRobotsTxt(props)
+    // 生成Feed订阅
+    generateRss(createRssProps(props))
+    // 生成
+    generateSitemapXml(props)
+    if (siteConfig('UUID_REDIRECT', false, props?.NOTION_CONFIG)) {
+      // 生成重定向 JSON
+      generateRedirectJson(props)
+    }
+  }
   // 检查数据是否需要从algolia删除
   checkDataFromAlgolia(props)
-  if (siteConfig('UUID_REDIRECT', false, props?.NOTION_CONFIG)) {
-    // 生成重定向 JSON
-    generateRedirectJson(props)
-  }
 
   // 生成全文索引 - 仅在 yarn build 时执行 && process.env.npm_lifecycle_event === 'build'
 

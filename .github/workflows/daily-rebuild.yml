@@ -1,0 +1,33 @@
+# 每天叫 Cloudflare Workers Builds 重建一次部落格
+#
+# 為什麼：sitemap.xml、RSS（/rss/feed.xml）、robots.txt 是建置時產生的靜態檔，
+# Workers 執行期不能寫檔，所以在 Notion 發新文後，這幾個檔要等下次重建才會更新。
+# 文章頁本身靠 ISR 一兩分鐘就會更新，不受影響。
+#
+# 需要的 secret：CF_DEPLOY_HOOK_URL
+#   Cloudflare 後台 Workers → gyozalab-blog → Settings → Builds → Deploy Hooks 建立（分支 main），
+#   把產生的網址存進 GitHub repo 的 Actions secret。網址本身就是憑證，不要貼進程式碼或對話。
+name: Daily rebuild on Cloudflare
+
+on:
+  schedule:
+    # 每天台灣時間 03:00（UTC 19:00）
+    - cron: '0 19 * * *'
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Trigger Cloudflare deploy hook
+        env:
+          HOOK: ${{ secrets.CF_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "::error::CF_DEPLOY_HOOK_URL secret 沒設定"
+            exit 1
+          fi
+          curl -fsS -X POST "$HOOK" -o /dev/null -w "HTTP %{http_code}\n"
