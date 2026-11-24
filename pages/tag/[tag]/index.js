@@ -83,7 +83,7 @@ export async function getStaticPaths() {
     paths: Object.keys(tagNames).map(index => ({
       params: { tag: tagNames[index] }
     })),
-    fallback: true
+    fallback: 'blocking'
   }
 }
 
