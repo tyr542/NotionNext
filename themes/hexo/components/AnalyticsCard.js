@@ -1,19 +1,10 @@
 import Card from './Card'
 
 /**
- * 以 Google Analytics 4 Data API 取得真實 PV / UV，取代原本的不蒜子（Busuanzi）。
- * 數字由 SSG / ISR 階段的 fetchGlobalAllData() 透過 fetchSitePageviews() 注入 props。
- * sitePv / siteUv 為 null 時代表 GA 未設定或呼叫失敗，以 '—' 替代顯示。
+ * 側欄統計卡：只顯示文章數。2026-11-24 起拿掉 GA 瀏覽數（部署到 Cloudflare Workers 後 GA Data API 的 gRPC 跑不動）。
  */
-const formatNumber = (value) => {
-  if (value === null || value === undefined) return '—'
-  const n = Number(value)
-  if (Number.isNaN(n)) return '—'
-  return n.toLocaleString('en-US')
-}
-
 export function AnalyticsCard (props) {
-  const { postCount, sitePv, siteUv } = props
+  const { postCount } = props
   return <Card>
     <div className='ml-2 mb-3 '>
       <i className='fas fa-chart-area' /> 统计
@@ -23,18 +14,6 @@ export function AnalyticsCard (props) {
         <div className='flex justify-between'>
           <div>文章数:</div>
           <div>{postCount}</div>
-        </div>
-      </div>
-      <div className='ml-2'>
-        <div className='flex justify-between'>
-          <div>访问量:</div>
-          <div>{formatNumber(sitePv)}</div>
-        </div>
-      </div>
-      <div className='ml-2'>
-        <div className='flex justify-between'>
-          <div>访客数:</div>
-          <div>{formatNumber(siteUv)}</div>
         </div>
       </div>
     </div>
