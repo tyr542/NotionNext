@@ -102,7 +102,8 @@ export async function getStaticProps(req) {
   if (!isCloudflareWorkers()) {
     generateRobotsTxt(props)
     // 生成Feed订阅
-    generateRss(createRssProps(props))
+    // 要等寫完：建置結束前 RSS 檔得落地，才會被打包成靜態檔（2026-11-25 Codex 審查建議）
+    await generateRss(createRssProps(props))
     // 生成
     generateSitemapXml(props)
     if (siteConfig('UUID_REDIRECT', false, props?.NOTION_CONFIG)) {
