@@ -1,5 +1,12 @@
 # 部署指南
 
+> **gyozalab.com 現況（2026-11-24 起）**：部署在 Cloudflare Workers（Worker 名稱 `gyozalab-blog`，Workers Paid 方案），用 `@opennextjs/cloudflare` 轉接。
+> - 推上 `main` 由 Cloudflare Workers Builds 自動建置部署（建置 `npx opennextjs-cloudflare build`、部署 `npx opennextjs-cloudflare deploy`）。手動部署：`npm run cf:deploy`
+> - 在 Notion 發文、改文不用部署，定時更新（ISR，60 秒）快取放 R2 `gyozalab-blog-cache`
+> - 網域靠 `wrangler.jsonc` 的 `routes` 接到 Worker，DNS 不動。改回舊主機：拿掉 `routes` 再部署
+> - 下面是上游 NotionNext 的通用說明，Vercel、Zeabur 那些段落已不適用本站
+
+
 ## 概述
 
 NotionNext 支持多种部署方式，本指南将详细介绍各种部署选项和最佳实践。
