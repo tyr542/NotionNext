@@ -13,5 +13,10 @@
   "migrations": [{ "tag": "v1", "new_sqlite_classes": ["DOQueueHandler"] }],
   "workers_dev": true,
   // 付費版才准調運算時間上限；部落格組一頁實測 170 到 998 毫秒
-  "limits": { "cpu_ms": 30000 }
+  "limits": { "cpu_ms": 30000 },
+  // 正式網域：兩筆 DNS 都是 Cloudflare 代理，DNS 不動；改回 Zeabur＝拿掉 routes 再部署
+  "routes": [
+    { "pattern": "gyozalab.com/*", "zone_name": "gyozalab.com" },
+    { "pattern": "www.gyozalab.com/*", "zone_name": "gyozalab.com" }
+  ]
 }
